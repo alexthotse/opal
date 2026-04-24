@@ -16,6 +16,7 @@ import bridge
 import security
 import planning
 import reasoning
+import jido_agent
 
 pub type Request {
   Request(id: String, method: String)
@@ -70,6 +71,7 @@ pub fn execute_method(method: String) -> String {
     "ping" -> "pong"
     "agent.start" -> "agent_started_successfully"
     "agent.status" -> "idle"
+    "jido.action" -> jido_agent.dispatch_action("process_query")
     "ultrathink.start" -> reasoning.start_ultrathink()
     "ultraplan.start" -> planning.start_ultraplan()
     "memory.extract" -> memory.extract_memories()

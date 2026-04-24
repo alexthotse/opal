@@ -13,9 +13,10 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"google.golang.org/adk/agent"
 )
 
-type model struct {
+type teaModel struct {
 	backendCmd *exec.Cmd
 	stdin      io.WriteCloser
 	stdout     io.ReadCloser
@@ -23,6 +24,7 @@ type model struct {
 	requestID  int
 	theme      Theme
 	animator   *Animator
+	adkAgent   agent.Agent
 }
 
 type JSONRPCRequest struct {
@@ -42,13 +44,17 @@ type backendMsg struct {
 	content string
 }
 
-func initialModel() model {
+func initialModel() teaModel {
 	anim := NewAnimator()
 	anim.SetTarget(20.0) // Target width for an animation reveal effect
-	return model{
+	
+	adkAgent, _ := initADKAgent()
+
+	return teaModel{
 		messages: []string{"Starting Peregrine Backend (Gleam)..."},
 		theme:    GetTheme(ThemePI),
 		animator: anim,
+		adkAgent: adkAgent,
 	}
 }
 
@@ -60,7 +66,7 @@ func tickCmd() tea.Cmd {
 	})
 }
 
-func (m model) Init() tea.Cmd {
+func (m teaModel) Init() tea.Cmd {
 	return tea.Batch(startBackend, tickCmd())
 }
 
@@ -120,7 +126,7 @@ func sendRequest(stdin io.WriteCloser, reqID int, method string) tea.Cmd {
 	}
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m teaModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case tea.KeyMsg:
@@ -135,10 +141,21 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.requestID++
 				return m, sendRequest(m.stdin, m.requestID, "ping")
 			}
+		case "s": // ADK mock search
+			if m.stdin != nil {
+				m.messages = append(m.messages, runADKAgent(m.adkAgent, "search logs"))
+				m.requestID++
+				return m, sendRequest(m.stdin, m.requestID, "search.quick")
+			}
 		case "a": // Start agent
 			if m.stdin != nil {
+				// 1:1 Matching Workflow:
+				// Frontend ADK Agent delegates to Backend Jido Agent
+				adkOutput := runADKAgent(m.adkAgent, "trigger backend action")
+				m.messages = append(m.messages, adkOutput)
+
 				m.requestID++
-				return m, sendRequest(m.stdin, m.requestID, "agent.start")
+				return m, sendRequest(m.stdin, m.requestID, "jido.action")
 			}
 		case "u": // Start ultrathink
 			if m.stdin != nil {
@@ -174,7 +191,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.backendCmd = msg.cmd
 		m.stdin = msg.stdin
 		m.stdout = msg.stdout
-		m.messages = append(m.messages, "Backend connected! Keys: 'p' (ping), 'a' (agent), 'u' (think), 'r' (plan), 'v' (voice), 'h' (history), 'm' (actions), 't' (theme), 'q' (quit).")
+		m.messages = append(m.messages, "Backend connected! Keys: 'p' (ping), 'a' (agent), 'u' (think), 'r' (plan), 'v' (voice), 'h' (history), 'm' (actions), 's' (search), 't' (theme), 'q' (quit).")
 		return m, listenBackend(m.stdout)
 
 	case backendMsg:
@@ -190,7 +207,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m model) View() string {
+func (m teaModel) View() string {
 	pad := int(m.animator.position)
 	if pad < 0 {
 		pad = 0

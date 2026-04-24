@@ -2,11 +2,49 @@
 # You typically do not need to edit this file
 
 packages = [
+  { name = "abacus", version = "2.2.0", build_tools = ["mix"], requirements = [], otp_app = "abacus", source = "hex", outer_checksum = "DC89CCBD711986FD10A8E2F11F532B332F8A975C6C5967E4EC6B47B4BA92FF60" },
+  { name = "certifi", version = "2.15.0", build_tools = ["rebar3"], requirements = [], otp_app = "certifi", source = "hex", outer_checksum = "B147ED22CE71D72EAFDAD94F055165C1C182F61A2FF49DF28BCC71D1D5B94A60" },
+  { name = "crontab", version = "1.2.0", build_tools = ["mix"], requirements = ["ecto"], otp_app = "crontab", source = "hex", outer_checksum = "EBD7EF4D831E1B20FA4700F0DE0284A04CAC4347E813337978E25B4CC5CC2207" },
+  { name = "deep_merge", version = "1.0.0", build_tools = ["mix"], requirements = [], otp_app = "deep_merge", source = "hex", outer_checksum = "CE708E5F094B9CD4E8F2BE4F00D2F4250C4095BE93F8CD6D018C753894885430" },
+  { name = "finch", version = "0.21.0", build_tools = ["mix"], requirements = ["mime", "mint", "nimble_options", "nimble_pool", "telemetry"], otp_app = "finch", source = "hex", outer_checksum = "87DC6E169794CB2570F75841A19DA99CFDE834249568F2A5B121B809588A4377" },
+  { name = "fuse", version = "2.5.0", build_tools = ["rebar3"], requirements = [], otp_app = "fuse", source = "hex", outer_checksum = "7F52A1C84571731AD3C91D569E03131CC220EBAA7E2A11034405F0BAC46A4FEF" },
   { name = "gleam_erlang", version = "1.3.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_erlang", source = "hex", outer_checksum = "1124AD3AA21143E5AF0FC5CF3D9529F6DB8CA03E43A55711B60B6B7B3874375C" },
   { name = "gleam_json", version = "3.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_json", source = "hex", outer_checksum = "44FDAA8847BE8FC48CA7A1C089706BD54BADCC4C45B237A992EDDF9F2CDB2836" },
   { name = "gleam_otp", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_erlang", "gleam_stdlib"], otp_app = "gleam_otp", source = "hex", outer_checksum = "BA6A294E295E428EC1562DC1C11EA7530DCB981E8359134BEABC8493B7B2258E" },
   { name = "gleam_stdlib", version = "1.0.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "960090C2FB391784BB34267B099DC9315CC1B1F6013E7415BC763CEF1905D7D3" },
   { name = "gleeunit", version = "1.10.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "254B697FE72EEAD7BF82E941723918E421317813AC49923EE76A18C788C61E72" },
+  { name = "hackney", version = "1.25.0", build_tools = ["rebar3"], requirements = ["certifi", "idna", "metrics", "mimerl", "parse_trans", "ssl_verify_fun", "unicode_util_compat"], otp_app = "hackney", source = "hex", outer_checksum = "7209BFD75FD1F42467211FF8F59EA74D6F2A9E81CBCEE95A56711EE79FD6B1D4" },
+  { name = "hpax", version = "1.0.3", build_tools = ["mix"], requirements = [], otp_app = "hpax", source = "hex", outer_checksum = "8EAB6E1CFA8D5918C2CE4BA43588E894AF35DBD8E91E6E55C817BCA5847DF34A" },
+  { name = "idna", version = "6.1.1", build_tools = ["rebar3"], requirements = ["unicode_util_compat"], otp_app = "idna", source = "hex", outer_checksum = "92376EB7894412ED19AC475E4A86F7B413C1B9FBB5BD16DCCD57934157944CEA" },
+  { name = "jason", version = "1.4.4", build_tools = ["mix"], requirements = ["decimal"], otp_app = "jason", source = "hex", outer_checksum = "C5EB0CAB91F094599F94D55BC63409236A8EC69A21A67814529E8D5F6CC90B3B" },
+  { name = "jido", version = "2.2.0", build_tools = ["mix"], requirements = ["crontab", "deep_merge", "igniter", "jason", "jido_action", "jido_signal", "nimble_options", "ok", "phoenix_pubsub", "poolboy", "splode", "telemetry", "telemetry_metrics", "tzdata", "uniq"], otp_app = "jido", source = "hex", outer_checksum = "8C244395B5890F1332E6EF126963F6765C7D32ECC39B941FA5DB08509D9CBB1E" },
+  { name = "jido_action", version = "2.2.1", build_tools = ["mix"], requirements = ["abacus", "igniter", "jason", "lua", "multigraph", "nimble_options", "private", "req", "splode", "telemetry", "telemetry_metrics", "uniq", "zoi"], otp_app = "jido_action", source = "hex", outer_checksum = "DB97D3A68EF4C87050C3428D1A7E42BF5FC804905EE003A52AD4887B950B02EB" },
+  { name = "jido_signal", version = "2.1.1", build_tools = ["mix"], requirements = ["fuse", "igniter", "jason", "memento", "msgpax", "nimble_options", "phoenix_pubsub", "splode", "telemetry", "uniq", "zoi"], otp_app = "jido_signal", source = "hex", outer_checksum = "45744FFAC00A734A63FDDCEAFB6D447A9E36AE5918ADCD467A68F188A29B4320" },
+  { name = "lua", version = "0.4.0", build_tools = ["mix"], requirements = ["luerl"], otp_app = "lua", source = "hex", outer_checksum = "648E17AB9FAA1AB1A788FA58ED608366A7026D0EEAEC2F311510C065817C4067" },
+  { name = "luerl", version = "1.5.1", build_tools = ["rebar3"], requirements = [], otp_app = "luerl", source = "hex", outer_checksum = "ABF88D849BAA0D5DCA93B245A8688D4DE2EE3D588159BB2FAF51E15946509390" },
+  { name = "memento", version = "0.5.0", build_tools = ["mix"], requirements = [], otp_app = "memento", source = "hex", outer_checksum = "F4C2108737640A0E9D3CD2F230F46863D746D5AB333B0ECD28619A2AE330D881" },
+  { name = "metrics", version = "1.0.1", build_tools = ["rebar3"], requirements = [], otp_app = "metrics", source = "hex", outer_checksum = "69B09ADDDC4F74A40716AE54D140F93BEB0FB8978D8636EADED0C31B6F099F16" },
+  { name = "mime", version = "2.0.7", build_tools = ["mix"], requirements = [], otp_app = "mime", source = "hex", outer_checksum = "6171188E399EE16023FFC5B76CE445EB6D9672E2E241D2DF6050F3C771E80CCD" },
+  { name = "mimerl", version = "1.5.0", build_tools = ["rebar3"], requirements = [], otp_app = "mimerl", source = "hex", outer_checksum = "DB648CE065BAE14EA84CA8B5DD123F42F49417CEF693541110BF6F9E9BE9ECC4" },
+  { name = "mint", version = "1.7.1", build_tools = ["mix"], requirements = ["castore", "hpax"], otp_app = "mint", source = "hex", outer_checksum = "FCEBA0A4D0F24301DDEE3024AE116DF1C3F4BB7A563A731F45FDFEB9D39A231B" },
+  { name = "msgpax", version = "2.4.0", build_tools = ["mix"], requirements = ["plug"], otp_app = "msgpax", source = "hex", outer_checksum = "CA933891B0E7075701A17507C61642BF6E0407BB244040D5D0A58597A06369D2" },
+  { name = "multigraph", version = "0.16.1-mg.3", build_tools = ["mix"], requirements = [], otp_app = "multigraph", source = "hex", outer_checksum = "72897C5C175AA605CF7355B8F73972E8EADC40EBC6FFD43C3E790424A753D468" },
+  { name = "nimble_options", version = "1.1.1", build_tools = ["mix"], requirements = [], otp_app = "nimble_options", source = "hex", outer_checksum = "821B2470CA9442C4B6984882FE9BB0389371B8DDEC4D45A9504F00A66F650B44" },
+  { name = "nimble_pool", version = "1.1.0", build_tools = ["mix"], requirements = [], otp_app = "nimble_pool", source = "hex", outer_checksum = "AF2E4E6B34197DB81F7AAD230C1118EAC993ACC0DAE6BC83BAC0126D4AE0813A" },
+  { name = "ok", version = "2.3.0", build_tools = ["mix"], requirements = [], otp_app = "ok", source = "hex", outer_checksum = "F0347B3F8F115BF347C704184B33CF084F2943771273F2B98A3707A5FA43C4D5" },
+  { name = "parse_trans", version = "3.4.1", build_tools = ["rebar3"], requirements = [], otp_app = "parse_trans", source = "hex", outer_checksum = "620A406CE75DADA827B82E453C19CF06776BE266F5A67CFF34E1EF2CBB60E49A" },
+  { name = "phoenix_pubsub", version = "2.2.0", build_tools = ["mix"], requirements = [], otp_app = "phoenix_pubsub", source = "hex", outer_checksum = "ADC313A5BF7136039F63CFD9668FDE73BBA0765E0614CBA80C06AC9460FF3E96" },
+  { name = "poolboy", version = "1.5.2", build_tools = ["rebar3"], requirements = [], otp_app = "poolboy", source = "hex", outer_checksum = "DAD79704CE5440F3D5A3681C8590B9DC25D1A561E8F5A9C995281012860901E3" },
+  { name = "private", version = "0.1.2", build_tools = ["mix"], requirements = [], otp_app = "private", source = "hex", outer_checksum = "22EE01C3F450CF8D135DA61E10EC59DDE006238FAB1EA039014791FC8F3FF075" },
+  { name = "req", version = "0.5.17", build_tools = ["mix"], requirements = ["brotli", "ezstd", "finch", "jason", "mime", "nimble_csv", "plug"], otp_app = "req", source = "hex", outer_checksum = "0B8BC6FFDFEBBC07968E59D3FF96D52F2202D0536F10FEF4DC11DC02A2A43E39" },
+  { name = "splode", version = "0.3.1", build_tools = ["mix"], requirements = [], otp_app = "splode", source = "hex", outer_checksum = "8F2309B6EC2ECBB01435656429ED1D9ED04BA28797A3280C3B0D1217018ECFBD" },
+  { name = "ssl_verify_fun", version = "1.1.7", build_tools = ["mix", "rebar3", "make"], requirements = [], otp_app = "ssl_verify_fun", source = "hex", outer_checksum = "FE4C190E8F37401D30167C8C405EDA19469F34577987C76DDE613E838BBC67F8" },
+  { name = "telemetry", version = "1.4.1", build_tools = ["rebar3"], requirements = [], otp_app = "telemetry", source = "hex", outer_checksum = "2172E05A27531D3D31DD9782841065C50DD5C3C7699D95266B2EDD54C2DAFA1C" },
+  { name = "telemetry_metrics", version = "1.1.0", build_tools = ["mix"], requirements = ["telemetry"], otp_app = "telemetry_metrics", source = "hex", outer_checksum = "E7B79E8DDFDE70ADB6DB8A6623D1778EC66401F366E9A8F5DD0955C56BC8CE67" },
+  { name = "tzdata", version = "1.1.3", build_tools = ["mix"], requirements = ["hackney"], otp_app = "tzdata", source = "hex", outer_checksum = "D4CA85575A064D29D4E94253EE95912EDFB165938743DBF002ACDF0DCECB0C28" },
+  { name = "unicode_util_compat", version = "0.7.1", build_tools = ["rebar3"], requirements = [], otp_app = "unicode_util_compat", source = "hex", outer_checksum = "B3A917854CE3AE233619744AD1E0102E05673136776FB2FA76234F3E03B23642" },
+  { name = "uniq", version = "0.6.2", build_tools = ["mix"], requirements = ["ecto"], otp_app = "uniq", source = "hex", outer_checksum = "95AA2A41EA331EF0A52D8ED12D3E730EF9AF9DBC30F40646E6AF334FBD7BC0FC" },
+  { name = "zoi", version = "0.17.4", build_tools = ["mix"], requirements = ["decimal", "phoenix_html"], otp_app = "zoi", source = "hex", outer_checksum = "321172341CCA8316EE8691AB3FD54B96037BF79446BEA7BC0E885C806B8C4B74" },
 ]
 
 [requirements]
@@ -15,3 +53,4 @@ gleam_json = { version = ">= 3.1.0 and < 4.0.0" }
 gleam_otp = { version = ">= 1.2.0 and < 2.0.0" }
 gleam_stdlib = { version = ">= 1.0.0 and < 2.0.0" }
 gleeunit = { version = ">= 1.0.0 and < 2.0.0" }
+jido = { version = ">= 2.2.0 and < 3.0.0" }
