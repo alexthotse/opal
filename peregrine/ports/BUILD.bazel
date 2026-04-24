@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "ports",
+    srcs = ["interfaces.go"],
+    importpath = "github.com/alexthotse/peregrine/ports",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/github.com/charmbracelet/bubbletea"],
+)

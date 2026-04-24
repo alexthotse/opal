@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "utils",
+    srcs = [
+        "schema_utils.go",
+        "utils.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/internal/utils",
+    importpath = "google.golang.org/adk/internal/utils",
+    visibility = ["//peregrine/vendor/google.golang.org/adk:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/github.com/google/uuid",
+        "//peregrine/vendor/google.golang.org/adk/agent",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/adk/session",
+        "//peregrine/vendor/google.golang.org/genai",
+    ],
+)

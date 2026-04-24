@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "remotesigner",
+    srcs = ["remotesigner.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/google/s2a-go/internal/v2/remotesigner",
+    importpath = "github.com/google/s2a-go/internal/v2/remotesigner",
+    visibility = ["//peregrine/vendor/github.com/google/s2a-go:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/github.com/google/s2a-go/internal/proto/v2/s2a_go_proto",
+        "//peregrine/vendor/github.com/google/s2a-go/stream",
+        "//peregrine/vendor/google.golang.org/grpc/codes",
+        "//peregrine/vendor/google.golang.org/grpc/grpclog",
+    ],
+)

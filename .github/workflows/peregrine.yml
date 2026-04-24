@@ -20,10 +20,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v26
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@v0.8.5
         with:
-          nix_path: nixpkgs=channel:nixos-unstable
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
@@ -32,8 +33,7 @@ jobs:
 
       - name: Check Formatting
         run: |
-          nix develop .#default -c bash -c "cd falcon && gleam format --check src test"
-          nix develop .#default -c bash -c "cd peregrine && test -z \"\$(gofmt -l .)\""
+          task format
 
       - name: Run Unit Tests
         run: task test
@@ -50,10 +50,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v26
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@v0.8.5
         with:
-          nix_path: nixpkgs=channel:nixos-unstable
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
@@ -64,15 +65,15 @@ jobs:
         run: task build:falcon
 
       - name: Build Peregrine Frontend (Go)
-        run: task default
+        run: task build:peregrine
 
       - name: Verify Binary Exists
         run: |
-          if [ ! -f ./result/bin/peregrine ]; then
-            echo "Nix build failed to produce the executable"
+          if [ ! -f ./bazel-bin/peregrine/peregrine_/peregrine ]; then
+            echo "Bazel build failed to produce the executable"
             exit 1
           fi
-          ./result/bin/peregrine -h || echo "Binary exists and is executable"
+          ./bazel-bin/peregrine/peregrine_/peregrine -h || echo "Binary exists and is executable"
 
       - name: Build OCI Container (Alpine Linux Base)
         # OCI builds natively on Linux. Avoid macOS Nix cross-compilation quirks for Docker outputs.
@@ -91,10 +92,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v26
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@v0.8.5
         with:
-          nix_path: nixpkgs=channel:nixos-unstable
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
@@ -102,11 +104,11 @@ jobs:
           version: 3.x
 
       - name: Build Native Linux Binary
-        run: task default
+        run: task build:peregrine
 
       - name: Tarball Artifact
         run: |
-          tar -czvf peregrine-${{ github.ref_name }}-linux-amd64.tar.gz -C result/bin peregrine
+          tar -czvf peregrine-${{ github.ref_name }}-linux-amd64.tar.gz -C bazel-bin/peregrine/peregrine_ peregrine
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

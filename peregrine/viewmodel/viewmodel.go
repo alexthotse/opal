@@ -7,10 +7,10 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"peregrine/adapters"
-	"peregrine/domain"
-	"peregrine/ports"
-	"peregrine/view"
+	"github.com/alexthotse/peregrine/adapters"
+	"github.com/alexthotse/peregrine/domain"
+	"github.com/alexthotse/peregrine/ports"
+	"github.com/alexthotse/peregrine/view"
 )
 
 type AppViewModel struct {

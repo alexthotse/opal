@@ -1,0 +1,30 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "otelhttp",
+    srcs = [
+        "client.go",
+        "common.go",
+        "config.go",
+        "doc.go",
+        "handler.go",
+        "labeler.go",
+        "start_time_context.go",
+        "transport.go",
+        "version.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
+    importpath = "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/felixge/httpsnoop",
+        "//peregrine/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/request",
+        "//peregrine/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconv",
+        "//peregrine/vendor/go.opentelemetry.io/otel",
+        "//peregrine/vendor/go.opentelemetry.io/otel/attribute",
+        "//peregrine/vendor/go.opentelemetry.io/otel/codes",
+        "//peregrine/vendor/go.opentelemetry.io/otel/metric",
+        "//peregrine/vendor/go.opentelemetry.io/otel/propagation",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace",
+    ],
+)

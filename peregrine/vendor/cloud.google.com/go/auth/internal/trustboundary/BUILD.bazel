@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "trustboundary",
+    srcs = [
+        "external_accounts_config_providers.go",
+        "trust_boundary.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/cloud.google.com/go/auth/internal/trustboundary",
+    importpath = "cloud.google.com/go/auth/internal/trustboundary",
+    visibility = ["//peregrine/vendor/cloud.google.com/go/auth:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/cloud.google.com/go/auth",
+        "//peregrine/vendor/cloud.google.com/go/auth/internal",
+        "//peregrine/vendor/cloud.google.com/go/auth/internal/retry",
+        "//peregrine/vendor/cloud.google.com/go/auth/internal/transport/headers",
+        "//peregrine/vendor/github.com/googleapis/gax-go/v2/internallog",
+    ],
+)

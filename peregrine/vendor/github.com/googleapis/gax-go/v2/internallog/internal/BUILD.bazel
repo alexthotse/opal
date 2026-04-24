@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "internal",
+    srcs = ["internal.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/googleapis/gax-go/v2/internallog/internal",
+    importpath = "github.com/googleapis/gax-go/v2/internallog/internal",
+    visibility = ["//peregrine/vendor/github.com/googleapis/gax-go/v2/internallog:__subpackages__"],
+)

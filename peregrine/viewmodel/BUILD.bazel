@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "viewmodel",
+    srcs = ["viewmodel.go"],
+    importpath = "github.com/alexthotse/peregrine/viewmodel",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/adapters",
+        "//peregrine/domain",
+        "//peregrine/ports",
+        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
+        "//peregrine/view",
+    ],
+)

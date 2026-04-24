@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "endpointsharding",
+    srcs = ["endpointsharding.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/grpc/balancer/endpointsharding",
+    importpath = "google.golang.org/grpc/balancer/endpointsharding",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/grpc/balancer",
+        "//peregrine/vendor/google.golang.org/grpc/balancer/base",
+        "//peregrine/vendor/google.golang.org/grpc/connectivity",
+        "//peregrine/vendor/google.golang.org/grpc/resolver",
+    ],
+)

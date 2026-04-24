@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "view",
+    srcs = [
+        "render.go",
+        "theme.go",
+    ],
+    importpath = "github.com/alexthotse/peregrine/view",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/domain",
+        "//peregrine/vendor/github.com/charmbracelet/lipgloss",
+    ],
+)

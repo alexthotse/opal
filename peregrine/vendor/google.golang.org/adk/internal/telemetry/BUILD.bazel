@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "telemetry",
+    srcs = [
+        "converters.go",
+        "logger.go",
+        "telemetry.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/internal/telemetry",
+    importpath = "google.golang.org/adk/internal/telemetry",
+    visibility = ["//peregrine/vendor/google.golang.org/adk:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/go.opentelemetry.io/otel",
+        "//peregrine/vendor/go.opentelemetry.io/otel/attribute",
+        "//peregrine/vendor/go.opentelemetry.io/otel/codes",
+        "//peregrine/vendor/go.opentelemetry.io/otel/log",
+        "//peregrine/vendor/go.opentelemetry.io/otel/log/global",
+        "//peregrine/vendor/go.opentelemetry.io/otel/semconv/v1.36.0:v1_36_0",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace",
+        "//peregrine/vendor/google.golang.org/adk/internal/version",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/adk/session",
+        "//peregrine/vendor/google.golang.org/genai",
+    ],
+)

@@ -7,8 +7,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"peregrine/adapters"
-	"peregrine/viewmodel"
+	"github.com/alexthotse/peregrine/adapters"
+	"github.com/alexthotse/peregrine/viewmodel"
 )
 
 func main() {

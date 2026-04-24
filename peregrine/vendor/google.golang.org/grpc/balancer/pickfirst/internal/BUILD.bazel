@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "internal",
+    srcs = ["internal.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/grpc/balancer/pickfirst/internal",
+    importpath = "google.golang.org/grpc/balancer/pickfirst/internal",
+    visibility = ["//peregrine/vendor/google.golang.org/grpc/balancer/pickfirst:__subpackages__"],
+)

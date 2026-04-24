@@ -1,8 +1,6 @@
 package adapters
 
 import (
-	"errors"
-
 	"github.com/vmihailenco/msgpack/v5"
 	"connectrpc.com/connect"
 )

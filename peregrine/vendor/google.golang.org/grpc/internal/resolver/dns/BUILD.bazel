@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "dns",
+    srcs = ["dns_resolver.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/grpc/internal/resolver/dns",
+    importpath = "google.golang.org/grpc/internal/resolver/dns",
+    visibility = ["//peregrine/vendor/google.golang.org/grpc:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/grpc/balancer/grpclb/state",
+        "//peregrine/vendor/google.golang.org/grpc/grpclog",
+        "//peregrine/vendor/google.golang.org/grpc/internal/backoff",
+        "//peregrine/vendor/google.golang.org/grpc/internal/envconfig",
+        "//peregrine/vendor/google.golang.org/grpc/internal/resolver/dns/internal",
+        "//peregrine/vendor/google.golang.org/grpc/resolver",
+        "//peregrine/vendor/google.golang.org/grpc/serviceconfig",
+    ],
+)

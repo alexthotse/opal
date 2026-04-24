@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "parentmap",
+    srcs = ["map.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/internal/agent/parentmap",
+    importpath = "google.golang.org/adk/internal/agent/parentmap",
+    visibility = ["//peregrine/vendor/google.golang.org/adk:__subpackages__"],
+    deps = ["//peregrine/vendor/google.golang.org/adk/agent"],
+)

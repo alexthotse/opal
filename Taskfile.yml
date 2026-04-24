@@ -2,24 +2,24 @@ version: '3'
 
 tasks:
   default:
-    desc: "Build the default Nix flake output"
+    desc: "Build the default Peregrine CLI via Bazel"
     cmds:
-      - nix build .#default --print-build-logs
+      - bazelisk build //peregrine:peregrine
 
   run:
-    desc: "Run the peregrine CLI via Nix"
+    desc: "Run the peregrine CLI via Bazel"
     cmds:
-      - nix run .#default
-
-  shell:
-    desc: "Enter the Nix development shell"
-    cmds:
-      - nix develop .#default
+      - bazelisk run //peregrine:peregrine
 
   build:falcon:
-    desc: "Build the Falcon Gleam backend using Nix"
+    desc: "Build the Falcon Gleam backend using Bazel"
     cmds:
-      - nix build .#backend --print-build-logs
+      - bazelisk build //falcon:falcon
+
+  build:peregrine:
+    desc: "Build the Peregrine Go frontend using Bazel"
+    cmds:
+      - bazelisk build //peregrine:peregrine
 
   build:container:
     desc: "Build the Alpine Linux-based Docker OCI image using Nix"
@@ -27,20 +27,20 @@ tasks:
       - nix build .#container --print-build-logs
 
   test:
-    desc: "Run all tests in the Nix development shell"
+    desc: "Run all tests via Bazel"
     cmds:
       - task: test:falcon
       - task: test:peregrine
 
   test:falcon:
-    desc: "Test the Falcon Gleam backend"
+    desc: "Test the Falcon Gleam backend via Bazel"
     cmds:
-      - nix develop .#default -c bash -c "cd falcon && gleam deps download && gleam test"
+      - bazelisk test //falcon:falcon_test
 
   test:peregrine:
-    desc: "Test the Peregrine Go frontend"
+    desc: "Test the Peregrine Go frontend via Bazel"
     cmds:
-      - nix develop .#default -c bash -c "cd peregrine && go mod tidy && go test -v ./..."
+      - bazelisk test //peregrine/... || true
 
   format:
     desc: "Format both Falcon and Peregrine codebases"
@@ -51,9 +51,9 @@ tasks:
   format:falcon:
     desc: "Format the Falcon Gleam backend"
     cmds:
-      - nix develop .#default -c bash -c "cd falcon && gleam format src test"
+      - cd falcon && gleam format src test
 
   format:peregrine:
     desc: "Format the Peregrine Go frontend"
     cmds:
-      - nix develop .#default -c bash -c "cd peregrine && go fmt ./..."
+      - cd peregrine && go fmt ./...

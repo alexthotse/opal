@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "noop",
+    srcs = ["noop.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/go.opentelemetry.io/otel/trace/noop",
+    importpath = "go.opentelemetry.io/otel/trace/noop",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/go.opentelemetry.io/otel/attribute",
+        "//peregrine/vendor/go.opentelemetry.io/otel/codes",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace/embedded",
+    ],
+)

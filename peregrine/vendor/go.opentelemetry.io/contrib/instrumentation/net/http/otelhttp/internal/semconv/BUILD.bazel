@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "semconv",
+    srcs = [
+        "env.go",
+        "gen.go",
+        "httpconv.go",
+        "util.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconv",
+    importpath = "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconv",
+    visibility = ["//peregrine/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/go.opentelemetry.io/otel",
+        "//peregrine/vendor/go.opentelemetry.io/otel/attribute",
+        "//peregrine/vendor/go.opentelemetry.io/otel/codes",
+        "//peregrine/vendor/go.opentelemetry.io/otel/metric",
+        "//peregrine/vendor/go.opentelemetry.io/otel/semconv/v1.37.0:v1_37_0",
+        "//peregrine/vendor/go.opentelemetry.io/otel/semconv/v1.37.0/httpconv",
+    ],
+)

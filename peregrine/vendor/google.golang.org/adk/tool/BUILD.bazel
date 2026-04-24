@@ -1,0 +1,18 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "tool",
+    srcs = ["tool.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/tool",
+    importpath = "google.golang.org/adk/tool",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/adk/agent",
+        "//peregrine/vendor/google.golang.org/adk/internal/toolinternal/toolutils",
+        "//peregrine/vendor/google.golang.org/adk/memory",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/adk/session",
+        "//peregrine/vendor/google.golang.org/adk/tool/toolconfirmation",
+        "//peregrine/vendor/google.golang.org/genai",
+    ],
+)

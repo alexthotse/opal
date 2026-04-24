@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "detrand",
+    srcs = ["rand.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/protobuf/internal/detrand",
+    importpath = "google.golang.org/protobuf/internal/detrand",
+    visibility = ["//peregrine/vendor/google.golang.org/protobuf:__subpackages__"],
+)

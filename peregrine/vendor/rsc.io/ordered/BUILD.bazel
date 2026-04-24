@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "ordered",
+    srcs = ["code.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/rsc.io/ordered",
+    importpath = "rsc.io/ordered",
+    visibility = ["//visibility:public"],
+)

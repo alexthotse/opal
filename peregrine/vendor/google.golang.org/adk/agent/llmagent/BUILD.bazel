@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "llmagent",
+    srcs = [
+        "doc.go",
+        "llmagent.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/agent/llmagent",
+    importpath = "google.golang.org/adk/agent/llmagent",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/adk/agent",
+        "//peregrine/vendor/google.golang.org/adk/internal/agent",
+        "//peregrine/vendor/google.golang.org/adk/internal/context",
+        "//peregrine/vendor/google.golang.org/adk/internal/llminternal",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/adk/session",
+        "//peregrine/vendor/google.golang.org/adk/tool",
+        "//peregrine/vendor/google.golang.org/genai",
+    ],
+)

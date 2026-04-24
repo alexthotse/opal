@@ -2,7 +2,7 @@ package view
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"peregrine/domain"
+	"github.com/alexthotse/peregrine/domain"
 )
 
 // Render converts the pure state and position into a rendered string.

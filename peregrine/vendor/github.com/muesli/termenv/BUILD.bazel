@@ -1,0 +1,42 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "termenv",
+    srcs = [
+        "ansicolors.go",
+        "color.go",
+        "constants_linux.go",
+        "constants_solaris.go",
+        "constants_unix.go",
+        "constants_zos.go",
+        "copy.go",
+        "hyperlink.go",
+        "notification.go",
+        "output.go",
+        "profile.go",
+        "screen.go",
+        "style.go",
+        "templatehelper.go",
+        "termenv.go",
+        "termenv_other.go",
+        "termenv_posix.go",
+        "termenv_solaris.go",
+        "termenv_unix.go",
+        "termenv_windows.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/muesli/termenv",
+    importpath = "github.com/muesli/termenv",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/aymanbagabas/go-osc52/v2:go-osc52",
+        "//peregrine/vendor/github.com/lucasb-eyer/go-colorful",
+        "//peregrine/vendor/github.com/mattn/go-isatty",
+        "//peregrine/vendor/github.com/rivo/uniseg",
+        "//peregrine/vendor/golang.org/x/sys/unix",
+    ] + select({
+        "@rules_go//go/platform:windows": [
+            "//peregrine/vendor/golang.org/x/sys/windows",
+        ],
+        "//conditions:default": [],
+    }),
+)

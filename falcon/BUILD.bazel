@@ -1,6 +1,12 @@
+load("@gazelle//:def.bzl", "gazelle")
 load("@rules_gleam//gleam:defs.bzl", "gleam_binary", "gleam_library", "gleam_test")
 
 exports_files(["gleam.toml", "manifest.toml"])
+
+gazelle(
+    name = "gazelle",
+    gazelle = "@rules_gleam//gazelle",
+)
 
 gleam_library(
     name = "falcon_lib",
@@ -11,13 +17,29 @@ gleam_library(
         "@hex_gleam_json//:gleam",
         "@hex_wisp//:gleam",
         "@hex_mist//:gleam",
-        "@hex_msgpack//:gleam",
+        "@hex_msgpack//:msgpack_ffi",
+        "@hex_msgpack//:msgpack_ext_ffi",
+        "@hex_msgpack//:msgpack_packer_ffi",
+        "@hex_msgpack//:msgpack_term_ffi",
+        "@hex_msgpack//:msgpack_unpacker_ffi",
     ],
 )
 
 gleam_binary(
     name = "falcon",
-    deps = [":falcon_lib"],
+    srcs = glob(["src/**/*.gleam", "src/**/*.erl"]),
+    deps = [
+        "@hex_gleam_stdlib//:gleam",
+        "@hex_gleam_erlang//:gleam",
+        "@hex_gleam_json//:gleam",
+        "@hex_wisp//:gleam",
+        "@hex_mist//:gleam",
+        "@hex_msgpack//:msgpack_ffi",
+        "@hex_msgpack//:msgpack_ext_ffi",
+        "@hex_msgpack//:msgpack_packer_ffi",
+        "@hex_msgpack//:msgpack_term_ffi",
+        "@hex_msgpack//:msgpack_unpacker_ffi",
+    ],
 )
 
 gleam_test(

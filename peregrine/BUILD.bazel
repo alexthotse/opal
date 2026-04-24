@@ -1,0 +1,23 @@
+load("@gazelle//:def.bzl", "gazelle")
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+# gazelle:prefix github.com/alexthotse/peregrine
+gazelle(name = "gazelle")
+
+go_library(
+    name = "peregrine_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/alexthotse/peregrine",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//peregrine/adapters",
+        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
+        "//peregrine/viewmodel",
+    ],
+)
+
+go_binary(
+    name = "peregrine",
+    embed = [":peregrine_lib"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,25 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "poly1305",
+    srcs = [
+        "mac_noasm.go",
+        "poly1305.go",
+        "sum_amd64.s",
+        "sum_asm.go",
+        "sum_generic.go",
+        "sum_loong64.s",
+        "sum_ppc64x.s",
+        "sum_s390x.go",
+        "sum_s390x.s",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/crypto/internal/poly1305",
+    importpath = "golang.org/x/crypto/internal/poly1305",
+    visibility = ["//peregrine/vendor/golang.org/x/crypto:__subpackages__"],
+    deps = select({
+        "@rules_go//go/platform:s390x": [
+            "//peregrine/vendor/golang.org/x/sys/cpu",
+        ],
+        "//conditions:default": [],
+    }),
+)

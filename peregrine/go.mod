@@ -1,11 +1,13 @@
-module peregrine
+module github.com/alexthotse/peregrine
 
 go 1.25.1
 
 require (
+	connectrpc.com/connect v1.19.2
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/harmonica v0.2.0
 	github.com/charmbracelet/lipgloss v1.1.0
+	github.com/vmihailenco/msgpack/v5 v5.4.1
 	google.golang.org/adk v1.2.0
 	google.golang.org/genai v1.40.0
 )
@@ -14,7 +16,6 @@ require (
 	cloud.google.com/go v0.123.0 // indirect
 	cloud.google.com/go/auth v0.18.2 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
-	connectrpc.com/connect v1.19.2 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
@@ -40,7 +41,6 @@ require (
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
