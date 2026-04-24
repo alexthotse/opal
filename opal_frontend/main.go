@@ -66,7 +66,11 @@ func (m model) Init() tea.Cmd {
 
 func startBackend() tea.Msg {
 	cmd := exec.Command("gleam", "run")
-	cmd.Dir = "../opal_backend"
+	if backendPath := os.Getenv("OPAL_BACKEND_DIR"); backendPath != "" {
+		cmd.Dir = backendPath
+	} else {
+		cmd.Dir = "../opal_backend"
+	}
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		return backendMsg{fmt.Sprintf("Error connecting stdin: %v", err)}
