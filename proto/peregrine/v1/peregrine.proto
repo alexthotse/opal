@@ -1,6 +1,6 @@
 syntax = "proto3";
 package peregrine.v1;
-option go_package = "peregrine/gen/peregrine/v1;peregrinev1";
+option go_package = "github.com/alexthotse/peregrine/gen/peregrine/v1;peregrinev1";
 
 // PeregrineService represents the Go frontend's local service, if needed for callbacks
 service PeregrineService {

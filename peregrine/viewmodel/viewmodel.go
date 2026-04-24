@@ -17,14 +17,21 @@ type AppViewModel struct {
 	backendClient  *adapters.BackendClient
 	animatorClient *adapters.Animator
 	agentClient    *adapters.ADKAgentClient
+
+	voice   VoiceModel
+	history HistoryModel
+	actions ActionsModel
 }
 
 func NewAppViewModel(bc *adapters.BackendClient, ac *adapters.ADKAgentClient, anim *adapters.Animator) *AppViewModel {
 	return &AppViewModel{
-		state:          domain.NewState(),
+		state:          domain.InitialState(),
 		backendClient:  bc,
 		animatorClient: anim,
 		agentClient:    ac,
+		voice:          NewVoiceModel(),
+		history:        NewHistoryModel(),
+		actions:        NewActionsModel(),
 	}
 }
 
@@ -53,12 +60,37 @@ func (m *AppViewModel) Init() tea.Cmd {
 }
 
 func (m *AppViewModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
+
 	switch msg := msg.(type) {
 
 	case tea.KeyMsg:
+		// Let sub-models handle keys first if they are active
+		if m.voice.active {
+			m.voice, cmd = m.voice.Update(msg)
+			return m, cmd
+		}
+		if m.history.active {
+			m.history, cmd = m.history.Update(msg)
+			return m, cmd
+		}
+		if m.actions.active {
+			m.actions, cmd = m.actions.Update(msg)
+			return m, cmd
+		}
+
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit
+		case "v":
+			m.voice.active = true
+			return m, nil
+		case "h":
+			m.history.active = true
+			return m, nil
+		case "m":
+			m.actions.active = true
+			return m, nil
 		case "t":
 			// Cycle themes
 			newTheme := (m.state.ThemeType + 1) % 3
@@ -106,5 +138,17 @@ func (m *AppViewModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m *AppViewModel) View() string {
-	return view.Render(m.state, m.animatorClient.Position())
+	baseView := view.Render(m.state, m.animatorClient.Position())
+	
+	if m.voice.active {
+		baseView += "\n\n" + m.voice.View()
+	}
+	if m.history.active {
+		baseView += "\n\n" + m.history.View()
+	}
+	if m.actions.active {
+		baseView += "\n\n" + m.actions.View()
+	}
+
+	return baseView
 }

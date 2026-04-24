@@ -1,0 +1,12 @@
+load("@rules_gleam//gleam:defs.bzl", "gleam_test")
+
+gleam_test(
+    name = "falcon_test",
+    srcs = glob([
+        "**/*.gleam",
+    ]),
+    deps = [
+        "//falcon:falcon_lib",
+        "@hex_gleeunit//:gleam",
+    ],
+)

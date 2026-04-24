@@ -11,6 +11,8 @@ go_library(
     importpath = "github.com/alexthotse/peregrine/adapters",
     visibility = ["//visibility:public"],
     deps = [
+        "//peregrine/gen/falcon/v1:falcon",
+        "//peregrine/gen/falcon/v1/falconv1connect",
         "//peregrine/vendor/github.com/charmbracelet/harmonica",
         "//peregrine/vendor/google.golang.org/adk/agent",
         "//peregrine/vendor/google.golang.org/adk/agent/llmagent",

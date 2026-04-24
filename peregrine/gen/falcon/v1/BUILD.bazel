@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "falcon",
+    srcs = ["falcon.pb.go"],
+    importpath = "github.com/alexthotse/peregrine/gen/falcon/v1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/protobuf/reflect/protoreflect",
+        "//peregrine/vendor/google.golang.org/protobuf/runtime/protoimpl",
+    ],
+)

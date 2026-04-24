@@ -1,4 +1,5 @@
 load("@gazelle//:def.bzl", "gazelle")
 
 # gazelle:prefix github.com/alexthotse/peregrine
+# gazelle:exclude proto
 gazelle(name = "gazelle")

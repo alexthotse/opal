@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "peregrine",
+    srcs = ["peregrine.pb.go"],
+    importpath = "github.com/alexthotse/peregrine/gen/peregrine/v1",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/protobuf/reflect/protoreflect",
+        "//peregrine/vendor/google.golang.org/protobuf/runtime/protoimpl",
+    ],
+)

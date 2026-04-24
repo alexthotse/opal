@@ -2,7 +2,6 @@ package adapters
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"connectrpc.com/connect"

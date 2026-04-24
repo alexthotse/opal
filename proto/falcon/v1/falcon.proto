@@ -1,6 +1,6 @@
 syntax = "proto3";
 package falcon.v1;
-option go_package = "peregrine/gen/falcon/v1;falconv1";
+option go_package = "github.com/alexthotse/peregrine/gen/falcon/v1;falconv1";
 
 service FalconService {
   rpc Ping(PingRequest) returns (PingResponse) {}

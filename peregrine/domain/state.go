@@ -4,7 +4,7 @@ package domain
 type State struct {
 	Messages  []string
 	RequestID int
-	ThemeType string
+	ThemeType int
 }
 
 // InitialState returns a pure initial state.
@@ -12,7 +12,7 @@ func InitialState() State {
 	return State{
 		Messages:  []string{"Starting Falcon Backend (Gleam)..."},
 		RequestID: 0,
-		ThemeType: "pi.dev",
+		ThemeType: 0,
 	}
 }
 
@@ -38,7 +38,7 @@ func IncrementRequestID(s State) State {
 }
 
 // SetTheme returns a new state with the given theme type.
-func SetTheme(s State, themeType string) State {
+func SetTheme(s State, themeType int) State {
 	return State{
 		Messages:  s.Messages,
 		RequestID: s.RequestID,

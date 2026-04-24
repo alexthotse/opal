@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "peregrinev1connect",
+    srcs = ["peregrine.connect.go"],
+    importpath = "github.com/alexthotse/peregrine/gen/peregrine/v1/peregrinev1connect",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/gen/peregrine/v1:peregrine",
+        "@com_connectrpc_connect//:connect",
+    ],
+)
