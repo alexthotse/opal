@@ -114,6 +114,9 @@
             erlang
             rebar3
             go-task
+            bazel
+            buf
+            protobuf
           ];
         };
       }

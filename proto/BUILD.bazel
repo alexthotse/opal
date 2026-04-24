@@ -1,0 +1,7 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "agent_v1_proto",
+    srcs = ["agent/v1/agent.proto"],
+    visibility = ["//visibility:public"],
+)
