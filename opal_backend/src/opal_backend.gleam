@@ -4,6 +4,18 @@ import gleam/string
 import gleam/dynamic/decode
 import gleam/result
 import gleam/dynamic
+import memory
+import cache
+import teammem
+import verification
+import triggers
+import search
+import budget
+import stats
+import bridge
+import security
+import planning
+import reasoning
 
 pub type Request {
   Request(id: String, method: String)
@@ -58,8 +70,19 @@ pub fn execute_method(method: String) -> String {
     "ping" -> "pong"
     "agent.start" -> "agent_started_successfully"
     "agent.status" -> "idle"
-    "ultrathink.start" -> "ultrathink_mode_activated"
-    "ultraplan.start" -> "ultraplan_mode_activated"
+    "ultrathink.start" -> reasoning.start_ultrathink()
+    "ultraplan.start" -> planning.start_ultraplan()
+    "memory.extract" -> memory.extract_memories()
+    "memory.compaction" -> memory.compaction_reminders()
+    "cache.microcompact" -> cache.cached_microcompact()
+    "teammem.get" -> teammem.get_teammem()
+    "verification.run" -> verification.verify_task()
+    "triggers.run" -> triggers.run_triggers()
+    "search.quick" -> search.quick_search()
+    "budget.check" -> budget.check_budget()
+    "stats.get" -> stats.get_stats()
+    "bridge.mode" -> bridge.bridge_mode()
+    "security.bash" -> security.bash_classifier()
     _ -> "unknown_method"
   }
 }

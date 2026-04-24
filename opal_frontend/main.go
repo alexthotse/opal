@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -42,15 +43,25 @@ type backendMsg struct {
 }
 
 func initialModel() model {
+	anim := NewAnimator()
+	anim.SetTarget(20.0) // Target width for an animation reveal effect
 	return model{
 		messages: []string{"Starting Opal Backend (Gleam)..."},
 		theme:    GetTheme(ThemePI),
-		animator: NewAnimator(),
+		animator: anim,
 	}
 }
 
+type tickMsg time.Time
+
+func tickCmd() tea.Cmd {
+	return tea.Tick(time.Second/60, func(t time.Time) tea.Msg {
+		return tickMsg(t)
+	})
+}
+
 func (m model) Init() tea.Cmd {
-	return startBackend
+	return tea.Batch(startBackend, tickCmd())
 }
 
 func startBackend() tea.Msg {
@@ -143,13 +154,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.theme = GetTheme(ThemePI)
 			}
+		case "v": // Start voice mode
+			m.messages = append(m.messages, StartVoiceMode())
+		case "h": // Show history
+			m.messages = append(m.messages, ShowHistoryPicker())
+		case "m": // Show message actions
+			m.messages = append(m.messages, ShowMessageActions())
 		}
+
+	case tickMsg:
+		m.animator.Update()
+		return m, tickCmd()
 
 	case backendStartedMsg:
 		m.backendCmd = msg.cmd
 		m.stdin = msg.stdin
 		m.stdout = msg.stdout
-		m.messages = append(m.messages, "Backend connected! Press 'p' to ping, 'a' to start agent, 't' to toggle theme, 'q' to quit.")
+		m.messages = append(m.messages, "Backend connected! Keys: 'p' (ping), 'a' (agent), 'u' (think), 'r' (plan), 'v' (voice), 'h' (history), 'm' (actions), 't' (theme), 'q' (quit).")
 		return m, listenBackend(m.stdout)
 
 	case backendMsg:
@@ -166,11 +187,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
+	pad := int(m.animator.position)
+	if pad < 0 {
+		pad = 0
+	}
+	paddingStyle := lipgloss.NewStyle().PaddingLeft(pad)
+
 	s := m.theme.Primary.Render("✦ Opal Agent") + "\n\n"
 	for _, msg := range m.messages {
 		s += m.theme.Text.Render(msg) + "\n"
 	}
-	return s
+	return paddingStyle.Render(s)
 }
 
 func main() {
