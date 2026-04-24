@@ -24,6 +24,34 @@ use_repo(
     "org_golang_google_protobuf",
 )
 
-# We will create a custom bazel rule for Gleam since an official rules_gleam bzlmod is not yet standard.
-# We will use rules_foreign_cc or standard genrule for Gleam as an elegant stopgap until native rules arrive.
-bazel_dep(name = "rules_foreign_cc", version = "0.12.0")
+bazel_dep(name = "rules_gleam", version = "0.1.13")
+
+gleam = use_extension("@rules_gleam//:extensions.bzl", "gleam")
+gleam.deps(
+    gleam_toml = "//falcon:gleam.toml",
+    manifest_toml = "//falcon:manifest.toml",
+)
+use_repo(
+    gleam,
+    "hex_directories",
+    "hex_envoy",
+    "hex_exception",
+    "hex_filepath",
+    "hex_gleam_crypto",
+    "hex_gleam_erlang",
+    "hex_gleam_http",
+    "hex_gleam_json",
+    "hex_gleam_stdlib",
+    "hex_glisten",
+    "hex_gramps",
+    "hex_houdini",
+    "hex_hpack_erl",
+    "hex_logging",
+    "hex_marceau",
+    "hex_mist",
+    "hex_msgpack",
+    "hex_platform",
+    "hex_simplifile",
+    "hex_wisp",
+    "hex_gleeunit",
+)

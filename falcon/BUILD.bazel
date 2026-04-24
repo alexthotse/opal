@@ -1,12 +1,30 @@
-load("//tools/build_rules:gleam.bzl", "gleam_binary")
+load("@rules_gleam//gleam:defs.bzl", "gleam_binary", "gleam_library", "gleam_test")
 
-# Define a custom Gleam build rule for the backend using Bazel orchestration.
-# This gives the backend 1:1 orchestrational parity with Go inside Bazel.
+exports_files(["gleam.toml", "manifest.toml"])
+
+gleam_library(
+    name = "falcon_lib",
+    srcs = glob(["src/**/*.gleam", "src/**/*.erl"]),
+    deps = [
+        "@hex_gleam_stdlib//:gleam",
+        "@hex_gleam_erlang//:gleam",
+        "@hex_gleam_json//:gleam",
+        "@hex_wisp//:gleam",
+        "@hex_mist//:gleam",
+        "@hex_msgpack//:gleam",
+    ],
+)
+
 gleam_binary(
     name = "falcon",
-    src_dir = ".",
+    deps = [":falcon_lib"],
+)
+
+gleam_test(
+    name = "falcon_test",
+    srcs = glob(["test/**/*.gleam"]),
     deps = [
-        # In a fully native Gleam ruleset, this is where Hex dependencies
-        # would be injected hermetically. For now, the builder relies on gleam deps download.
+        ":falcon_lib",
+        "@hex_gleeunit//:gleam",
     ],
 )
