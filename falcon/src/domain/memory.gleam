@@ -1,7 +1,9 @@
+import gleam/string
+
 pub fn extract_memories() -> String {
-  "memories_extracted"
+  "EXTRACT_MEMORIES: Synthesizing context into SQLite cache."
 }
 
 pub fn compaction_reminders() -> String {
-  "compaction_reminders_sent"
+  "COMPACTION_REMINDERS: Context limit approaching, consider compressing context."
 }

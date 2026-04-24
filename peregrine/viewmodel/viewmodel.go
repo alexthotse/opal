@@ -1,132 +1,110 @@
 package viewmodel
 
 import (
-	"io"
-	"os/exec"
-	"strings"
+	"context"
+	"fmt"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+
 	"github.com/alexthotse/peregrine/adapters"
 	"github.com/alexthotse/peregrine/domain"
-	"github.com/alexthotse/peregrine/ports"
 	"github.com/alexthotse/peregrine/view"
 )
 
 type AppViewModel struct {
-	State          domain.State
-	BackendCmd     *exec.Cmd
-	Stdin          io.WriteCloser
-	Stdout         io.ReadCloser
-	BackendClient  ports.BackendClient
-	AgentClient    ports.AgentClient
-	AnimatorClient ports.AnimatorClient
+	state          domain.State
+	backendClient  *adapters.BackendClient
+	animatorClient *adapters.Animator
+	agentClient    *adapters.ADKAgentClient
 }
 
-type TickMsg time.Time
-
-func TickCmd() tea.Cmd {
-	return tea.Tick(time.Second/60, func(t time.Time) tea.Msg {
-		return TickMsg(t)
-	})
-}
-
-func NewAppViewModel(bc ports.BackendClient, ac ports.AgentClient, anim ports.AnimatorClient) AppViewModel {
-	anim.SetTarget(20.0)
-	return AppViewModel{
-		State:          domain.InitialState(),
-		BackendClient:  bc,
-		AgentClient:    ac,
-		AnimatorClient: anim,
+func NewAppViewModel(bc *adapters.BackendClient, ac *adapters.ADKAgentClient, anim *adapters.Animator) *AppViewModel {
+	return &AppViewModel{
+		state:          domain.NewState(),
+		backendClient:  bc,
+		animatorClient: anim,
+		agentClient:    ac,
 	}
 }
 
-func (m AppViewModel) Init() tea.Cmd {
+type tickMsg time.Time
+
+func tick() tea.Cmd {
+	return tea.Tick(time.Second/60, func(t time.Time) tea.Msg {
+		return tickMsg(t)
+	})
+}
+
+type rpcResultMsg string
+
+func (m *AppViewModel) Init() tea.Cmd {
 	return tea.Batch(
-		func() tea.Msg { return m.BackendClient.Start() },
-		TickCmd(),
+		tick(),
+		func() tea.Msg {
+			// Initially ping the backend to ensure connectivity
+			res, err := m.backendClient.Ping(context.Background(), "init-ping")
+			if err != nil {
+				return rpcResultMsg(fmt.Sprintf("RPC Error: %v", err))
+			}
+			return rpcResultMsg(fmt.Sprintf("Backend says: %s", res))
+		},
 	)
 }
 
-func (m AppViewModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m *AppViewModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "ctrl+c", "q":
-			if m.BackendCmd != nil {
-				m.BackendCmd.Process.Kill()
-			}
+		case "q", "ctrl+c":
 			return m, tea.Quit
-		case "p":
-			if m.Stdin != nil {
-				m.State = domain.IncrementRequestID(m.State)
-				return m, m.BackendClient.SendRequest(m.Stdin, m.State.RequestID, "ping")
-			}
-		case "a":
-			if m.Stdin != nil {
-				out := m.AgentClient.ProcessPrompt("trigger backend action")
-				m.State = domain.AddMessage(m.State, out)
-				m.State = domain.IncrementRequestID(m.State)
-				return m, m.BackendClient.SendRequest(m.Stdin, m.State.RequestID, "jido.action")
-			}
-		case "u":
-			if m.Stdin != nil {
-				m.State = domain.IncrementRequestID(m.State)
-				return m, m.BackendClient.SendRequest(m.Stdin, m.State.RequestID, "ultrathink.start")
-			}
-		case "r":
-			if m.Stdin != nil {
-				m.State = domain.IncrementRequestID(m.State)
-				return m, m.BackendClient.SendRequest(m.Stdin, m.State.RequestID, "ultraplan.start")
-			}
-		case "v":
-			m.State = domain.AddMessage(m.State, "VOICE_MODE: Listening for voice input...")
-		case "h":
-			m.State = domain.AddMessage(m.State, "HISTORY_PICKER: Displaying prompt history...")
-		case "m":
-			m.State = domain.AddMessage(m.State, "MESSAGE_ACTIONS: Displaying message actions...")
-		case "s":
-			if m.Stdin != nil {
-				out := m.AgentClient.ProcessPrompt("search logs")
-				m.State = domain.AddMessage(m.State, out)
-				m.State = domain.IncrementRequestID(m.State)
-				return m, m.BackendClient.SendRequest(m.Stdin, m.State.RequestID, "search.quick")
-			}
 		case "t":
-			if m.State.ThemeType == "pi.dev" {
-				m.State = domain.SetTheme(m.State, "free-code")
-			} else if m.State.ThemeType == "free-code" {
-				m.State = domain.SetTheme(m.State, "crush")
-			} else {
-				m.State = domain.SetTheme(m.State, "pi.dev")
+			// Cycle themes
+			newTheme := (m.state.ThemeType + 1) % 3
+			m.state = domain.SetTheme(m.state, newTheme)
+			return m, nil
+		case "u":
+			// Trigger Ultrathink via RPC
+			m.state = domain.AddMessage(m.state, "Triggering ULTRATHINK...")
+			m.animatorClient.SetTarget(20.0) // Bounce right
+			return m, func() tea.Msg {
+				res, err := m.backendClient.StartUltrathink(context.Background(), "u-req")
+				if err != nil {
+					return rpcResultMsg(fmt.Sprintf("Ultrathink failed: %v", err))
+				}
+				return rpcResultMsg(fmt.Sprintf("Ultrathink result: %s", res))
 			}
+		case "j":
+			// Trigger Jido Action via RPC
+			m.state = domain.AddMessage(m.state, "Dispatching Jido Action...")
+			return m, func() tea.Msg {
+				res, err := m.backendClient.DispatchAction(context.Background(), "j-req", "test_action")
+				if err != nil {
+					return rpcResultMsg(fmt.Sprintf("Jido Action failed: %v", err))
+				}
+				return rpcResultMsg(fmt.Sprintf("Jido Action result: %s", res))
+			}
+		case "space":
+			m.animatorClient.SetTarget(0.0) // Bounce back
+			m.state = domain.IncrementRequestID(m.state)
+			m.state = domain.AddMessage(m.state, fmt.Sprintf("Ping %d", m.state.RequestID))
+			return m, nil
 		}
 
-	case TickMsg:
-		m.AnimatorClient.Update()
-		return m, TickCmd()
+	case rpcResultMsg:
+		m.state = domain.AddMessage(m.state, string(msg))
+		m.animatorClient.SetTarget(0.0) // Reset position
+		return m, nil
 
-	case adapters.BackendStartedMsg:
-		m.BackendCmd = msg.Cmd
-		m.Stdin = msg.Stdin
-		m.Stdout = msg.Stdout
-		m.State = domain.AddMessage(m.State, "Falcon Backend connected! Keys: 'p' (ping), 'a' (agent), 'u' (think), 'r' (plan), 'v' (voice), 'h' (history), 'm' (actions), 's' (search), 't' (theme), 'q' (quit).")
-		return m, m.BackendClient.Listen(m.Stdout)
-
-	case adapters.BackendMsg:
-		parsed := strings.TrimSpace(msg.Content)
-		if parsed != "" {
-			m.State = domain.AddMessage(m.State, "Gleam: "+parsed)
-		}
-		if m.Stdout != nil && !strings.Contains(parsed, "disconnected") {
-			return m, m.BackendClient.Listen(m.Stdout)
-		}
+	case tickMsg:
+		m.animatorClient.Update()
+		return m, tick()
 	}
 
 	return m, nil
 }
 
-func (m AppViewModel) View() string {
-	return view.Render(m.State, m.AnimatorClient.Position())
+func (m *AppViewModel) View() string {
+	return view.Render(m.state, m.animatorClient.Position())
 }

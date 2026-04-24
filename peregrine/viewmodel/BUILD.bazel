@@ -8,7 +8,6 @@ go_library(
     deps = [
         "//peregrine/adapters",
         "//peregrine/domain",
-        "//peregrine/ports",
         "//peregrine/vendor/github.com/charmbracelet/bubbletea",
         "//peregrine/view",
     ],

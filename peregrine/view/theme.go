@@ -1,40 +1,44 @@
 package view
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"github.com/charmbracelet/lipgloss"
+)
 
-type ThemeType string
+type ThemeType int
 
 const (
-	ThemePI       ThemeType = "pi.dev"
-	ThemeFreeCode ThemeType = "free-code"
-	ThemeCrush    ThemeType = "crush"
+	ThemePIDev ThemeType = iota
+	ThemeFreeCode
+	ThemeCrush
 )
 
 type Theme struct {
-	Primary   lipgloss.Style
-	Secondary lipgloss.Style
-	Text      lipgloss.Style
+	Primary lipgloss.Style
+	Text    lipgloss.Style
+	Border  lipgloss.Style
 }
 
 func GetTheme(t ThemeType) Theme {
 	switch t {
+	case ThemePIDev:
+		return Theme{
+			Primary: lipgloss.NewStyle().Foreground(lipgloss.Color("39")).Bold(true),
+			Text:    lipgloss.NewStyle().Foreground(lipgloss.Color("252")),
+			Border:  lipgloss.NewStyle().Foreground(lipgloss.Color("240")),
+		}
 	case ThemeFreeCode:
 		return Theme{
-			Primary:   lipgloss.NewStyle().Foreground(lipgloss.Color("0")).Background(lipgloss.Color("255")).Bold(true),
-			Secondary: lipgloss.NewStyle().Foreground(lipgloss.Color("240")),
-			Text:      lipgloss.NewStyle().Foreground(lipgloss.Color("255")),
+			Primary: lipgloss.NewStyle().Foreground(lipgloss.Color("208")).Bold(true),
+			Text:    lipgloss.NewStyle().Foreground(lipgloss.Color("255")),
+			Border:  lipgloss.NewStyle().Foreground(lipgloss.Color("245")),
 		}
 	case ThemeCrush:
 		return Theme{
-			Primary:   lipgloss.NewStyle().Foreground(lipgloss.Color("205")).Bold(true),
-			Secondary: lipgloss.NewStyle().Foreground(lipgloss.Color("99")),
-			Text:      lipgloss.NewStyle().Foreground(lipgloss.Color("252")),
+			Primary: lipgloss.NewStyle().Foreground(lipgloss.Color("205")).Bold(true).Italic(true),
+			Text:    lipgloss.NewStyle().Foreground(lipgloss.Color("229")),
+			Border:  lipgloss.NewStyle().Foreground(lipgloss.Color("141")),
 		}
-	default: // ThemePI
-		return Theme{
-			Primary:   lipgloss.NewStyle().Foreground(lipgloss.Color("39")).Bold(true),
-			Secondary: lipgloss.NewStyle().Foreground(lipgloss.Color("43")),
-			Text:      lipgloss.NewStyle().Foreground(lipgloss.Color("250")),
-		}
+	default:
+		return GetTheme(ThemePIDev)
 	}
 }

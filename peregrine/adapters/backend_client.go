@@ -1,84 +1,57 @@
 package adapters
 
 import (
-	"bufio"
-	"encoding/json"
+	"context"
 	"fmt"
-	"io"
-	"os"
-	"os/exec"
+	"net/http"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"connectrpc.com/connect"
+	falconv1 "github.com/alexthotse/peregrine/gen/falcon/v1"
+	"github.com/alexthotse/peregrine/gen/falcon/v1/falconv1connect"
 )
 
-type BackendStartedMsg struct {
-	Cmd    *exec.Cmd
-	Stdin  io.WriteCloser
-	Stdout io.ReadCloser
+type BackendClient struct {
+	client falconv1connect.FalconServiceClient
 }
 
-type BackendMsg struct {
-	Content string
-}
-
-type JSONRPCRequest struct {
-	JSONRPC string `json:"jsonrpc"`
-	ID      string `json:"id"`
-	Method  string `json:"method"`
-}
-
-type DefaultBackendClient struct{}
-
-func NewDefaultBackendClient() *DefaultBackendClient {
-	return &DefaultBackendClient{}
-}
-
-func (c *DefaultBackendClient) Start() tea.Msg {
-	cmd := exec.Command("gleam", "run")
-	if backendPath := os.Getenv("FALCON_DIR"); backendPath != "" {
-		cmd.Dir = backendPath
-	} else {
-		cmd.Dir = "../falcon"
+func NewDefaultBackendClient() *BackendClient {
+	// Initialize the ConnectRPC client using the custom MessagePack Codec over HTTP
+	client := falconv1connect.NewFalconServiceClient(
+		http.DefaultClient,
+		"http://localhost:8080",
+		connect.WithCodec(NewMsgPackCodec()),
+	)
+	return &BackendClient{
+		client: client,
 	}
-	stdin, err := cmd.StdinPipe()
+}
+
+// Ping checks liveness of the Falcon backend
+func (b *BackendClient) Ping(ctx context.Context, id string) (string, error) {
+	req := connect.NewRequest(&falconv1.PingRequest{Id: id})
+	res, err := b.client.Ping(ctx, req)
 	if err != nil {
-		return BackendMsg{fmt.Sprintf("Error connecting stdin: %v", err)}
+		return "", err
 	}
-	stdout, err := cmd.StdoutPipe()
+	return res.Msg.Message, nil
+}
+
+// StartUltrathink invokes the deep reasoning agent
+func (b *BackendClient) StartUltrathink(ctx context.Context, id string) (string, error) {
+	req := connect.NewRequest(&falconv1.UltrathinkRequest{Id: id})
+	res, err := b.client.StartUltrathink(ctx, req)
 	if err != nil {
-		return BackendMsg{fmt.Sprintf("Error connecting stdout: %v", err)}
+		return "", err
 	}
-	if err := cmd.Start(); err != nil {
-		return BackendMsg{fmt.Sprintf("Error starting gleam: %v", err)}
-	}
-
-	return BackendStartedMsg{
-		Cmd:    cmd,
-		Stdin:  stdin,
-		Stdout: stdout,
-	}
+	return res.Msg.Result, nil
 }
 
-func (c *DefaultBackendClient) Listen(stdout io.ReadCloser) tea.Cmd {
-	return func() tea.Msg {
-		reader := bufio.NewReader(stdout)
-		line, err := reader.ReadString('\n')
-		if err != nil {
-			return BackendMsg{"Backend disconnected."}
-		}
-		return BackendMsg{line}
+// DispatchAction dispatches a Jido action
+func (b *BackendClient) DispatchAction(ctx context.Context, id, action string) (string, error) {
+	req := connect.NewRequest(&falconv1.ActionRequest{Id: id, Action: action})
+	res, err := b.client.DispatchAction(ctx, req)
+	if err != nil {
+		return "", err
 	}
-}
-
-func (c *DefaultBackendClient) SendRequest(stdin io.WriteCloser, reqID int, method string) tea.Cmd {
-	return func() tea.Msg {
-		req := JSONRPCRequest{
-			JSONRPC: "2.0",
-			ID:      fmt.Sprintf("%d", reqID),
-			Method:  method,
-		}
-		b, _ := json.Marshal(req)
-		fmt.Fprintf(stdin, "%s\n", b)
-		return nil
-	}
+	return res.Msg.Result, nil
 }
