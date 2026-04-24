@@ -53,11 +53,13 @@ fn handle_request(raw_json: String) {
   }
 }
 
-fn execute_method(method: String) -> String {
+pub fn execute_method(method: String) -> String {
   case method {
     "ping" -> "pong"
     "agent.start" -> "agent_started_successfully"
     "agent.status" -> "idle"
+    "ultrathink.start" -> "ultrathink_mode_activated"
+    "ultraplan.start" -> "ultraplan_mode_activated"
     _ -> "unknown_method"
   }
 }

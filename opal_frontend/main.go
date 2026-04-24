@@ -20,6 +20,8 @@ type model struct {
 	stdout     io.ReadCloser
 	messages   []string
 	requestID  int
+	theme      Theme
+	animator   *Animator
 }
 
 type JSONRPCRequest struct {
@@ -42,6 +44,8 @@ type backendMsg struct {
 func initialModel() model {
 	return model{
 		messages: []string{"Starting Opal Backend (Gleam)..."},
+		theme:    GetTheme(ThemePI),
+		animator: NewAnimator(),
 	}
 }
 
@@ -121,13 +125,31 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.requestID++
 				return m, sendRequest(m.stdin, m.requestID, "agent.start")
 			}
+		case "u": // Start ultrathink
+			if m.stdin != nil {
+				m.requestID++
+				return m, sendRequest(m.stdin, m.requestID, "ultrathink.start")
+			}
+		case "r": // Start ultraplan
+			if m.stdin != nil {
+				m.requestID++
+				return m, sendRequest(m.stdin, m.requestID, "ultraplan.start")
+			}
+		case "t": // Toggle theme
+			if m.theme.Primary.GetForeground() == lipgloss.Color("39") {
+				m.theme = GetTheme(ThemeFreeCode)
+			} else if m.theme.Primary.GetForeground() == lipgloss.Color("0") {
+				m.theme = GetTheme(ThemeCrush)
+			} else {
+				m.theme = GetTheme(ThemePI)
+			}
 		}
 
 	case backendStartedMsg:
 		m.backendCmd = msg.cmd
 		m.stdin = msg.stdin
 		m.stdout = msg.stdout
-		m.messages = append(m.messages, "Backend connected! Press 'p' to ping, 'a' to start agent, 'q' to quit.")
+		m.messages = append(m.messages, "Backend connected! Press 'p' to ping, 'a' to start agent, 't' to toggle theme, 'q' to quit.")
 		return m, listenBackend(m.stdout)
 
 	case backendMsg:
@@ -144,9 +166,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	s := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("205")).Render("✦ Opal Agent (Go + Gleam)") + "\n\n"
+	s := m.theme.Primary.Render("✦ Opal Agent") + "\n\n"
 	for _, msg := range m.messages {
-		s += msg + "\n"
+		s += m.theme.Text.Render(msg) + "\n"
 	}
 	return s
 }
