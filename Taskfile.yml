@@ -1,0 +1,59 @@
+version: '3'
+
+tasks:
+  default:
+    desc: "Build the default Nix flake output"
+    cmds:
+      - nix build .#default --print-build-logs
+
+  run:
+    desc: "Run the peregrine CLI via Nix"
+    cmds:
+      - nix run .#default
+
+  shell:
+    desc: "Enter the Nix development shell"
+    cmds:
+      - nix develop .#default
+
+  build:falcon:
+    desc: "Build the Falcon Gleam backend using Nix"
+    cmds:
+      - nix build .#backend --print-build-logs
+
+  build:peregrine:
+    desc: "Build the Peregrine Go frontend using Nix"
+    cmds:
+      - nix build .#frontend --print-build-logs
+
+  test:
+    desc: "Run all tests in the Nix development shell"
+    cmds:
+      - task: test:falcon
+      - task: test:peregrine
+
+  test:falcon:
+    desc: "Test the Falcon Gleam backend"
+    cmds:
+      - nix develop .#default -c bash -c "cd falcon && gleam deps download && gleam test"
+
+  test:peregrine:
+    desc: "Test the Peregrine Go frontend"
+    cmds:
+      - nix develop .#default -c bash -c "cd peregrine && go mod tidy && go test -v ./..."
+
+  format:
+    desc: "Format both Falcon and Peregrine codebases"
+    cmds:
+      - task: format:falcon
+      - task: format:peregrine
+
+  format:falcon:
+    desc: "Format the Falcon Gleam backend"
+    cmds:
+      - nix develop .#default -c bash -c "cd falcon && gleam format src test"
+
+  format:peregrine:
+    desc: "Format the Peregrine Go frontend"
+    cmds:
+      - nix develop .#default -c bash -c "cd peregrine && go fmt ./..."

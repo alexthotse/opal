@@ -23,34 +23,24 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Build Flake (Frontend + Backend)
-        run: nix build .#default --print-build-logs
+      - name: Setup Task
+        uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.25.1'
-          
-      - name: Setup Gleam & Erlang
-        uses: erlef/setup-beam@v1
-        with:
-          otp-version: "27.1.2"
-          gleam-version: "1.9.0"
-          rebar3-version: "3"
+      - name: Build Flake (Frontend + Backend)
+        run: task default
 
       - name: Test Gleam Backend
-        run: |
-          cd falcon
-          gleam deps download
-          gleam test
-          gleam format --check src test
+        run: task test:falcon
 
       - name: Test Go Frontend
+        run: task test:peregrine
+
+      - name: Check Formatting
         run: |
-          cd peregrine
-          go mod tidy
-          go test -v ./...
-          go build -o peregrine_cli
+          nix develop .#default -c bash -c "cd falcon && gleam format --check src test"
+          nix develop .#default -c bash -c "cd peregrine && test -z \"\$(gofmt -l .)\""
 
       - name: Verify Binary Output
         run: |

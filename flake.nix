@@ -77,6 +77,7 @@
             gleam
             erlang
             rebar3
+            go-task
           ];
         };
       }
