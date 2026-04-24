@@ -114,7 +114,7 @@
             erlang
             rebar3
             go-task
-            bazel
+            bazelisk
             buf
             protobuf
           ];

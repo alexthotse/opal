@@ -1,1 +1,14 @@
-# Root BUILD.bazel
+load("@gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix peregrine
+gazelle(name = "gazelle")
+
+gazelle(
+    name = "gazelle-update-repos",
+    args = [
+        "-from_file=peregrine/go.mod",
+        "-to_macro=deps.bzl%go_dependencies",
+        "-prune",
+    ],
+    command = "update-repos",
+)
