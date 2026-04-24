@@ -1,0 +1,15 @@
+syntax = "proto3";
+package peregrine.v1;
+option go_package = "peregrine/gen/peregrine/v1;peregrinev1";
+
+// PeregrineService represents the Go frontend's local service, if needed for callbacks
+service PeregrineService {
+  rpc Status(StatusRequest) returns (StatusResponse) {}
+}
+
+message StatusRequest {
+  string id = 1;
+}
+message StatusResponse {
+  string status = 1;
+}

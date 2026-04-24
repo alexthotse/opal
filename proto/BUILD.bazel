@@ -1,7 +1,13 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
-    name = "agent_v1_proto",
-    srcs = ["agent/v1/agent.proto"],
+    name = "falcon_v1_proto",
+    srcs = ["falcon/v1/falcon.proto"],
+    visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "peregrine_v1_proto",
+    srcs = ["peregrine/v1/peregrine.proto"],
     visibility = ["//visibility:public"],
 )

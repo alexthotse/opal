@@ -1,0 +1,26 @@
+syntax = "proto3";
+package falcon.v1;
+option go_package = "peregrine/gen/falcon/v1;falconv1";
+
+service FalconService {
+  rpc Ping(PingRequest) returns (PingResponse) {}
+  rpc StartUltrathink(UltrathinkRequest) returns (UltrathinkResponse) {}
+  rpc StartUltraplan(UltraplanRequest) returns (UltraplanResponse) {}
+  rpc DispatchAction(ActionRequest) returns (ActionResponse) {}
+  rpc QuickSearch(SearchRequest) returns (SearchResponse) {}
+}
+
+message PingRequest { string id = 1; }
+message PingResponse { string message = 1; }
+
+message UltrathinkRequest { string id = 1; }
+message UltrathinkResponse { string result = 1; }
+
+message UltraplanRequest { string id = 1; }
+message UltraplanResponse { string result = 1; }
+
+message ActionRequest { string id = 1; string action = 2; }
+message ActionResponse { string result = 1; }
+
+message SearchRequest { string id = 1; string query = 2; }
+message SearchResponse { string result = 1; }
