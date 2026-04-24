@@ -1,8 +1,8 @@
 package ports
 
 import (
-	"io"
 	tea "github.com/charmbracelet/bubbletea"
+	"io"
 )
 
 // BackendClient represents the side-effectful boundary to our Gleam backend.

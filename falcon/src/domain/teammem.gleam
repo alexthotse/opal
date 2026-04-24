@@ -1,1 +1,3 @@
-pub fn get_teammem() -> String { "teammem_retrieved" }
+pub fn get_teammem() -> String {
+  "teammem_retrieved"
+}

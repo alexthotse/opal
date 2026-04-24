@@ -1,1 +1,3 @@
-pub fn run_triggers() -> String { "triggers_executed" }
+pub fn run_triggers() -> String {
+  "triggers_executed"
+}

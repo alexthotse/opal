@@ -1,27 +1,29 @@
-import gleam/io
-import gleam/json
-import gleam/string
-import gleam/dynamic/decode
-import gleam/result
-import gleam/dynamic
-import domain/memory
-import domain/cache
-import domain/teammem
-import domain/verification
-import domain/triggers
-import domain/search
-import domain/budget
-import domain/stats
+import adapters/jido_agent
 import domain/bridge
-import domain/security
+import domain/budget
+import domain/cache
+import domain/memory
 import domain/planning
 import domain/reasoning
-import adapters/jido_agent
+import domain/search
+import domain/security
+import domain/stats
+import domain/teammem
+import domain/triggers
+import domain/verification
+import gleam/dynamic
+import gleam/dynamic/decode
+import gleam/io
+import gleam/json
+import gleam/result
+import gleam/string
 
 import ports/rpc
 
 pub fn main() {
-  io.println("{\"jsonrpc\": \"2.0\", \"method\": \"system.started\", \"params\": {}}")
+  io.println(
+    "{\"jsonrpc\": \"2.0\", \"method\": \"system.started\", \"params\": {}}",
+  )
   loop()
 }
 
@@ -36,7 +38,9 @@ fn loop() {
       loop()
     }
     Error(_) -> {
-      io.println("{\"jsonrpc\": \"2.0\", \"method\": \"system.stopped\", \"params\": {}}")
+      io.println(
+        "{\"jsonrpc\": \"2.0\", \"method\": \"system.stopped\", \"params\": {}}",
+      )
     }
   }
 }
@@ -51,15 +55,18 @@ fn handle_request(raw_json: String) {
   case json.parse(raw_json, decoder) {
     Ok(req) -> {
       let res = execute_method(req.method)
-      let response = json.object([
-        #("jsonrpc", json.string("2.0")),
-        #("id", json.string(req.id)),
-        #("result", json.string(res))
-      ])
+      let response =
+        json.object([
+          #("jsonrpc", json.string("2.0")),
+          #("id", json.string(req.id)),
+          #("result", json.string(res)),
+        ])
       io.println(json.to_string(response))
     }
     Error(_) -> {
-      io.println("{\"jsonrpc\": \"2.0\", \"error\": {\"code\": -32600, \"message\": \"Invalid Request\"}}")
+      io.println(
+        "{\"jsonrpc\": \"2.0\", \"error\": {\"code\": -32600, \"message\": \"Invalid Request\"}}",
+      )
     }
   }
 }

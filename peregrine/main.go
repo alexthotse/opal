@@ -21,7 +21,7 @@ func main() {
 
 	// Hexagonal Architecture Initialization
 	backendClient := adapters.NewDefaultBackendClient()
-	
+
 	agentClient, err := adapters.NewADKAgentClient()
 	if err != nil {
 		log.Fatalf("Failed to initialize ADK Agent: %v", err)

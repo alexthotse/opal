@@ -7,9 +7,9 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"peregrine/adapters"
 	"peregrine/domain"
 	"peregrine/ports"
-	"peregrine/adapters"
 	"peregrine/view"
 )
 

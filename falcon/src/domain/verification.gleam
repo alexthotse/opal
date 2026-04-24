@@ -1,1 +1,3 @@
-pub fn verify_task() -> String { "task_verified" }
+pub fn verify_task() -> String {
+  "task_verified"
+}

@@ -1,1 +1,3 @@
-pub fn bridge_mode() -> String { "bridge_active" }
+pub fn bridge_mode() -> String {
+  "bridge_active"
+}

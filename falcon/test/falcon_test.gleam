@@ -1,6 +1,6 @@
+import falcon
 import gleeunit
 import gleeunit/should
-import falcon
 
 pub fn main() {
   gleeunit.main()
