@@ -22,7 +22,7 @@
         peregrineBackend = pkgs.stdenv.mkDerivation {
           pname = "peregrine-backend";
           version = "1.0.0";
-          src = ./peregrine_backend;
+          src = ./falcon;
 
           nativeBuildInputs = with pkgs; [ gleam erlang rebar3 ];
 
@@ -41,7 +41,7 @@
         peregrineFrontend = pkgs.buildGoModule {
           pname = "peregrine-frontend";
           version = "1.0.0";
-          src = ./peregrine_frontend;
+          src = ./peregrine;
 
           vendorHash = "sha256-n6V8YgR3bSjJqG9Yy25p50yK2263v7K15E9L41V35G8="; # You might need to update this hash
           
@@ -51,11 +51,11 @@
           nativeBuildInputs = [ pkgs.makeWrapper ];
 
           postInstall = ''
-            wrapProgram $out/bin/peregrine_frontend \
-              --set OPAL_BACKEND_DIR "${peregrineBackend}/share/peregrine-backend" \
+            wrapProgram $out/bin/peregrine \
+              --set FALCON_DIR "${peregrineBackend}/share/peregrine-backend" \
               --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.gleam pkgs.erlang ]}
             
-            mv $out/bin/peregrine_frontend $out/bin/peregrine
+            mv $out/bin/peregrine $out/bin/peregrine
           '';
         };
       in
