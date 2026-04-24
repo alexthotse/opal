@@ -23,3 +23,7 @@ use_repo(
     "org_golang_google_genai",
     "org_golang_google_protobuf",
 )
+
+# We will create a custom bazel rule for Gleam since an official rules_gleam bzlmod is not yet standard.
+# We will use rules_foreign_cc or standard genrule for Gleam as an elegant stopgap until native rules arrive.
+bazel_dep(name = "rules_foreign_cc", version = "0.12.0")

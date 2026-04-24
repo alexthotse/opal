@@ -1,0 +1,12 @@
+load("//tools/build_rules:gleam.bzl", "gleam_binary")
+
+# Define a custom Gleam build rule for the backend using Bazel orchestration.
+# This gives the backend 1:1 orchestrational parity with Go inside Bazel.
+gleam_binary(
+    name = "falcon",
+    src_dir = ".",
+    deps = [
+        # In a fully native Gleam ruleset, this is where Hex dependencies
+        # would be injected hermetically. For now, the builder relies on gleam deps download.
+    ],
+)

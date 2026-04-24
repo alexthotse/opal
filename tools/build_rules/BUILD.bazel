@@ -1,0 +1,2 @@
+# Export rules for Bazel
+exports_files(["gleam.bzl"])
