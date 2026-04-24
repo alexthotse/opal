@@ -21,10 +21,10 @@ tasks:
     cmds:
       - nix build .#backend --print-build-logs
 
-  build:peregrine:
-    desc: "Build the Peregrine Go frontend using Nix"
+  build:container:
+    desc: "Build the Alpine Linux-based Docker OCI image using Nix"
     cmds:
-      - nix build .#frontend --print-build-logs
+      - nix build .#container --print-build-logs
 
   test:
     desc: "Run all tests in the Nix development shell"

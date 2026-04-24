@@ -30,8 +30,10 @@ jobs:
         with:
           version: 3.x
 
-      - name: Build Flake (Frontend + Backend)
-        run: task default || true
+      - name: Build Flake (Frontend, Backend, and OCI Container)
+        run: |
+          task default || true
+          task build:container || true
 
       - name: Test Gleam Backend
         run: task test:falcon
@@ -74,10 +76,9 @@ jobs:
             peregrine-${{ github.ref_name }}-linux-amd64.tar.gz
           generate_release_notes: true
 
-      - name: Build Docker Container
+      - name: Build Docker Container via Nix
         run: |
-          # Build a minimal Docker image using nix
-          nix bundle --bundler github:NixOS/bundlers#toDockerImage .#default
+          nix build .#container
           
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -88,10 +89,16 @@ jobs:
 
       - name: Push to GHCR
         run: |
+          # Load the Nix-built OCI container into docker daemon
+          docker load < result
+          
           IMAGE_NAME="ghcr.io/${{ github.repository }}"
-          # The nix bundle output is typically named something like 'peregrine-frontend-1.0.0-docker-image.tar.gz'
-          docker load < *-docker-image.tar.gz
-          # Tag and push logic goes here depending on the exact Nix bundle name output
-          # docker tag <loaded_image> $IMAGE_NAME:${{ github.ref_name }}
-          # docker push $IMAGE_NAME:${{ github.ref_name }}
-          echo "GHCR pushing is configured and ready"
+          
+          # The nix dockerTools defaults the tag to 'latest'. We will retag it.
+          docker tag ghcr.io/alexthotse/peregrine:latest $IMAGE_NAME:${{ github.ref_name }}
+          docker tag ghcr.io/alexthotse/peregrine:latest $IMAGE_NAME:latest
+          
+          # Push both the version tag and the latest tag
+          docker push $IMAGE_NAME:${{ github.ref_name }}
+          docker push $IMAGE_NAME:latest
+          echo "GHCR pushing completed successfully"

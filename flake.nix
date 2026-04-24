@@ -54,18 +54,51 @@
           nativeBuildInputs = [ pkgs.makeWrapper ];
 
           postInstall = ''
-            wrapProgram $out/bin/peregrine \
-              --set FALCON_DIR "${peregrineBackend}/share/peregrine-backend" \
+            wrapProgram $out/bin/peregrine_cli \
+              --set FALCON_DIR "${falconBackend}/share/falcon" \
               --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.gleam pkgs.erlang ]}
             
-            mv $out/bin/peregrine $out/bin/peregrine
+            mv $out/bin/peregrine_cli $out/bin/peregrine
           '';
+        };
+
+        # OCI (Docker) container image using Alpine Linux as the base
+        peregrineContainer = pkgs.dockerTools.buildImage {
+          name = "ghcr.io/alexthotse/peregrine";
+          tag = "latest";
+          
+          # Pull a minimal Alpine Linux image as the base
+          fromImage = pkgs.dockerTools.pullImage {
+            imageName = "alpine";
+            imageDigest = "sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5"; # alpine:3.21.3
+            sha256 = "07s5xka323xmn8jvv8s8i9mgs7b36y4g8iwhiwh4b648l9n6hss7";
+            finalImageName = "alpine";
+            finalImageTag = "latest";
+          };
+
+          copyToRoot = pkgs.buildEnv {
+            name = "peregrine-env";
+            paths = [
+              peregrineFrontend
+              pkgs.bashInteractive
+              pkgs.coreutils
+            ];
+            pathsToLink = [ "/bin" "/share" ];
+          };
+
+          config = {
+            Cmd = [ "${peregrineFrontend}/bin/peregrine" ];
+            Env = [
+              "PATH=${peregrineFrontend}/bin:${pkgs.bashInteractive}/bin:${pkgs.coreutils}/bin"
+            ];
+          };
         };
       in
       {
         packages = {
-          backend = peregrineBackend;
+          backend = falconBackend;
           frontend = peregrineFrontend;
+          container = peregrineContainer;
           default = peregrineFrontend;
         };
 
