@@ -1,5 +1,5 @@
 {
-  description = "Opal: A terminal-based AI assistant system";
+  description = "Peregrine: A terminal-based AI assistant system";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -11,10 +11,10 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        opalBackend = pkgs.stdenv.mkDerivation {
-          pname = "opal-backend";
+        peregrineBackend = pkgs.stdenv.mkDerivation {
+          pname = "peregrine-backend";
           version = "1.0.0";
-          src = ./opal_backend;
+          src = ./peregrine_backend;
 
           nativeBuildInputs = with pkgs; [ gleam erlang rebar3 ];
 
@@ -25,15 +25,15 @@
           '';
 
           installPhase = ''
-            mkdir -p $out/share/opal-backend
-            cp -r ./* $out/share/opal-backend/
+            mkdir -p $out/share/peregrine-backend
+            cp -r ./* $out/share/peregrine-backend/
           '';
         };
 
-        opalFrontend = pkgs.buildGoModule {
-          pname = "opal-frontend";
+        peregrineFrontend = pkgs.buildGoModule {
+          pname = "peregrine-frontend";
           version = "1.0.0";
-          src = ./opal_frontend;
+          src = ./peregrine_frontend;
 
           vendorHash = "sha256-n6V8YgR3bSjJqG9Yy25p50yK2263v7K15E9L41V35G8="; # You might need to update this hash
           
@@ -43,24 +43,24 @@
           nativeBuildInputs = [ pkgs.makeWrapper ];
 
           postInstall = ''
-            wrapProgram $out/bin/opal_frontend \
-              --set OPAL_BACKEND_DIR "${opalBackend}/share/opal-backend" \
+            wrapProgram $out/bin/peregrine_frontend \
+              --set OPAL_BACKEND_DIR "${peregrineBackend}/share/peregrine-backend" \
               --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.gleam pkgs.erlang ]}
             
-            mv $out/bin/opal_frontend $out/bin/opal
+            mv $out/bin/peregrine_frontend $out/bin/peregrine
           '';
         };
       in
       {
         packages = {
-          backend = opalBackend;
-          frontend = opalFrontend;
-          default = opalFrontend;
+          backend = peregrineBackend;
+          frontend = peregrineFrontend;
+          default = peregrineFrontend;
         };
 
         apps.default = flake-utils.lib.mkApp {
-          drv = opalFrontend;
-          exePath = "/bin/opal";
+          drv = peregrineFrontend;
+          exePath = "/bin/peregrine";
         };
 
         devShells.default = pkgs.mkShell {
