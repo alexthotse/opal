@@ -19,8 +19,8 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        peregrineBackend = pkgs.stdenv.mkDerivation {
-          pname = "peregrine-backend";
+        falconBackend = pkgs.stdenv.mkDerivation {
+          pname = "falcon";
           version = "1.0.0";
           src = ./falcon;
 
@@ -33,8 +33,8 @@
           '';
 
           installPhase = ''
-            mkdir -p $out/share/peregrine-backend
-            cp -r ./* $out/share/peregrine-backend/
+            mkdir -p $out/share/falcon
+            cp -r ./* $out/share/falcon/
           '';
         };
 
