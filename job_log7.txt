@@ -1,0 +1,344 @@
+﻿2026-04-25T09:22:18.3900375Z Current runner version: '2.333.1'
+2026-04-25T09:22:18.3934570Z ##[group]Runner Image Provisioner
+2026-04-25T09:22:18.3935516Z Hosted Compute Agent
+2026-04-25T09:22:18.3936052Z Version: 20260213.493
+2026-04-25T09:22:18.3936680Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-04-25T09:22:18.3937524Z Build Date: 2026-02-13T00:28:41Z
+2026-04-25T09:22:18.3938161Z Worker ID: {f58d3370-a3e3-432a-a8d3-33d43c38604d}
+2026-04-25T09:22:18.3938848Z Azure Region: centralus
+2026-04-25T09:22:18.3939449Z ##[endgroup]
+2026-04-25T09:22:18.3940847Z ##[group]Operating System
+2026-04-25T09:22:18.3941422Z Ubuntu
+2026-04-25T09:22:18.3942029Z 24.04.4
+2026-04-25T09:22:18.3942488Z LTS
+2026-04-25T09:22:18.3942988Z ##[endgroup]
+2026-04-25T09:22:18.3943521Z ##[group]Runner Image
+2026-04-25T09:22:18.3944360Z Image: ubuntu-24.04
+2026-04-25T09:22:18.3944917Z Version: 20260413.86.1
+2026-04-25T09:22:18.3946196Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+2026-04-25T09:22:18.3947645Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+2026-04-25T09:22:18.3948615Z ##[endgroup]
+2026-04-25T09:22:18.3949724Z ##[group]GITHUB_TOKEN Permissions
+2026-04-25T09:22:18.3951955Z Contents: read
+2026-04-25T09:22:18.3952554Z Metadata: read
+2026-04-25T09:22:18.3953098Z Packages: read
+2026-04-25T09:22:18.3953565Z ##[endgroup]
+2026-04-25T09:22:18.3955973Z Secret source: Actions
+2026-04-25T09:22:18.3957144Z Prepare workflow directory
+2026-04-25T09:22:18.4332821Z Prepare all required actions
+2026-04-25T09:22:18.4385779Z Getting action download info
+2026-04-25T09:22:18.8114810Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-04-25T09:22:18.9364061Z Download action repository 'bazel-contrib/setup-bazel@0.8.5' (SHA:e403ad507104847c3539436f64a9e9eecc73eeec)
+2026-04-25T09:22:19.7016628Z Download action repository 'arduino/setup-task@v2' (SHA:b91d5d2c96a56797b48ac1e0e89220bf64044611)
+2026-04-25T09:22:20.2473165Z Complete job name: Build Artifacts (ubuntu-latest)
+2026-04-25T09:22:20.3310082Z ##[group]Run actions/checkout@v4
+2026-04-25T09:22:20.3311341Z with:
+2026-04-25T09:22:20.3312083Z   repository: alexthotse/opal
+2026-04-25T09:22:20.3313272Z   token: ***
+2026-04-25T09:22:20.3314215Z   ssh-strict: true
+2026-04-25T09:22:20.3314968Z   ssh-user: git
+2026-04-25T09:22:20.3315734Z   persist-credentials: true
+2026-04-25T09:22:20.3316580Z   clean: true
+2026-04-25T09:22:20.3317356Z   sparse-checkout-cone-mode: true
+2026-04-25T09:22:20.3318293Z   fetch-depth: 1
+2026-04-25T09:22:20.3319033Z   fetch-tags: false
+2026-04-25T09:22:20.3319815Z   show-progress: true
+2026-04-25T09:22:20.3320575Z   lfs: false
+2026-04-25T09:22:20.3321339Z   submodules: false
+2026-04-25T09:22:20.3322123Z   set-safe-directory: true
+2026-04-25T09:22:20.3323174Z ##[endgroup]
+2026-04-25T09:22:20.4442847Z Syncing repository: alexthotse/opal
+2026-04-25T09:22:20.4446569Z ##[group]Getting Git version info
+2026-04-25T09:22:20.4448031Z Working directory is '/home/runner/work/opal/opal'
+2026-04-25T09:22:20.4450396Z [command]/usr/bin/git version
+2026-04-25T09:22:20.4502557Z git version 2.53.0
+2026-04-25T09:22:20.4540671Z ##[endgroup]
+2026-04-25T09:22:20.4559274Z Temporarily overriding HOME='/home/runner/work/_temp/1f954401-1644-4e1e-91d4-7997fa2f6aa4' before making global git config changes
+2026-04-25T09:22:20.4562257Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-25T09:22:20.4568897Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/opal/opal
+2026-04-25T09:22:20.4601813Z Deleting the contents of '/home/runner/work/opal/opal'
+2026-04-25T09:22:20.4604382Z ##[group]Initializing the repository
+2026-04-25T09:22:20.4608050Z [command]/usr/bin/git init /home/runner/work/opal/opal
+2026-04-25T09:22:20.4676741Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-25T09:22:20.4679790Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-25T09:22:20.4683062Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-25T09:22:20.4685569Z hint: call:
+2026-04-25T09:22:20.4686608Z hint:
+2026-04-25T09:22:20.4687924Z hint: 	git config --global init.defaultBranch <name>
+2026-04-25T09:22:20.4689656Z hint:
+2026-04-25T09:22:20.4691312Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-25T09:22:20.4694236Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-25T09:22:20.4696310Z hint:
+2026-04-25T09:22:20.4697617Z hint: 	git branch -m <name>
+2026-04-25T09:22:20.4698493Z hint:
+2026-04-25T09:22:20.4699617Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-25T09:22:20.4701399Z Initialized empty Git repository in /home/runner/work/opal/opal/.git/
+2026-04-25T09:22:20.4705173Z [command]/usr/bin/git remote add origin https://github.com/alexthotse/opal
+2026-04-25T09:22:20.4725265Z ##[endgroup]
+2026-04-25T09:22:20.4727301Z ##[group]Disabling automatic garbage collection
+2026-04-25T09:22:20.4729395Z [command]/usr/bin/git config --local gc.auto 0
+2026-04-25T09:22:20.4760044Z ##[endgroup]
+2026-04-25T09:22:20.4761990Z ##[group]Setting up auth
+2026-04-25T09:22:20.4767558Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-25T09:22:20.4801291Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-25T09:22:20.5085685Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-25T09:22:20.5118813Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-25T09:22:20.5351356Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-25T09:22:20.5394964Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-25T09:22:20.5631774Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-25T09:22:20.5668558Z ##[endgroup]
+2026-04-25T09:22:20.5671036Z ##[group]Fetching the repository
+2026-04-25T09:22:20.5680108Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d735af2a6a4b24be9d9c9271bc2f833aa968dc2f:refs/remotes/pull/3/merge
+2026-04-25T09:22:23.8080399Z From https://github.com/alexthotse/opal
+2026-04-25T09:22:23.8082008Z  * [new ref]         d735af2a6a4b24be9d9c9271bc2f833aa968dc2f -> pull/3/merge
+2026-04-25T09:22:23.8110531Z ##[endgroup]
+2026-04-25T09:22:23.8111529Z ##[group]Determining the checkout info
+2026-04-25T09:22:23.8112789Z ##[endgroup]
+2026-04-25T09:22:23.8118691Z [command]/usr/bin/git sparse-checkout disable
+2026-04-25T09:22:23.8156925Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-04-25T09:22:23.8182850Z ##[group]Checking out the ref
+2026-04-25T09:22:23.8186649Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/3/merge
+2026-04-25T09:22:24.3212734Z Note: switching to 'refs/remotes/pull/3/merge'.
+2026-04-25T09:22:24.3213340Z 
+2026-04-25T09:22:24.3214244Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-04-25T09:22:24.3215245Z changes and commit them, and you can discard any commits you make in this
+2026-04-25T09:22:24.3216159Z state without impacting any branches by switching back to a branch.
+2026-04-25T09:22:24.3234852Z 
+2026-04-25T09:22:24.3235447Z If you want to create a new branch to retain commits you create, you may
+2026-04-25T09:22:24.3236423Z do so (now or later) by using -c with the switch command. Example:
+2026-04-25T09:22:24.3236877Z 
+2026-04-25T09:22:24.3237072Z   git switch -c <new-branch-name>
+2026-04-25T09:22:24.3237403Z 
+2026-04-25T09:22:24.3238052Z Or undo this operation with:
+2026-04-25T09:22:24.3238355Z 
+2026-04-25T09:22:24.3238499Z   git switch -
+2026-04-25T09:22:24.3238714Z 
+2026-04-25T09:22:24.3239020Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-04-25T09:22:24.3239542Z 
+2026-04-25T09:22:24.3239964Z HEAD is now at d735af2 Merge bb5fb0fb3fe577c93b4c34a050b22d15e5ec907f into a726bebdd1136ee17478561cce70bff0a6e783d1
+2026-04-25T09:22:24.3251290Z ##[endgroup]
+2026-04-25T09:22:24.3290820Z [command]/usr/bin/git log -1 --format=%H
+2026-04-25T09:22:24.3316417Z d735af2a6a4b24be9d9c9271bc2f833aa968dc2f
+2026-04-25T09:22:24.3555419Z ##[group]Run bazel-contrib/setup-bazel@0.8.5
+2026-04-25T09:22:24.3555890Z with:
+2026-04-25T09:22:24.3556203Z   bazelisk-cache: true
+2026-04-25T09:22:24.3556581Z   cache-version: 1
+2026-04-25T09:22:24.3556909Z   disk-cache: false
+2026-04-25T09:22:24.3557207Z   repository-cache: false
+2026-04-25T09:22:24.3557787Z   token: ***
+2026-04-25T09:22:24.3558099Z ##[endgroup]
+2026-04-25T09:22:24.5279312Z ##[group]Configure Bazel
+2026-04-25T09:22:24.5279815Z Configuration:
+2026-04-25T09:22:24.5280358Z {
+2026-04-25T09:22:24.5280809Z   "baseCacheKey": "setup-bazel-1-linux",
+2026-04-25T09:22:24.5281405Z   "bazeliskCache": {
+2026-04-25T09:22:24.5281878Z     "enabled": true,
+2026-04-25T09:22:24.5282458Z     "files": [
+2026-04-25T09:22:24.5282849Z       ".bazelversion"
+2026-04-25T09:22:24.5283291Z     ],
+2026-04-25T09:22:24.5284000Z     "name": "bazelisk",
+2026-04-25T09:22:24.5284487Z     "paths": [
+2026-04-25T09:22:24.5285488Z       "/home/runner/.cache/bazelisk"
+2026-04-25T09:22:24.5286240Z     ]
+2026-04-25T09:22:24.5286592Z   },
+2026-04-25T09:22:24.5287053Z   "bazeliskVersion": "",
+2026-04-25T09:22:24.5287571Z   "bazelrc": [],
+2026-04-25T09:22:24.5288011Z   "diskCache": {
+2026-04-25T09:22:24.5288504Z     "enabled": false,
+2026-04-25T09:22:24.5288938Z     "files": [
+2026-04-25T09:22:24.5289380Z       "**/BUILD.bazel",
+2026-04-25T09:22:24.5289749Z       "**/BUILD"
+2026-04-25T09:22:24.5290263Z     ],
+2026-04-25T09:22:24.5290684Z     "name": "disk",
+2026-04-25T09:22:24.5291112Z     "paths": [
+2026-04-25T09:22:24.5291627Z       "/home/runner/.cache/bazel-disk"
+2026-04-25T09:22:24.5292177Z     ]
+2026-04-25T09:22:24.5292530Z   },
+2026-04-25T09:22:24.5293016Z   "externalCache": {},
+2026-04-25T09:22:24.5293547Z   "paths": {
+2026-04-25T09:22:24.5294251Z     "bazelExternal": "/home/runner/.bazel/external",
+2026-04-25T09:22:24.5367910Z     "bazelOutputBase": "/home/runner/.bazel",
+2026-04-25T09:22:24.5368349Z     "bazelrc": [
+2026-04-25T09:22:24.5368628Z       "/home/runner/.bazelrc"
+2026-04-25T09:22:24.5368986Z     ]
+2026-04-25T09:22:24.5369218Z   },
+2026-04-25T09:22:24.5369446Z   "os": {
+2026-04-25T09:22:24.5369689Z     "arch": "x64",
+2026-04-25T09:22:24.5369980Z     "platform": "linux"
+2026-04-25T09:22:24.5370252Z   },
+2026-04-25T09:22:24.5370501Z   "repositoryCache": {
+2026-04-25T09:22:24.5370793Z     "enabled": false,
+2026-04-25T09:22:24.5372512Z     "files": [
+2026-04-25T09:22:24.5372773Z       "MODULE.bazel",
+2026-04-25T09:22:24.5373097Z       "WORKSPACE.bazel",
+2026-04-25T09:22:24.5373478Z       "WORKSPACE.bzlmod",
+2026-04-25T09:22:24.5374004Z       "WORKSPACE"
+2026-04-25T09:22:24.5374327Z     ],
+2026-04-25T09:22:24.5374654Z     "name": "repository",
+2026-04-25T09:22:24.5374942Z     "paths": [
+2026-04-25T09:22:24.5375224Z       "/home/runner/.cache/bazel-repo"
+2026-04-25T09:22:24.5375570Z     ]
+2026-04-25T09:22:24.5375794Z   }
+2026-04-25T09:22:24.5376027Z }
+2026-04-25T09:22:24.5376697Z ##[endgroup]
+2026-04-25T09:22:24.5377294Z ##[group]Restore cache for bazelisk
+2026-04-25T09:22:24.7090927Z ##[warning]Failed to restore: Cache service responded with 400
+2026-04-25T09:22:24.7098673Z Failed to restore bazelisk cache
+2026-04-25T09:22:24.7099129Z ##[endgroup]
+2026-04-25T09:22:24.8176150Z ##[group]Run arduino/setup-task@v2
+2026-04-25T09:22:24.8176428Z with:
+2026-04-25T09:22:24.8176620Z   version: 3.x
+2026-04-25T09:22:24.8176825Z ##[endgroup]
+2026-04-25T09:22:25.5765583Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/dde1c193-1321-46e8-bf51-a2337a33ba49 -f /home/runner/work/_temp/447e53aa-8bf7-46f3-8fe7-7a22ac6c52c9
+2026-04-25T09:22:25.9327224Z Successfully setup Task version v3.50.0
+2026-04-25T09:22:25.9439066Z ##[group]Run task build:falcon
+2026-04-25T09:22:25.9439402Z [36;1mtask build:falcon[0m
+2026-04-25T09:22:25.9467763Z shell: /usr/bin/bash -e {0}
+2026-04-25T09:22:25.9468027Z ##[endgroup]
+2026-04-25T09:22:25.9765051Z [32mtask: [build:falcon] bazelisk build //falcon:falcon
+2026-04-25T09:22:26.2383074Z [0m2026/04/25 09:22:26 Downloading https://releases.bazel.build/9.0.0/release/bazel-9.0.0-linux-x86_64...
+2026-04-25T09:22:26.8501605Z Extracting Bazel installation...
+2026-04-25T09:22:27.7472576Z Starting local Bazel server (9.0.0) and connecting to it...
+2026-04-25T09:22:29.1660345Z Computing main repo mapping: 
+2026-04-25T09:22:30.1690585Z Computing main repo mapping: 
+2026-04-25T09:22:31.1662481Z Computing main repo mapping: 
+2026-04-25T09:22:32.2259668Z Computing main repo mapping: 
+2026-04-25T09:22:32.5951966Z Loading: 
+2026-04-25T09:22:32.5961588Z Loading: 1 packages loaded
+2026-04-25T09:22:33.6355795Z Loading: 1 packages loaded
+2026-04-25T09:22:33.6357482Z     currently loading: falcon
+2026-04-25T09:22:34.3625550Z Analyzing: target //falcon:falcon (6 packages loaded, 6 targets configured)
+2026-04-25T09:22:34.3736397Z Analyzing: target //falcon:falcon (6 packages loaded, 6 targets configured)
+2026-04-25T09:22:34.3756361Z 
+2026-04-25T09:22:35.4335310Z Analyzing: target //falcon:falcon (16 packages loaded, 8 targets configured)
+2026-04-25T09:22:35.4362966Z 
+2026-04-25T09:22:36.4715464Z Analyzing: target //falcon:falcon (56 packages loaded, 8 targets configured)
+2026-04-25T09:22:36.4744176Z 
+2026-04-25T09:22:37.8139035Z Analyzing: target //falcon:falcon (61 packages loaded, 8 targets configured)
+2026-04-25T09:22:37.8139850Z 
+2026-04-25T09:22:39.1726806Z Analyzing: target //falcon:falcon (61 packages loaded, 8 targets configured)
+2026-04-25T09:22:39.1727327Z 
+2026-04-25T09:22:47.4207139Z Analyzing: target //falcon:falcon (61 packages loaded, 8 targets configured)
+2026-04-25T09:22:47.4274246Z 
+2026-04-25T09:22:54.6513183Z Analyzing: target //falcon:falcon (62 packages loaded, 8 targets configured)
+2026-04-25T09:22:54.6514302Z 
+2026-04-25T09:22:55.6979585Z Analyzing: target //falcon:falcon (62 packages loaded, 8 targets configured)
+2026-04-25T09:22:55.6980242Z 
+2026-04-25T09:22:56.7683104Z Analyzing: target //falcon:falcon (62 packages loaded, 8 targets configured)
+2026-04-25T09:22:56.7684149Z 
+2026-04-25T09:22:58.1817447Z Analyzing: target //falcon:falcon (62 packages loaded, 8 targets configured)
+2026-04-25T09:22:58.1818455Z 
+2026-04-25T09:23:15.5090704Z Analyzing: target //falcon:falcon (62 packages loaded, 8 targets configured)
+2026-04-25T09:23:15.5114103Z 
+2026-04-25T09:23:16.5148806Z Analyzing: target //falcon:falcon (87 packages loaded, 1607 targets configured)
+2026-04-25T09:23:16.5182339Z 
+2026-04-25T09:23:18.1970003Z Analyzing: target //falcon:falcon (110 packages loaded, 1844 targets configured)
+2026-04-25T09:23:18.1970572Z 
+2026-04-25T09:23:19.1803459Z INFO: Analyzed target //falcon:falcon (111 packages loaded, 5379 targets configured).
+2026-04-25T09:23:19.2026859Z [2 / 133] Expanding template falcon/bin/falcon.app; 0s local
+2026-04-25T09:23:20.2005264Z [280 / 3,524] GleamLibraryCompile external/rules_gleam++gleam+hex_platform/platform.beam; 0s processwrapper-sandbox ... (4 actions running)
+2026-04-25T09:23:21.2105945Z [307 / 3,524] GleamLibraryCompile external/rules_gleam++gleam+hex_houdini/houdini.beam; 1s processwrapper-sandbox ... (4 actions running)
+2026-04-25T09:23:22.2097750Z [554 / 3,524] GleamLibraryCompile external/rules_gleam++gleam+hex_marceau/marceau.beam; 1s processwrapper-sandbox ... (3 actions, 2 running)
+2026-04-25T09:23:22.6758638Z INFO: From GleamLibraryCompile external/rules_gleam++gleam+hex_msgpack/msgpack.beam:
+2026-04-25T09:23:22.6767107Z ./_gleam_artefacts/msgpack_term.erl:22:2: Warning: behaviour msgpack_ext undefined
+2026-04-25T09:23:22.6769274Z %   22| -behaviour(msgpack_ext).
+2026-04-25T09:23:22.6770241Z %     |  ^
+2026-04-25T09:23:22.6771268Z 
+2026-04-25T09:23:23.2085837Z [1,364 / 3,524] GleamLibraryCompile external/rules_gleam++gleam+hex_envoy/envoy.beam; 0s processwrapper-sandbox ... (4 actions running)
+2026-04-25T09:23:24.3858096Z [1,862 / 3,524] GleamLibraryCompile external/rules_gleam++gleam+hex_gleam_erlang/gleam@erlang@application.erl; 1s processwrapper-sandbox ... (4 actions, 3 running)
+2026-04-25T09:23:25.3867608Z [2,715 / 3,524] GleamLibraryCompile external/rules_gleam++gleam+hex_directories/directories.beam; 0s processwrapper-sandbox ... (4 actions, 2 running)
+2026-04-25T09:23:26.7629388Z [3,131 / 3,524] [Prepa] Creating symlink external/rules_gleam++gleam+hex_wisp/lib/erlang/placeholder/ebin/mist_ffi.beam ... (4 actions, 0 running)
+2026-04-25T09:23:27.8331472Z [3,424 / 3,524] [Prepa] Creating symlink falcon/bin/lib/erlang/placeholder/ebin/ports@rpc.beam ... (4 actions, 0 running)
+2026-04-25T09:23:28.5340394Z INFO: Found 1 target...
+2026-04-25T09:23:28.5505136Z Target //falcon/bin:falcon_bin up-to-date:
+2026-04-25T09:23:28.5612557Z   bazel-bin/falcon/bin/falcon@@main.beam
+2026-04-25T09:23:28.5613109Z   bazel-bin/falcon/bin/falcon.sh
+2026-04-25T09:23:28.5613539Z   bazel-bin/falcon/bin/falcon.app
+2026-04-25T09:23:28.5826345Z INFO: Elapsed time: 61.690s, Critical Path: 7.22s
+2026-04-25T09:23:28.5827010Z INFO: 3524 processes: 3501 internal, 23 processwrapper-sandbox.
+2026-04-25T09:23:28.5827603Z INFO: Build completed successfully, 3524 total actions
+2026-04-25T09:23:28.6531715Z ##[group]Run task build:peregrine
+2026-04-25T09:23:28.6532121Z [36;1mtask build:peregrine[0m
+2026-04-25T09:23:28.6555641Z shell: /usr/bin/bash -e {0}
+2026-04-25T09:23:28.6555989Z ##[endgroup]
+2026-04-25T09:23:28.6837541Z [32mtask: [build:peregrine] bazelisk build //peregrine:peregrine
+2026-04-25T09:23:29.0128644Z [0mComputing main repo mapping: 
+2026-04-25T09:23:29.0502688Z Loading: 
+2026-04-25T09:23:29.0510855Z Loading: 0 packages loaded
+2026-04-25T09:23:29.3445399Z Analyzing: target //peregrine:peregrine (1 packages loaded, 0 targets configured)
+2026-04-25T09:23:29.3481033Z Analyzing: target //peregrine:peregrine (1 packages loaded, 0 targets configured)
+2026-04-25T09:23:29.3511368Z 
+2026-04-25T09:23:30.3610962Z Analyzing: target //peregrine:peregrine (272 packages loaded, 1716 targets configured)
+2026-04-25T09:23:30.3634200Z 
+2026-04-25T09:23:31.6557217Z INFO: Analyzed target //peregrine:peregrine (300 packages loaded, 10422 targets configured).
+2026-04-25T09:23:31.6685393Z [1 / 1] no actions running
+2026-04-25T09:23:33.0170505Z [5 / 286] GoToolchainBinaryBuild external/rules_go++go_sdk+main___download_0/builder [for tool]; 1s processwrapper-sandbox
+2026-04-25T09:23:43.3596977Z [5 / 286] GoToolchainBinaryBuild external/rules_go++go_sdk+main___download_0/builder [for tool]; 11s processwrapper-sandbox
+2026-04-25T09:23:46.8662802Z [6 / 286] [Prepa] Creating symlink external/rules_go++go_sdk+main___download_0/pack_reset/pack.exe [for tool]
+2026-04-25T09:23:48.0305373Z [8 / 286] GoStdlib external/rules_go+/stdlib_/pkg; 1s processwrapper-sandbox
+2026-04-25T09:23:58.3772929Z [8 / 286] GoStdlib external/rules_go+/stdlib_/pkg; 11s processwrapper-sandbox
+2026-04-25T09:24:03.2433622Z [9 / 286] [Prepa] GoCompilePkg peregrine/vendor/golang.org/x/sys/unix/unix.a
+2026-04-25T09:24:04.2535450Z [30 / 286] GoCompilePkg peregrine/vendor/golang.org/x/sys/unix/unix.a; 0s processwrapper-sandbox ... (4 actions, 3 running)
+2026-04-25T09:24:05.2621323Z [48 / 286] GoCompilePkg peregrine/vendor/github.com/spf13/pflag/pflag.a; 0s processwrapper-sandbox ... (4 actions, 3 running)
+2026-04-25T09:24:06.3215925Z [69 / 286] GoCompilePkg peregrine/vendor/github.com/charmbracelet/lipgloss/lipgloss.a; 0s processwrapper-sandbox ... (4 actions, 3 running)
+2026-04-25T09:24:07.4245284Z [95 / 286] GoCompilePkg peregrine/vendor/golang.org/x/net/http2/http2.a; 0s processwrapper-sandbox ... (4 actions, 3 running)
+2026-04-25T09:24:08.4625300Z [117 / 286] GoCompilePkg peregrine/vendor/go.opentelemetry.io/otel/trace/trace.a; 0s processwrapper-sandbox ... (4 actions, 3 running)
+2026-04-25T09:24:09.4638348Z [159 / 286] GoCompilePkg peregrine/vendor/google.golang.org/protobuf/reflect/protoreflect/protoreflect.a; 0s processwrapper-sandbox ... (4 actions, 3 running)
+2026-04-25T09:24:10.4850478Z [200 / 286] GoCompilePkg peregrine/vendor/google.golang.org/protobuf/internal/filedesc/filedesc.a; 0s processwrapper-sandbox ... (3 actions, 2 running)
+2026-04-25T09:24:11.8077686Z [221 / 286] [Prepa] GoCompilePkg peregrine/vendor/google.golang.org/protobuf/internal/filetype/filetype.a
+2026-04-25T09:24:13.0347152Z [245 / 286] GoCompilePkg peregrine/vendor/google.golang.org/grpc/internal/transport/transport.a; 0s processwrapper-sandbox ... (2 actions running)
+2026-04-25T09:24:14.0351056Z [259 / 286] GoCompilePkg peregrine/vendor/github.com/google/s2a-go/internal/v2/internal.a; 0s processwrapper-sandbox
+2026-04-25T09:24:15.0665292Z [264 / 286] [Prepa] GoCompilePkg peregrine/vendor/google.golang.org/adk/tool/toolconfirmation/toolconfirmation.a ... (3 actions, 0 running)
+2026-04-25T09:24:16.4683336Z [285 / 286] [Prepa] runfiles for //peregrine:peregrine
+2026-04-25T09:24:16.4711709Z INFO: Found 1 target...
+2026-04-25T09:24:16.4776675Z Target //peregrine:peregrine up-to-date:
+2026-04-25T09:24:16.4777479Z   bazel-bin/peregrine/peregrine_/peregrine
+2026-04-25T09:24:16.5075905Z INFO: Elapsed time: 47.763s, Critical Path: 37.83s
+2026-04-25T09:24:16.5081727Z INFO: 286 processes: 8 internal, 278 processwrapper-sandbox.
+2026-04-25T09:24:16.5083065Z INFO: Build completed successfully, 286 total actions
+2026-04-25T09:24:16.5404202Z ##[group]Run if [ ! -f ./bazel-bin/peregrine/peregrine_/peregrine ]; then
+2026-04-25T09:24:16.5405062Z [36;1mif [ ! -f ./bazel-bin/peregrine/peregrine_/peregrine ]; then[0m
+2026-04-25T09:24:16.5405699Z [36;1m  echo "Bazel build failed to produce the executable"[0m
+2026-04-25T09:24:16.5406181Z [36;1m  exit 1[0m
+2026-04-25T09:24:16.5406452Z [36;1mfi[0m
+2026-04-25T09:24:16.5407043Z [36;1m./bazel-bin/peregrine/peregrine_/peregrine -h || echo "Binary exists and is executable"[0m
+2026-04-25T09:24:16.5439009Z shell: /usr/bin/bash -e {0}
+2026-04-25T09:24:16.5439402Z ##[endgroup]
+2026-04-25T09:24:16.5548971Z Peregrine is a terminal-based AI assistant system
+2026-04-25T09:24:16.5554274Z 
+2026-04-25T09:24:16.5554661Z Usage:
+2026-04-25T09:24:16.5554963Z   peregrine [flags]
+2026-04-25T09:24:16.5555164Z 
+2026-04-25T09:24:16.5555264Z Flags:
+2026-04-25T09:24:16.5555607Z   -h, --help              help for peregrine
+2026-04-25T09:24:16.5556218Z       --provider string   LLM provider to use (default "anthropic")
+2026-04-25T09:24:16.5556963Z       --theme string      Theme to use (pi, freecode, crush) (default "pi")
+2026-04-25T09:24:16.5621155Z ##[group]Run task build:container
+2026-04-25T09:24:16.5621584Z [36;1mtask build:container[0m
+2026-04-25T09:24:16.5650668Z shell: /usr/bin/bash -e {0}
+2026-04-25T09:24:16.5651041Z ##[endgroup]
+2026-04-25T09:24:16.5921096Z [32mtask: [build:container] nix build .#container --print-build-logs
+2026-04-25T09:24:16.6000707Z [0m"nix": executable file not found in $PATH
+2026-04-25T09:24:16.6005021Z ##[error]exit status 127
+2026-04-25T09:24:16.6006626Z [31mtask: Failed to run task "build:container": exit status 127
+2026-04-25T09:24:16.6016009Z [0m
+2026-04-25T09:24:16.6018974Z ##[error]Process completed with exit code 201.
+2026-04-25T09:24:16.6079333Z Post job cleanup.
+2026-04-25T09:24:16.7737137Z ##[group]Save cache for bazelisk
+2026-04-25T09:24:16.8002666Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/opal/opal --files-from manifest.txt --use-compress-program zstdmt
+2026-04-25T09:24:16.9953031Z ##[warning]Failed to save: <h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p>0QIjsaQAAAAAcfG9csaQjRKkHUeWGBg8yTVNQMzExMDAwMTAzMDIxAEVkZ2U=
+2026-04-25T09:24:16.9996282Z Successfully saved cache
+2026-04-25T09:24:16.9996954Z ##[endgroup]
+2026-04-25T09:24:17.0144332Z Post job cleanup.
+2026-04-25T09:24:17.1113287Z [command]/usr/bin/git version
+2026-04-25T09:24:17.1150145Z git version 2.53.0
+2026-04-25T09:24:17.1193220Z Temporarily overriding HOME='/home/runner/work/_temp/8c3573cc-e043-448d-adc9-f277d752bda9' before making global git config changes
+2026-04-25T09:24:17.1195047Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-25T09:24:17.1207810Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/opal/opal
+2026-04-25T09:24:17.1243870Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-25T09:24:17.1276109Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-25T09:24:17.1512877Z fatal: No url found for submodule path 'opal' in .gitmodules
+2026-04-25T09:24:17.1550303Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+2026-04-25T09:24:17.1675143Z Cleaning up orphan processes
+2026-04-25T09:24:17.1966501Z Terminate orphan process: pid (2353) (java.lang=ALL-UNNAMED)
+2026-04-25T09:24:17.1994506Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, arduino/setup-task@v2, bazel-contrib/setup-bazel@0.8.5. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
