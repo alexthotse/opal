@@ -1,3 +1,12 @@
+diff -urN a/gleam/gleam_test.bzl b/gleam/gleam_test.bzl
+--- a/gleam/gleam_test.bzl	2025-10-26 07:30:47.000000000 +0000
++++ b/gleam/gleam_test.bzl	2026-04-24 21:33:24.562222564 +0000
+@@ -5,3 +5,3 @@
+ def _gleam_test_impl(ctx):
+-    package_dir = ctx.files.srcs[0].dirname
+-    main_module = (package_dir.replace("/", "@") + "/") if package_dir != "." else "" + "gleam_test"
++    strip_prefix = getattr(ctx.attr, "strip_src_prefix", "")
++    main_module = "gleam_test_" + ctx.label.name
 diff -urN a/gleam/gleam_binary.bzl b/gleam/gleam_binary.bzl
 --- a/gleam/gleam_binary.bzl	2025-10-26 07:30:47.000000000 +0000
 +++ b/gleam/gleam_binary.bzl	2026-04-24 21:33:24.562222564 +0000
@@ -105,7 +114,7 @@ diff -urN a/gleam_hex/repositories.bzl b/gleam_hex/repositories.bzl
 +    visibility = ["//visibility:public"],
 +)
 +\"\"\"
-+    with open("BUILD.bazel", "w") as f:
++    with open("BUILD.bazel", "a") as f:
 +        f.write(build_content)
 +
 +if __name__ == "__main__":

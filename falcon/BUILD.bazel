@@ -11,6 +11,13 @@ gazelle(
     gazelle = "@rules_gleam//gazelle",
 )
 
+genrule(
+    name = "jido_agent_beam",
+    srcs = ["src/jido/agent.ex"],
+    outs = ["Elixir.Falcon.JidoAgent.beam"],
+    cmd = "elixirc -o $(@D) $<",
+)
+
 gleam_library(
     name = "falcon_lib",
     srcs = glob([
@@ -18,6 +25,7 @@ gleam_library(
         "src/**/*.erl",
     ]),
     deps = [
+        # ":jido_agent_beam", # cannot be in deps because it's not a gleam library
         "@hex_gleam_erlang//:gleam",
         "@hex_gleam_json//:gleam",
         "@hex_gleam_stdlib//:gleam",
@@ -25,6 +33,7 @@ gleam_library(
         "@hex_msgpack//:gleam",
         "@hex_wisp//:gleam",
     ],
+    data = [":jido_agent_beam"],
     strip_src_prefix = "falcon/src",
     visibility = ["//visibility:public"],
 )
