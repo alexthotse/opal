@@ -45,21 +45,39 @@ type ADKAgentClient struct {
 }
 
 func NewADKAgentClient(ctx context.Context) (*ADKAgentClient, error) {
-	// Initialize a generic GenAI client that ADK will orchestrate.
-	// You can swap this wrapper with ANY provider (Anthropic, Ollama, OpenAI)
-	// because ADK uses the model.LLM interface.
-	if os.Getenv("GEMINI_API_KEY") == "" {
-		return nil, fmt.Errorf("GEMINI_API_KEY is not set")
+	provider := os.Getenv("LLM_PROVIDER")
+	if provider == "" {
+		provider = "gemini"
 	}
 
-	client, err := genai.NewClient(ctx, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize GenAI client: %w", err)
-	}
+	var modelWrapper model.LLM
+	var err error
 
-	modelWrapper := &GenericModelWrapper{
-		client:    client,
-		modelName: "gemini-2.5-flash",
+	switch provider {
+	case "anthropic":
+		modelWrapper, err = NewAnthropicWrapper("claude-3-7-sonnet-20250219")
+		if err != nil {
+			return nil, fmt.Errorf("failed to initialize Anthropic wrapper: %w", err)
+		}
+	case "openai":
+		modelWrapper, err = NewOpenAIWrapper("gpt-4o")
+		if err != nil {
+			return nil, fmt.Errorf("failed to initialize OpenAI wrapper: %w", err)
+		}
+	case "gemini":
+		if os.Getenv("GEMINI_API_KEY") == "" {
+			return nil, fmt.Errorf("GEMINI_API_KEY is not set")
+		}
+		client, err := genai.NewClient(ctx, nil)
+		if err != nil {
+			return nil, fmt.Errorf("failed to initialize GenAI client: %w", err)
+		}
+		modelWrapper = &GenericModelWrapper{
+			client:    client,
+			modelName: "gemini-2.5-flash",
+		}
+	default:
+		return nil, fmt.Errorf("unsupported LLM_PROVIDER: %s", provider)
 	}
 
 	cfg := llmagent.Config{

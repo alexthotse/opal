@@ -10,6 +10,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//peregrine/domain",
-        "//peregrine/vendor/github.com/charmbracelet/lipgloss",
+        "@com_github_charmbracelet_lipgloss//:lipgloss",
     ],
 )

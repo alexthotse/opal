@@ -13,8 +13,8 @@ go_library(
     deps = [
         "//peregrine/adapters",
         "//peregrine/domain",
-        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
-        "//peregrine/vendor/github.com/charmbracelet/lipgloss",
         "//peregrine/view",
+        "@com_github_charmbracelet_bubbletea//:bubbletea",
+        "@com_github_charmbracelet_lipgloss//:lipgloss",
     ],
 )

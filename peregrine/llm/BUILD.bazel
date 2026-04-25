@@ -2,15 +2,21 @@ load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "llm",
-    srcs = ["client.go"],
+    srcs = [
+        "anthropic.go",
+        "client.go",
+        "openai.go",
+    ],
     importpath = "github.com/alexthotse/peregrine/llm",
     visibility = ["//visibility:public"],
     deps = [
-        "//peregrine/vendor/google.golang.org/adk/agent",
-        "//peregrine/vendor/google.golang.org/adk/agent/llmagent",
-        "//peregrine/vendor/google.golang.org/adk/model",
-        "//peregrine/vendor/google.golang.org/adk/runner",
-        "//peregrine/vendor/google.golang.org/adk/session",
-        "//peregrine/vendor/google.golang.org/genai",
+        "@com_github_liushuangls_go_anthropic_v2//:go-anthropic",
+        "@com_github_sashabaranov_go_openai//:go-openai",
+        "@org_golang_google_adk//agent",
+        "@org_golang_google_adk//agent/llmagent",
+        "@org_golang_google_adk//model",
+        "@org_golang_google_adk//runner",
+        "@org_golang_google_adk//session",
+        "@org_golang_google_genai//:genai",
     ],
 )

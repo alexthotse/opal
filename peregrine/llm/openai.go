@@ -44,8 +44,8 @@ func (m *OpenAIWrapper) GenerateContent(ctx context.Context, req *model.LLMReque
 
 			var text string
 			for _, part := range content.Parts {
-				if t, ok := part.(genai.Text); ok {
-					text += string(t)
+				if part.Text != "" {
+					text += part.Text
 				}
 			}
 			messages = append(messages, openai.ChatCompletionMessage{
@@ -71,8 +71,8 @@ func (m *OpenAIWrapper) GenerateContent(ctx context.Context, req *model.LLMReque
 			yield(&model.LLMResponse{
 				Content: &genai.Content{
 					Role: "model",
-					Parts: []any{
-						genai.Text(resp.Choices[0].Message.Content),
+					Parts: []*genai.Part{
+						genai.NewPartFromText(resp.Choices[0].Message.Content),
 					},
 				},
 			}, nil)
