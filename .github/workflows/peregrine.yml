@@ -21,10 +21,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
+        uses: bazel-contrib/setup-bazel@0.8.5
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
@@ -51,10 +50,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
+        uses: bazel-contrib/setup-bazel@0.8.5
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
@@ -93,10 +91,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.19.0
+        uses: bazel-contrib/setup-bazel@0.8.5
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
