@@ -46,7 +46,7 @@
           # Setting to empty string forces Nix to calculate and show the new hash
           # during the first build if it's incorrect.
           # vendorHash = "sha256-n6V8YgR3bSjJqG9Yy25p50yK2263v7K15E9L41V35G8=";
-          vendorHash = "sha256-QN0lvGul2z6+XjPqssdf6K9RmY/oFVgJKfTLkgdIj5c=";
+          vendorHash = null;
           
           # Don't check during build to avoid issues with bubbletea tests in nix sandbox
           doCheck = false;
