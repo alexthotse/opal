@@ -3,6 +3,7 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "colorprofile",
     srcs = [
+        "doc.go",
         "env.go",
         "env_other.go",
         "env_windows.go",
@@ -15,7 +16,6 @@ go_library(
     deps = [
         "//peregrine/vendor/github.com/charmbracelet/x/ansi",
         "//peregrine/vendor/github.com/charmbracelet/x/term",
-        "//peregrine/vendor/github.com/lucasb-eyer/go-colorful",
         "//peregrine/vendor/github.com/xo/terminfo",
     ] + select({
         "@rules_go//go/platform:windows": [

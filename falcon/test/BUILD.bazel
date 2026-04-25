@@ -9,4 +9,5 @@ gleam_test(
         "//falcon:falcon_lib",
         "@hex_gleeunit//:gleam",
     ],
+    strip_src_prefix = "falcon/test",
 )

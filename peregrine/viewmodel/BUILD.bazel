@@ -1,4 +1,4 @@
-load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "viewmodel",
@@ -13,8 +13,20 @@ go_library(
     deps = [
         "//peregrine/adapters",
         "//peregrine/domain",
+        "//peregrine/vendor/github.com/charmbracelet/bubbles/textinput",
         "//peregrine/vendor/github.com/charmbracelet/bubbletea",
         "//peregrine/vendor/github.com/charmbracelet/lipgloss",
         "//peregrine/view",
+    ],
+)
+
+go_test(
+    name = "viewmodel_test",
+    srcs = ["viewmodel_test.go"],
+    deps = [
+        ":viewmodel",
+        "//peregrine/adapters",
+        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
+        "//peregrine/vendor/github.com/charmbracelet/x/exp/teatest",
     ],
 )

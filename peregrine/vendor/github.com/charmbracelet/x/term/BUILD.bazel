@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "term.go",
         "term_other.go",
+        "term_plan9.go",
         "term_unix.go",
         "term_unix_bsd.go",
         "term_unix_other.go",

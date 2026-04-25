@@ -6,10 +6,10 @@ exports_files([
     "manifest.toml",
 ])
 
-gazelle(
-    name = "gazelle",
-    gazelle = "@rules_gleam//gazelle",
-)
+# gazelle(
+#     name = "gazelle",
+#     gazelle = "@rules_gleam//gazelle",
+# )
 
 gleam_library(
     name = "falcon_lib",
@@ -17,16 +17,17 @@ gleam_library(
         "src/**/*.gleam",
         "src/**/*.erl",
     ]),
+    strip_src_prefix = "falcon/src",
+    visibility = ["//visibility:public"],
     deps = [
         "@hex_gleam_erlang//:gleam",
         "@hex_gleam_json//:gleam",
         "@hex_gleam_stdlib//:gleam",
         "@hex_mist//:gleam",
         "@hex_msgpack//:gleam",
+        "@hex_simplifile//:gleam",
         "@hex_wisp//:gleam",
     ],
-    strip_src_prefix = "falcon/src",
-    visibility = ["//visibility:public"],
 )
 
 alias(

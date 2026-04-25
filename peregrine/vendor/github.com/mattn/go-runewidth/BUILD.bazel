@@ -12,5 +12,5 @@ go_library(
     importmap = "github.com/alexthotse/peregrine/vendor/github.com/mattn/go-runewidth",
     importpath = "github.com/mattn/go-runewidth",
     visibility = ["//visibility:public"],
-    deps = ["//peregrine/vendor/github.com/rivo/uniseg"],
+    deps = ["//peregrine/vendor/github.com/clipperhouse/uax29/v2/graphemes"],
 )

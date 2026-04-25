@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "golden",
+    srcs = ["golden.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/charmbracelet/x/exp/golden",
+    importpath = "github.com/charmbracelet/x/exp/golden",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/github.com/aymanbagabas/go-udiff"],
+)

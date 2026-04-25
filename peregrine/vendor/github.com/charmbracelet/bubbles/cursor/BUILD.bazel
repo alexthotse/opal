@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cursor",
+    srcs = ["cursor.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/charmbracelet/bubbles/cursor",
+    importpath = "github.com/charmbracelet/bubbles/cursor",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
+        "//peregrine/vendor/github.com/charmbracelet/lipgloss",
+    ],
+)

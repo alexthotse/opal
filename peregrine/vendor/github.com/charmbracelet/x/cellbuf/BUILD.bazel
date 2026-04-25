@@ -10,6 +10,7 @@ go_library(
         "hardscroll.go",
         "hashmap.go",
         "link.go",
+        "pen.go",
         "screen.go",
         "sequence.go",
         "style.go",

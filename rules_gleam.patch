@@ -1,3 +1,15 @@
+diff -urN a/gleam/gleam_test.bzl b/gleam/gleam_test.bzl
+--- a/gleam/gleam_test.bzl	2025-10-26 07:30:47.000000000 +0000
++++ b/gleam/gleam_test.bzl	2026-04-24 21:33:24.562222564 +0000
+@@ -4,7 +4,7 @@
+ 
+ def _gleam_test_impl(ctx):
+     package_dir = ctx.files.srcs[0].dirname
+-    main_module = (package_dir.replace("/", "@") + "/") if package_dir != "." else "" + "gleam_test"
++    main_module = "gleam_test"
+     test_main = ctx.actions.declare_file("gleam_test.gleam")
+     ctx.actions.expand_template(
+         template = ctx.file._main_test_module_tmpl,
 diff -urN a/gleam/gleam_binary.bzl b/gleam/gleam_binary.bzl
 --- a/gleam/gleam_binary.bzl	2025-10-26 07:30:47.000000000 +0000
 +++ b/gleam/gleam_binary.bzl	2026-04-24 21:33:24.562222564 +0000
@@ -115,3 +127,24 @@ diff -urN a/gleam_hex/repositories.bzl b/gleam_hex/repositories.bzl
      if result.return_code:
          fail("failed to generate BUILD files for %s: %s. err: %s" % (
              ctx.attr.module_name,
+diff -urN a/gleam/templates/[[main_module]].sh b/gleam/templates/[[main_module]].sh
+--- a/gleam/templates/[[main_module]].sh	2025-10-26 07:30:47.000000000 +0000
++++ b/gleam/templates/[[main_module]].sh	2026-04-24 21:33:24.562222564 +0000
+@@ -5,12 +5,14 @@
+ set -eu
+ 
+ PACKAGE={PACKAGE}
+-BASE=$(echo "$0.runfiles/_main")
++BASE=$(pwd)
++BEAM_DIRS=$(find "$BASE" -name "*.beam" -exec dirname {} \; | sort -u)
++PA_ARGS=""
++for d in $BEAM_DIRS; do PA_ARGS="$PA_ARGS -pa $d"; done
+ 
+ run() {
+-  exec {ERL} \
+-    -pa "$BASE" \
++  exec {ERL} $PA_ARGS \
+     -eval "$PACKAGE@@main:run($PACKAGE)" \
+     -noshell \
+     -extra "$@"
+ }

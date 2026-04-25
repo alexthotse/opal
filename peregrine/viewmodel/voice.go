@@ -1,16 +1,52 @@
 package viewmodel
 
 import (
+	"log"
+
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
+type AudioRecorder interface {
+	Start() error
+	Stop() error
+	Read(p []int16) (int, error)
+	Close() error
+}
+
+type MockAudioRecorder struct{}
+
+func (m *MockAudioRecorder) Start() error {
+	log.Println("MockAudioRecorder: Start recording (hardware absent)")
+	return nil
+}
+
+func (m *MockAudioRecorder) Stop() error {
+	log.Println("MockAudioRecorder: Stop recording")
+	return nil
+}
+
+func (m *MockAudioRecorder) Read(p []int16) (int, error) {
+	for i := range p {
+		p[i] = 0
+	}
+	return len(p), nil
+}
+
+func (m *MockAudioRecorder) Close() error {
+	return nil
+}
+
 type VoiceModel struct {
-	active bool
+	active   bool
+	recorder AudioRecorder
 }
 
 func NewVoiceModel() VoiceModel {
-	return VoiceModel{active: false}
+	return VoiceModel{
+		active:   false,
+		recorder: &MockAudioRecorder{},
+	}
 }
 
 func (m VoiceModel) Init() tea.Cmd {

@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "teatest",
+    srcs = ["teatest.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/charmbracelet/x/exp/teatest",
+    importpath = "github.com/charmbracelet/x/exp/teatest",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
+        "//peregrine/vendor/github.com/charmbracelet/x/exp/golden",
+    ],
+)
