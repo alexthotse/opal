@@ -69,6 +69,10 @@ jobs:
           fi
           ./bazel-bin/peregrine/peregrine_/peregrine -h || echo "Binary exists and is executable"
 
+      - name: Install Nix
+        if: runner.os == 'Linux'
+        uses: DeterminateSystems/nix-installer-action@main
+      
       - name: Build OCI Container (Alpine Linux Base)
         # OCI builds natively on Linux. Avoid macOS Nix cross-compilation quirks for Docker outputs.
         if: runner.os == 'Linux'
@@ -108,6 +112,9 @@ jobs:
         with:
           files: peregrine-${{ github.ref_name }}-linux-amd64.tar.gz
           generate_release_notes: true
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
 
       - name: Build OCI Container Image
         run: task build:container
