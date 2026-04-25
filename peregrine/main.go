@@ -22,7 +22,7 @@ func main() {
                 Use:   "peregrine",
                 Short: "Peregrine is a terminal-based AI assistant system",
                 Run: func(cmd *cobra.Command, args []string) {
-                        runApp()
+                        runApp(theme, provider)
                 },
         }
 
@@ -35,7 +35,7 @@ func main() {
         }
 }
 
-func runApp() {
+func runApp(themeStr, providerStr string) {
         f, err := tea.LogToFile("debug.log", "debug")
         if err != nil {
                 fmt.Println("fatal:", err)
@@ -46,7 +46,7 @@ func runApp() {
         // Hexagonal Architecture Initialization
         backendClient := adapters.NewDefaultBackendClient()
 
-        agentClient, err := adapters.NewADKAgentClient()
+        agentClient, err := adapters.NewADKAgentClient(providerStr)
         if err != nil {
                 log.Fatalf("Failed to initialize ADK Agent: %v", err)
         }
@@ -54,7 +54,7 @@ func runApp() {
         animatorClient := adapters.NewAnimator()
 
         // MVVM Bootstrap
-        appViewModel := viewmodel.NewAppViewModel(backendClient, agentClient, animatorClient)
+        appViewModel := viewmodel.NewAppViewModel(backendClient, agentClient, animatorClient, themeStr)
 
         p := tea.NewProgram(appViewModel)
         if _, err := p.Run(); err != nil {

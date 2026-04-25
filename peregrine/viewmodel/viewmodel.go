@@ -26,15 +26,25 @@ type AppViewModel struct {
         actions   ActionsModel
 }
 
-func NewAppViewModel(bc *adapters.BackendClient, ac *adapters.ADKAgentClient, anim *adapters.Animator) *AppViewModel {
+func NewAppViewModel(bc *adapters.BackendClient, ac *adapters.ADKAgentClient, anim *adapters.Animator, themeStr string) *AppViewModel {
         ti := textinput.New()
         ti.Placeholder = "Type a command (/budget, /teammem, /bridge, etc)..."
         ti.Focus()
         ti.CharLimit = 156
         ti.Width = 40
 
+        initialState := domain.InitialState()
+        switch themeStr {
+        case "pi":
+                initialState = domain.SetTheme(initialState, 0) // ThemePIDev
+        case "freecode":
+                initialState = domain.SetTheme(initialState, 1) // ThemeFreeCode
+        case "crush":
+                initialState = domain.SetTheme(initialState, 2) // ThemeCrush
+        }
+
         return &AppViewModel{
-                state:          domain.InitialState(),
+                state:          initialState,
                 backendClient:  bc,
                 animatorClient: anim,
                 agentClient:    ac,

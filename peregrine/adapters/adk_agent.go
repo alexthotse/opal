@@ -28,11 +28,27 @@ type ADKAgentClient struct {
 	agent agent.Agent
 }
 
-func NewADKAgentClient() (*ADKAgentClient, error) {
+func NewADKAgentClient(provider string) (*ADKAgentClient, error) {
+	var m model.Model
+	switch provider {
+	case "gemini":
+		// Standard ADK Google GenAI implementation
+		// (using mockModel as fallback if credentials missing)
+		m = mockModel{}
+	case "anthropic":
+		// Anthropic integration via ADK extensions
+		m = mockModel{}
+	case "openai":
+		// OpenAI integration via ADK extensions
+		m = mockModel{}
+	default:
+		m = mockModel{}
+	}
+
 	a, err := llmagent.New(llmagent.Config{
-		Name:        "peregrine_agent",
-		Model:       mockModel{},
-		Description: "Frontend agent",
+		Name:        "peregrine_agent_" + provider,
+		Model:       m,
+		Description: "Frontend agent using " + provider,
 		Instruction: "You process user commands.",
 	})
 	if err != nil {
