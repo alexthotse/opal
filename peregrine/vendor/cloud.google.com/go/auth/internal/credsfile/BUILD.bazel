@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "credsfile",
+    srcs = [
+        "credsfile.go",
+        "filetype.go",
+        "parse.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/cloud.google.com/go/auth/internal/credsfile",
+    importpath = "cloud.google.com/go/auth/internal/credsfile",
+    visibility = ["//peregrine/vendor/cloud.google.com/go/auth:__subpackages__"],
+)

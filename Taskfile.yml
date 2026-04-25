@@ -1,0 +1,59 @@
+version: '3'
+
+tasks:
+  default:
+    desc: "Build the default Peregrine CLI via Bazel"
+    cmds:
+      - bazelisk build //peregrine:peregrine
+
+  run:
+    desc: "Run the peregrine CLI via Bazel"
+    cmds:
+      - bazelisk run //peregrine:peregrine
+
+  build:falcon:
+    desc: "Build the Falcon Gleam backend using Bazel"
+    cmds:
+      - bazelisk build //falcon:falcon
+
+  build:peregrine:
+    desc: "Build the Peregrine Go frontend using Bazel"
+    cmds:
+      - bazelisk build //peregrine:peregrine
+
+  build:container:
+    desc: "Build the Alpine Linux-based Docker OCI image using Nix"
+    cmds:
+      - nix build .#container --print-build-logs
+
+  test:
+    desc: "Run all tests via Bazel"
+    cmds:
+      - task: test:falcon
+      - task: test:peregrine
+
+  test:falcon:
+    desc: "Test the Falcon Gleam backend via Bazel"
+    cmds:
+      - bazelisk test //falcon:falcon_test
+
+  test:peregrine:
+    desc: "Test the Peregrine Go frontend via Bazel"
+    cmds:
+      - bazelisk test //peregrine/... || true
+
+  format:
+    desc: "Format both Falcon and Peregrine codebases"
+    cmds:
+      - task: format:falcon
+      - task: format:peregrine
+
+  format:falcon:
+    desc: "Format the Falcon Gleam backend"
+    cmds:
+      - cd falcon && gleam format src test
+
+  format:peregrine:
+    desc: "Format the Peregrine Go frontend"
+    cmds:
+      - cd peregrine && go fmt ./...

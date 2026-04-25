@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pickfirst",
+    srcs = ["pickfirst.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/grpc/balancer/pickfirst",
+    importpath = "google.golang.org/grpc/balancer/pickfirst",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/grpc/balancer",
+        "//peregrine/vendor/google.golang.org/grpc/balancer/pickfirst/internal",
+        "//peregrine/vendor/google.golang.org/grpc/connectivity",
+        "//peregrine/vendor/google.golang.org/grpc/experimental/stats",
+        "//peregrine/vendor/google.golang.org/grpc/grpclog",
+        "//peregrine/vendor/google.golang.org/grpc/internal/balancer/weight",
+        "//peregrine/vendor/google.golang.org/grpc/internal/envconfig",
+        "//peregrine/vendor/google.golang.org/grpc/internal/grpclog",
+        "//peregrine/vendor/google.golang.org/grpc/internal/pretty",
+        "//peregrine/vendor/google.golang.org/grpc/resolver",
+        "//peregrine/vendor/google.golang.org/grpc/serviceconfig",
+    ],
+)

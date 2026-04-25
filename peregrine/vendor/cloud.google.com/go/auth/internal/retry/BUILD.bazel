@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "retry",
+    srcs = ["retry.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/cloud.google.com/go/auth/internal/retry",
+    importpath = "cloud.google.com/go/auth/internal/retry",
+    visibility = ["//peregrine/vendor/cloud.google.com/go/auth:__subpackages__"],
+)

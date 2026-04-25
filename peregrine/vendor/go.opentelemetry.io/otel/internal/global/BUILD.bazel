@@ -1,0 +1,29 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "global",
+    srcs = [
+        "handler.go",
+        "instruments.go",
+        "internal_logging.go",
+        "meter.go",
+        "propagator.go",
+        "state.go",
+        "trace.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/go.opentelemetry.io/otel/internal/global",
+    importpath = "go.opentelemetry.io/otel/internal/global",
+    visibility = ["//peregrine/vendor/go.opentelemetry.io/otel:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/github.com/go-logr/logr",
+        "//peregrine/vendor/github.com/go-logr/stdr",
+        "//peregrine/vendor/go.opentelemetry.io/auto/sdk",
+        "//peregrine/vendor/go.opentelemetry.io/otel/attribute",
+        "//peregrine/vendor/go.opentelemetry.io/otel/codes",
+        "//peregrine/vendor/go.opentelemetry.io/otel/metric",
+        "//peregrine/vendor/go.opentelemetry.io/otel/metric/embedded",
+        "//peregrine/vendor/go.opentelemetry.io/otel/propagation",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace/embedded",
+    ],
+)

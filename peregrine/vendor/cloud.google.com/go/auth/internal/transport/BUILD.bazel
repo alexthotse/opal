@@ -1,0 +1,21 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "transport",
+    srcs = [
+        "cba.go",
+        "s2a.go",
+        "transport.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/cloud.google.com/go/auth/internal/transport",
+    importpath = "cloud.google.com/go/auth/internal/transport",
+    visibility = ["//peregrine/vendor/cloud.google.com/go/auth:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/cloud.google.com/go/auth/credentials",
+        "//peregrine/vendor/cloud.google.com/go/auth/internal",
+        "//peregrine/vendor/cloud.google.com/go/auth/internal/transport/cert",
+        "//peregrine/vendor/cloud.google.com/go/compute/metadata",
+        "//peregrine/vendor/github.com/google/s2a-go",
+        "//peregrine/vendor/google.golang.org/grpc/credentials",
+    ],
+)

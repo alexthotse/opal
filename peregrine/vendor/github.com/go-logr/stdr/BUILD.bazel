@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "stdr",
+    srcs = ["stdr.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/go-logr/stdr",
+    importpath = "github.com/go-logr/stdr",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/go-logr/logr",
+        "//peregrine/vendor/github.com/go-logr/logr/funcr",
+    ],
+)

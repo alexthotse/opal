@@ -1,0 +1,50 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cancelreader",
+    srcs = [
+        "cancelreader.go",
+        "cancelreader_bsd.go",
+        "cancelreader_default.go",
+        "cancelreader_linux.go",
+        "cancelreader_select.go",
+        "cancelreader_unix.go",
+        "cancelreader_windows.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/muesli/cancelreader",
+    importpath = "github.com/muesli/cancelreader",
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@rules_go//go/platform:android": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:darwin": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:dragonfly": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:freebsd": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:ios": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:linux": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:netbsd": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:openbsd": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:solaris": [
+            "//peregrine/vendor/golang.org/x/sys/unix",
+        ],
+        "@rules_go//go/platform:windows": [
+            "//peregrine/vendor/golang.org/x/sys/windows",
+        ],
+        "//conditions:default": [],
+    }),
+)

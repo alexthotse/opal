@@ -1,0 +1,20 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "halfconn",
+    srcs = [
+        "ciphersuite.go",
+        "counter.go",
+        "expander.go",
+        "halfconn.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/google/s2a-go/internal/record/internal/halfconn",
+    importpath = "github.com/google/s2a-go/internal/record/internal/halfconn",
+    visibility = ["//peregrine/vendor/github.com/google/s2a-go:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/github.com/google/s2a-go/internal/proto/common_go_proto",
+        "//peregrine/vendor/github.com/google/s2a-go/internal/record/internal/aeadcrypter",
+        "//peregrine/vendor/golang.org/x/crypto/cryptobyte",
+        "//peregrine/vendor/golang.org/x/crypto/hkdf",
+    ],
+)

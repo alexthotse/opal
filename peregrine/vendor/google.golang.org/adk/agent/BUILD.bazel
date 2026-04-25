@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "agent",
+    srcs = [
+        "agent.go",
+        "context.go",
+        "doc.go",
+        "loader.go",
+        "run_config.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/agent",
+    importpath = "google.golang.org/adk/agent",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace",
+        "//peregrine/vendor/google.golang.org/adk/artifact",
+        "//peregrine/vendor/google.golang.org/adk/internal/agent",
+        "//peregrine/vendor/google.golang.org/adk/internal/plugininternal/plugincontext",
+        "//peregrine/vendor/google.golang.org/adk/internal/telemetry",
+        "//peregrine/vendor/google.golang.org/adk/memory",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/adk/session",
+        "//peregrine/vendor/google.golang.org/genai",
+    ],
+)

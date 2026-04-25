@@ -1,0 +1,24 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "adapters",
+    srcs = [
+        "adk_agent.go",
+        "animator.go",
+        "backend_client.go",
+        "msgpack_codec.go",
+    ],
+    importpath = "github.com/alexthotse/peregrine/adapters",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/gen/falcon/v1:falcon",
+        "//peregrine/gen/falcon/v1/falconv1connect",
+        "//peregrine/vendor/github.com/charmbracelet/harmonica",
+        "//peregrine/vendor/google.golang.org/adk/agent",
+        "//peregrine/vendor/google.golang.org/adk/agent/llmagent",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/genai",
+        "@com_connectrpc_connect//:connect",
+        "@com_github_vmihailenco_msgpack_v5//:msgpack",
+    ],
+)

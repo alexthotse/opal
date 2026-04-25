@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "session",
+    srcs = [
+        "doc.go",
+        "inmemory.go",
+        "service.go",
+        "session.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/session",
+    importpath = "google.golang.org/adk/session",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/google/uuid",
+        "//peregrine/vendor/google.golang.org/adk/internal/sessionutils",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/adk/tool/toolconfirmation",
+        "//peregrine/vendor/rsc.io/omap",
+        "//peregrine/vendor/rsc.io/ordered",
+    ],
+)

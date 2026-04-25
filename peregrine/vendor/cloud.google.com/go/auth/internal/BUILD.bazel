@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "internal",
+    srcs = [
+        "internal.go",
+        "version.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/cloud.google.com/go/auth/internal",
+    importpath = "cloud.google.com/go/auth/internal",
+    visibility = ["//peregrine/vendor/cloud.google.com/go/auth:__subpackages__"],
+    deps = ["//peregrine/vendor/cloud.google.com/go/compute/metadata"],
+)

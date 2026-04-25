@@ -1,0 +1,29 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "trace",
+    srcs = [
+        "auto.go",
+        "config.go",
+        "context.go",
+        "doc.go",
+        "hex.go",
+        "nonrecording.go",
+        "noop.go",
+        "provider.go",
+        "span.go",
+        "trace.go",
+        "tracer.go",
+        "tracestate.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/go.opentelemetry.io/otel/trace",
+    importpath = "go.opentelemetry.io/otel/trace",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/go.opentelemetry.io/otel/attribute",
+        "//peregrine/vendor/go.opentelemetry.io/otel/codes",
+        "//peregrine/vendor/go.opentelemetry.io/otel/semconv/v1.39.0:v1_39_0",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace/embedded",
+        "//peregrine/vendor/go.opentelemetry.io/otel/trace/internal/telemetry",
+    ],
+)

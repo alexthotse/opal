@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "converters",
+    srcs = ["map_structure.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/internal/converters",
+    importpath = "google.golang.org/adk/internal/converters",
+    visibility = ["//peregrine/vendor/google.golang.org/adk:__subpackages__"],
+)

@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "runconfig",
+    srcs = ["run_config.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/internal/agent/runconfig",
+    importpath = "google.golang.org/adk/internal/agent/runconfig",
+    visibility = ["//peregrine/vendor/google.golang.org/adk:__subpackages__"],
+)

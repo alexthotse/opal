@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "civil",
+    srcs = ["civil.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/cloud.google.com/go/civil",
+    importpath = "cloud.google.com/go/civil",
+    visibility = ["//visibility:public"],
+)

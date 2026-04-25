@@ -1,0 +1,117 @@
+diff -urN a/gleam/gleam_binary.bzl b/gleam/gleam_binary.bzl
+--- a/gleam/gleam_binary.bzl	2025-10-26 07:30:47.000000000 +0000
++++ b/gleam/gleam_binary.bzl	2026-04-24 21:33:24.562222564 +0000
+@@ -129,7 +129,7 @@
+         srcs = attr.label_list(
+             doc = "The list of gleam module files to compile under the current package.",
+             mandatory = True,
+-            allow_files = [".gleam"],
++            allow_files = [".gleam", ".erl", ".hrl", ".app", ".app.src", ".toml"],
+         ),
+         main_module = attr.string(doc = "The module name containing the main function. Must match the file name of one of the source. Default to the module at srcs[0]"),
+         deps = attr.label_list(
+diff -urN a/gleam/gleam_library.bzl b/gleam/gleam_library.bzl
+--- a/gleam/gleam_library.bzl	2025-10-26 07:30:47.000000000 +0000
++++ b/gleam/gleam_library.bzl	2026-04-24 21:33:24.562222564 +0000
+@@ -66,7 +66,7 @@
+         srcs = attr.label_list(
+             doc = "The list of gleam module files to compile under the current package.",
+             mandatory = True,
+-            allow_files = [".gleam"],
++            allow_files = [".gleam", ".erl", ".hrl", ".app", ".app.src", ".toml"],
+         ),
+         deps = attr.label_list(
+             doc = "The list of dependent gleam modules.",
+diff -urN a/gleam/gleeunit/BUILD b/gleam/gleeunit/BUILD
+--- a/gleam/gleeunit/BUILD	2025-10-26 07:30:47.000000000 +0000
++++ b/gleam/gleeunit/BUILD	2026-04-24 21:37:12.281917209 +0000
+@@ -21,13 +21,6 @@
+     visibility = ["//visibility:public"],
+     deps = [
+         ":gleeunit_ffi",
+-        "@hex_gleam_stdlib//gleam:bit_array",
+-        "@hex_gleam_stdlib//gleam:dynamic",
+-        "@hex_gleam_stdlib//gleam:int",
+-        "@hex_gleam_stdlib//gleam:io",
+-        "@hex_gleam_stdlib//gleam:list",
+-        "@hex_gleam_stdlib//gleam:option",
+-        "@hex_gleam_stdlib//gleam:result",
+-        "@hex_gleam_stdlib//gleam:string",
++        "@hex_gleam_stdlib//:gleam",
+     ],
+ )
+diff -urN a/gleam_hex/repositories.bzl b/gleam_hex/repositories.bzl
+--- a/gleam_hex/repositories.bzl	2025-10-26 07:30:47.000000000 +0000
++++ b/gleam_hex/repositories.bzl	2026-04-24 21:33:16.882233365 +0000
+@@ -87,20 +87,58 @@
+     _gazelle = ctx.path(_gazelle_label)
+     watch(ctx, _gazelle)
+ 
+-    cmd = [
+-        _gazelle,
+-        "-mode",
+-        "fix",
+-        "-gleam_external_repo",
+-        "-gleam_compiler_path",
+-        _gleam_compiler_path(ctx),
+-        "-repo_root",
+-        ctx.path(""),
+-    ]
+-    cmd.append(ctx.path(""))
+-    ctx.report_progress("Runnning Gazelle")
++    ctx.file("generate_build.py", """import sys, os
++def main():
++    if not os.path.exists("gleam.toml"):
++        return
++    with open("gleam.toml") as f:
++        content = f.read()
++    
++    deps = []
++    in_deps = False
++    for line in content.splitlines():
++        line = line.strip()
++        if line.startswith("[dependencies]"):
++            in_deps = True
++            continue
++        if line.startswith("[") and in_deps:
++            in_deps = False
++            continue
++        if in_deps and "=" in line and not line.startswith("#"):
++            dep_name = line.split("=")[0].strip()
++            deps.append(f'"@hex_{dep_name}//:gleam"')
++            
++    deps_str = ",\\n        ".join(deps)
++    if deps:
++        deps_str = "\\n        " + deps_str + ",\\n    "
++    
++    repo_name = os.path.basename(os.getcwd())
++    strip_prefix = f"external/{repo_name}"
++        
++    build_content = f\"\"\"load("@rules_gleam//gleam:defs.bzl", "gleam_library")
+ 
+-    result = env_execute(ctx, cmd)
++gleam_library(
++    name = "gleam",
++    srcs = glob([
++        "**/*.gleam",
++        "**/*.erl",
++        "**/*.hrl",
++        "**/*.app",
++        "**/*.app.src",
++        "gleam.toml",
++    ], allow_empty = True),
++    deps = [{deps_str}],
++    strip_src_prefix = "{strip_prefix}",
++    visibility = ["//visibility:public"],
++)
++\"\"\"
++    with open("BUILD.bazel", "w") as f:
++        f.write(build_content)
++
++if __name__ == "__main__":
++    main()
++""")
++    result = env_execute(ctx, ["python3", "generate_build.py"])
+     if result.return_code:
+         fail("failed to generate BUILD files for %s: %s. err: %s" % (
+             ctx.attr.module_name,

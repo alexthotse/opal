@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "baggage",
+    srcs = [
+        "baggage.go",
+        "context.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/go.opentelemetry.io/otel/internal/baggage",
+    importpath = "go.opentelemetry.io/otel/internal/baggage",
+    visibility = ["//peregrine/vendor/go.opentelemetry.io/otel:__subpackages__"],
+)

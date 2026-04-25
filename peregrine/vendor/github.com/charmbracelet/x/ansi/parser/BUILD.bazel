@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "parser",
+    srcs = [
+        "const.go",
+        "seq.go",
+        "transition_table.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/charmbracelet/x/ansi/parser",
+    importpath = "github.com/charmbracelet/x/ansi/parser",
+    visibility = ["//visibility:public"],
+)
