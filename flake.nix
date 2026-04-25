@@ -52,6 +52,7 @@
           doCheck = false;
 
           nativeBuildInputs = [ pkgs.makeWrapper ];
+          buildInputs = [ pkgs.alsa-lib ];
 
           postInstall = ''
             wrapProgram $out/bin/peregrine_cli \
@@ -82,6 +83,7 @@
               peregrineFrontend
               pkgs.bashInteractive
               pkgs.coreutils
+              pkgs.alsa-lib
             ];
             pathsToLink = [ "/bin" "/share" ];
           };
