@@ -12,12 +12,12 @@ import (
 
 func TestMainApp(t *testing.T) {
 	bc := adapters.NewDefaultBackendClient()
-	ac, err := adapters.NewADKAgentClient()
+	ac, err := adapters.NewADKAgentClient("anthropic")
 	if err != nil {
 		t.Fatalf("Failed to initialize ADK Agent: %v", err)
 	}
 	anim := adapters.NewAnimator()
-	app := viewmodel.NewAppViewModel(bc, ac, anim)
+	app := viewmodel.NewAppViewModel(bc, ac, anim, "pi")
 
 	tm := teatest.NewTestModel(t, app, teatest.WithInitialTermSize(80, 24))
 
