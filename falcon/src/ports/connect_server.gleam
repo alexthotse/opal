@@ -7,6 +7,9 @@ import domain/reasoning
 import domain/planning
 import adapters/jido_agent
 import domain/search
+import domain/stats
+import domain/security
+import domain/teammem
 
 @external(erlang, "gleam_stdlib", "identity")
 fn to_dynamic(a: a) -> dynamic.Dynamic
@@ -28,7 +31,10 @@ pub fn handle_request(req: wisp.Request) -> wisp.Response {
     "/falcon.v1.FalconService/StartUltraplan" -> planning.start_ultraplan()
     "/falcon.v1.FalconService/DispatchAction" -> jido_agent.dispatch_action("test_action")
     "/falcon.v1.FalconService/QuickSearch" -> search.quick_search()
-    _ -> "not_found"
+    "/falcon.v1.FalconService/GetShotStats" -> stats.get_stats()
+    "/falcon.v1.FalconService/ClassifyBash" -> security.bash_classifier("unknown_command")
+    "/falcon.v1.FalconService/GetTeamMem" -> teammem.get_teammem()
+    _ -> "not_implemented"
   }
 
   // Pack a simple map

@@ -35,7 +35,7 @@ tasks:
   test:falcon:
     desc: "Test the Falcon Gleam backend via Bazel"
     cmds:
-      - bazelisk test //falcon:falcon_test
+      - bazelisk test //falcon/test:falcon_test
 
   test:peregrine:
     desc: "Test the Peregrine Go frontend via Bazel"

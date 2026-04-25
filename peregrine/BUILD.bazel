@@ -1,5 +1,5 @@
 load("@gazelle//:def.bzl", "gazelle")
-load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 
 # gazelle:prefix github.com/alexthotse/peregrine
 gazelle(name = "gazelle")
@@ -11,8 +11,9 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//peregrine/adapters",
-        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
         "//peregrine/viewmodel",
+        "@com_github_charmbracelet_bubbletea//:bubbletea",
+        "@com_github_spf13_cobra//:cobra",
     ],
 )
 
@@ -20,4 +21,15 @@ go_binary(
     name = "peregrine",
     embed = [":peregrine_lib"],
     visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "peregrine_test",
+    srcs = ["main_test.go"],
+    embed = [":peregrine_lib"],
+    deps = [
+        "//peregrine/adapters",
+        "//peregrine/viewmodel",
+        "@com_github_charmbracelet_x_exp_teatest//:teatest",
+    ],
 )

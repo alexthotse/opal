@@ -477,6 +477,1238 @@ func (x *SearchResponse) GetResult() string {
 	return ""
 }
 
+type BudgetRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BudgetRequest) Reset() {
+	*x = BudgetRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BudgetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BudgetRequest) ProtoMessage() {}
+
+func (x *BudgetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BudgetRequest.ProtoReflect.Descriptor instead.
+func (*BudgetRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *BudgetRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type BudgetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BudgetResponse) Reset() {
+	*x = BudgetResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BudgetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BudgetResponse) ProtoMessage() {}
+
+func (x *BudgetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BudgetResponse.ProtoReflect.Descriptor instead.
+func (*BudgetResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *BudgetResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type TeamMemRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TeamMemRequest) Reset() {
+	*x = TeamMemRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TeamMemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TeamMemRequest) ProtoMessage() {}
+
+func (x *TeamMemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TeamMemRequest.ProtoReflect.Descriptor instead.
+func (*TeamMemRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *TeamMemRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type TeamMemResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TeamMemResponse) Reset() {
+	*x = TeamMemResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TeamMemResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TeamMemResponse) ProtoMessage() {}
+
+func (x *TeamMemResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TeamMemResponse.ProtoReflect.Descriptor instead.
+func (*TeamMemResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *TeamMemResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type BridgeModeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BridgeModeRequest) Reset() {
+	*x = BridgeModeRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BridgeModeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BridgeModeRequest) ProtoMessage() {}
+
+func (x *BridgeModeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BridgeModeRequest.ProtoReflect.Descriptor instead.
+func (*BridgeModeRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *BridgeModeRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type BridgeModeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BridgeModeResponse) Reset() {
+	*x = BridgeModeResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BridgeModeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BridgeModeResponse) ProtoMessage() {}
+
+func (x *BridgeModeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BridgeModeResponse.ProtoReflect.Descriptor instead.
+func (*BridgeModeResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *BridgeModeResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type TriggerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TriggerRequest) Reset() {
+	*x = TriggerRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TriggerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerRequest) ProtoMessage() {}
+
+func (x *TriggerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerRequest.ProtoReflect.Descriptor instead.
+func (*TriggerRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *TriggerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type TriggerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TriggerResponse) Reset() {
+	*x = TriggerResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TriggerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerResponse) ProtoMessage() {}
+
+func (x *TriggerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerResponse.ProtoReflect.Descriptor instead.
+func (*TriggerResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *TriggerResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type TriggerRemoteRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TriggerRemoteRequest) Reset() {
+	*x = TriggerRemoteRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TriggerRemoteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerRemoteRequest) ProtoMessage() {}
+
+func (x *TriggerRemoteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerRemoteRequest.ProtoReflect.Descriptor instead.
+func (*TriggerRemoteRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *TriggerRemoteRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type TriggerRemoteResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TriggerRemoteResponse) Reset() {
+	*x = TriggerRemoteResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TriggerRemoteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerRemoteResponse) ProtoMessage() {}
+
+func (x *TriggerRemoteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerRemoteResponse.ProtoReflect.Descriptor instead.
+func (*TriggerRemoteResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *TriggerRemoteResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type ExtractMemoriesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExtractMemoriesRequest) Reset() {
+	*x = ExtractMemoriesRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExtractMemoriesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExtractMemoriesRequest) ProtoMessage() {}
+
+func (x *ExtractMemoriesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExtractMemoriesRequest.ProtoReflect.Descriptor instead.
+func (*ExtractMemoriesRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ExtractMemoriesRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type ExtractMemoriesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExtractMemoriesResponse) Reset() {
+	*x = ExtractMemoriesResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExtractMemoriesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExtractMemoriesResponse) ProtoMessage() {}
+
+func (x *ExtractMemoriesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExtractMemoriesResponse.ProtoReflect.Descriptor instead.
+func (*ExtractMemoriesResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ExtractMemoriesResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type CompactionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CompactionRequest) Reset() {
+	*x = CompactionRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CompactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CompactionRequest) ProtoMessage() {}
+
+func (x *CompactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CompactionRequest.ProtoReflect.Descriptor instead.
+func (*CompactionRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *CompactionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type CompactionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CompactionResponse) Reset() {
+	*x = CompactionResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CompactionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CompactionResponse) ProtoMessage() {}
+
+func (x *CompactionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CompactionResponse.ProtoReflect.Descriptor instead.
+func (*CompactionResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *CompactionResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type MicrocompactRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MicrocompactRequest) Reset() {
+	*x = MicrocompactRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MicrocompactRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MicrocompactRequest) ProtoMessage() {}
+
+func (x *MicrocompactRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MicrocompactRequest.ProtoReflect.Descriptor instead.
+func (*MicrocompactRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *MicrocompactRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type MicrocompactResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MicrocompactResponse) Reset() {
+	*x = MicrocompactResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MicrocompactResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MicrocompactResponse) ProtoMessage() {}
+
+func (x *MicrocompactResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MicrocompactResponse.ProtoReflect.Descriptor instead.
+func (*MicrocompactResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *MicrocompactResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type ShotStatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ShotStatsRequest) Reset() {
+	*x = ShotStatsRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ShotStatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShotStatsRequest) ProtoMessage() {}
+
+func (x *ShotStatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShotStatsRequest.ProtoReflect.Descriptor instead.
+func (*ShotStatsRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *ShotStatsRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type ShotStatsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ShotStatsResponse) Reset() {
+	*x = ShotStatsResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ShotStatsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShotStatsResponse) ProtoMessage() {}
+
+func (x *ShotStatsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShotStatsResponse.ProtoReflect.Descriptor instead.
+func (*ShotStatsResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *ShotStatsResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type VerificationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerificationRequest) Reset() {
+	*x = VerificationRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerificationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerificationRequest) ProtoMessage() {}
+
+func (x *VerificationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerificationRequest.ProtoReflect.Descriptor instead.
+func (*VerificationRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *VerificationRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type VerificationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerificationResponse) Reset() {
+	*x = VerificationResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerificationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerificationResponse) ProtoMessage() {}
+
+func (x *VerificationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerificationResponse.ProtoReflect.Descriptor instead.
+func (*VerificationResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *VerificationResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type BashClassifyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BashClassifyRequest) Reset() {
+	*x = BashClassifyRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BashClassifyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BashClassifyRequest) ProtoMessage() {}
+
+func (x *BashClassifyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BashClassifyRequest.ProtoReflect.Descriptor instead.
+func (*BashClassifyRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *BashClassifyRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type BashClassifyResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BashClassifyResponse) Reset() {
+	*x = BashClassifyResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BashClassifyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BashClassifyResponse) ProtoMessage() {}
+
+func (x *BashClassifyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BashClassifyResponse.ProtoReflect.Descriptor instead.
+func (*BashClassifyResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *BashClassifyResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type VoiceModeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VoiceModeRequest) Reset() {
+	*x = VoiceModeRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoiceModeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoiceModeRequest) ProtoMessage() {}
+
+func (x *VoiceModeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoiceModeRequest.ProtoReflect.Descriptor instead.
+func (*VoiceModeRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *VoiceModeRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type VoiceModeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VoiceModeResponse) Reset() {
+	*x = VoiceModeResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoiceModeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoiceModeResponse) ProtoMessage() {}
+
+func (x *VoiceModeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoiceModeResponse.ProtoReflect.Descriptor instead.
+func (*VoiceModeResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *VoiceModeResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type HistoryPickerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HistoryPickerRequest) Reset() {
+	*x = HistoryPickerRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HistoryPickerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HistoryPickerRequest) ProtoMessage() {}
+
+func (x *HistoryPickerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HistoryPickerRequest.ProtoReflect.Descriptor instead.
+func (*HistoryPickerRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *HistoryPickerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type HistoryPickerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HistoryPickerResponse) Reset() {
+	*x = HistoryPickerResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HistoryPickerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HistoryPickerResponse) ProtoMessage() {}
+
+func (x *HistoryPickerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HistoryPickerResponse.ProtoReflect.Descriptor instead.
+func (*HistoryPickerResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *HistoryPickerResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type MessageActionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MessageActionsRequest) Reset() {
+	*x = MessageActionsRequest{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MessageActionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MessageActionsRequest) ProtoMessage() {}
+
+func (x *MessageActionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MessageActionsRequest.ProtoReflect.Descriptor instead.
+func (*MessageActionsRequest) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *MessageActionsRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type MessageActionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MessageActionsResponse) Reset() {
+	*x = MessageActionsResponse{}
+	mi := &file_falcon_v1_falcon_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MessageActionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MessageActionsResponse) ProtoMessage() {}
+
+func (x *MessageActionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_falcon_v1_falcon_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MessageActionsResponse.ProtoReflect.Descriptor instead.
+func (*MessageActionsResponse) Descriptor() ([]byte, []int) {
+	return file_falcon_v1_falcon_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *MessageActionsResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
 var File_falcon_v1_falcon_proto protoreflect.FileDescriptor
 
 const file_falcon_v1_falcon_proto_rawDesc = "" +
@@ -503,13 +1735,84 @@ const file_falcon_v1_falcon_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05query\x18\x02 \x01(\tR\x05query\"(\n" +
 	"\x0eSearchResponse\x12\x16\n" +
-	"\x06result\x18\x01 \x01(\tR\x06result2\xfa\x02\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"\x1f\n" +
+	"\rBudgetRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"(\n" +
+	"\x0eBudgetResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\" \n" +
+	"\x0eTeamMemRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\")\n" +
+	"\x0fTeamMemResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"#\n" +
+	"\x11BridgeModeRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\",\n" +
+	"\x12BridgeModeResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\" \n" +
+	"\x0eTriggerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\")\n" +
+	"\x0fTriggerResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"&\n" +
+	"\x14TriggerRemoteRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"/\n" +
+	"\x15TriggerRemoteResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"(\n" +
+	"\x16ExtractMemoriesRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"1\n" +
+	"\x17ExtractMemoriesResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"#\n" +
+	"\x11CompactionRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\",\n" +
+	"\x12CompactionResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"%\n" +
+	"\x13MicrocompactRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\".\n" +
+	"\x14MicrocompactResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"\"\n" +
+	"\x10ShotStatsRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"+\n" +
+	"\x11ShotStatsResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"%\n" +
+	"\x13VerificationRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\".\n" +
+	"\x14VerificationResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"%\n" +
+	"\x13BashClassifyRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\".\n" +
+	"\x14BashClassifyResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"\"\n" +
+	"\x10VoiceModeRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"+\n" +
+	"\x11VoiceModeResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"&\n" +
+	"\x14HistoryPickerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"/\n" +
+	"\x15HistoryPickerResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"'\n" +
+	"\x15MessageActionsRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"0\n" +
+	"\x16MessageActionsResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result2\x8b\f\n" +
 	"\rFalconService\x129\n" +
 	"\x04Ping\x12\x16.falcon.v1.PingRequest\x1a\x17.falcon.v1.PingResponse\"\x00\x12P\n" +
 	"\x0fStartUltrathink\x12\x1c.falcon.v1.UltrathinkRequest\x1a\x1d.falcon.v1.UltrathinkResponse\"\x00\x12M\n" +
 	"\x0eStartUltraplan\x12\x1b.falcon.v1.UltraplanRequest\x1a\x1c.falcon.v1.UltraplanResponse\"\x00\x12G\n" +
 	"\x0eDispatchAction\x12\x18.falcon.v1.ActionRequest\x1a\x19.falcon.v1.ActionResponse\"\x00\x12D\n" +
-	"\vQuickSearch\x12\x18.falcon.v1.SearchRequest\x1a\x19.falcon.v1.SearchResponse\"\x00B8Z6github.com/alexthotse/peregrine/gen/falcon/v1;falconv1b\x06proto3"
+	"\vQuickSearch\x12\x18.falcon.v1.SearchRequest\x1a\x19.falcon.v1.SearchResponse\"\x00\x12G\n" +
+	"\x0eGetTokenBudget\x12\x18.falcon.v1.BudgetRequest\x1a\x19.falcon.v1.BudgetResponse\"\x00\x12E\n" +
+	"\n" +
+	"GetTeamMem\x12\x19.falcon.v1.TeamMemRequest\x1a\x1a.falcon.v1.TeamMemResponse\"\x00\x12P\n" +
+	"\x0fStartBridgeMode\x12\x1c.falcon.v1.BridgeModeRequest\x1a\x1d.falcon.v1.BridgeModeResponse\"\x00\x12J\n" +
+	"\x0fSetAgentTrigger\x12\x19.falcon.v1.TriggerRequest\x1a\x1a.falcon.v1.TriggerResponse\"\x00\x12\\\n" +
+	"\x15SetAgentTriggerRemote\x12\x1f.falcon.v1.TriggerRemoteRequest\x1a .falcon.v1.TriggerRemoteResponse\"\x00\x12Z\n" +
+	"\x0fExtractMemories\x12!.falcon.v1.ExtractMemoriesRequest\x1a\".falcon.v1.ExtractMemoriesResponse\"\x00\x12W\n" +
+	"\x16GetCompactionReminders\x12\x1c.falcon.v1.CompactionRequest\x1a\x1d.falcon.v1.CompactionResponse\"\x00\x12W\n" +
+	"\x12CachedMicrocompact\x12\x1e.falcon.v1.MicrocompactRequest\x1a\x1f.falcon.v1.MicrocompactResponse\"\x00\x12K\n" +
+	"\fGetShotStats\x12\x1b.falcon.v1.ShotStatsRequest\x1a\x1c.falcon.v1.ShotStatsResponse\"\x00\x12V\n" +
+	"\x11StartVerification\x12\x1e.falcon.v1.VerificationRequest\x1a\x1f.falcon.v1.VerificationResponse\"\x00\x12Q\n" +
+	"\fClassifyBash\x12\x1e.falcon.v1.BashClassifyRequest\x1a\x1f.falcon.v1.BashClassifyResponse\"\x00\x12K\n" +
+	"\fGetVoiceMode\x12\x1b.falcon.v1.VoiceModeRequest\x1a\x1c.falcon.v1.VoiceModeResponse\"\x00\x12W\n" +
+	"\x10GetHistoryPicker\x12\x1f.falcon.v1.HistoryPickerRequest\x1a .falcon.v1.HistoryPickerResponse\"\x00\x12W\n" +
+	"\x0eMessageActions\x12 .falcon.v1.MessageActionsRequest\x1a!.falcon.v1.MessageActionsResponse\"\x00B8Z6github.com/alexthotse/peregrine/gen/falcon/v1;falconv1b\x06proto3"
 
 var (
 	file_falcon_v1_falcon_proto_rawDescOnce sync.Once
@@ -523,35 +1826,91 @@ func file_falcon_v1_falcon_proto_rawDescGZIP() []byte {
 	return file_falcon_v1_falcon_proto_rawDescData
 }
 
-var file_falcon_v1_falcon_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_falcon_v1_falcon_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
 var file_falcon_v1_falcon_proto_goTypes = []any{
-	(*PingRequest)(nil),        // 0: falcon.v1.PingRequest
-	(*PingResponse)(nil),       // 1: falcon.v1.PingResponse
-	(*UltrathinkRequest)(nil),  // 2: falcon.v1.UltrathinkRequest
-	(*UltrathinkResponse)(nil), // 3: falcon.v1.UltrathinkResponse
-	(*UltraplanRequest)(nil),   // 4: falcon.v1.UltraplanRequest
-	(*UltraplanResponse)(nil),  // 5: falcon.v1.UltraplanResponse
-	(*ActionRequest)(nil),      // 6: falcon.v1.ActionRequest
-	(*ActionResponse)(nil),     // 7: falcon.v1.ActionResponse
-	(*SearchRequest)(nil),      // 8: falcon.v1.SearchRequest
-	(*SearchResponse)(nil),     // 9: falcon.v1.SearchResponse
+	(*PingRequest)(nil),             // 0: falcon.v1.PingRequest
+	(*PingResponse)(nil),            // 1: falcon.v1.PingResponse
+	(*UltrathinkRequest)(nil),       // 2: falcon.v1.UltrathinkRequest
+	(*UltrathinkResponse)(nil),      // 3: falcon.v1.UltrathinkResponse
+	(*UltraplanRequest)(nil),        // 4: falcon.v1.UltraplanRequest
+	(*UltraplanResponse)(nil),       // 5: falcon.v1.UltraplanResponse
+	(*ActionRequest)(nil),           // 6: falcon.v1.ActionRequest
+	(*ActionResponse)(nil),          // 7: falcon.v1.ActionResponse
+	(*SearchRequest)(nil),           // 8: falcon.v1.SearchRequest
+	(*SearchResponse)(nil),          // 9: falcon.v1.SearchResponse
+	(*BudgetRequest)(nil),           // 10: falcon.v1.BudgetRequest
+	(*BudgetResponse)(nil),          // 11: falcon.v1.BudgetResponse
+	(*TeamMemRequest)(nil),          // 12: falcon.v1.TeamMemRequest
+	(*TeamMemResponse)(nil),         // 13: falcon.v1.TeamMemResponse
+	(*BridgeModeRequest)(nil),       // 14: falcon.v1.BridgeModeRequest
+	(*BridgeModeResponse)(nil),      // 15: falcon.v1.BridgeModeResponse
+	(*TriggerRequest)(nil),          // 16: falcon.v1.TriggerRequest
+	(*TriggerResponse)(nil),         // 17: falcon.v1.TriggerResponse
+	(*TriggerRemoteRequest)(nil),    // 18: falcon.v1.TriggerRemoteRequest
+	(*TriggerRemoteResponse)(nil),   // 19: falcon.v1.TriggerRemoteResponse
+	(*ExtractMemoriesRequest)(nil),  // 20: falcon.v1.ExtractMemoriesRequest
+	(*ExtractMemoriesResponse)(nil), // 21: falcon.v1.ExtractMemoriesResponse
+	(*CompactionRequest)(nil),       // 22: falcon.v1.CompactionRequest
+	(*CompactionResponse)(nil),      // 23: falcon.v1.CompactionResponse
+	(*MicrocompactRequest)(nil),     // 24: falcon.v1.MicrocompactRequest
+	(*MicrocompactResponse)(nil),    // 25: falcon.v1.MicrocompactResponse
+	(*ShotStatsRequest)(nil),        // 26: falcon.v1.ShotStatsRequest
+	(*ShotStatsResponse)(nil),       // 27: falcon.v1.ShotStatsResponse
+	(*VerificationRequest)(nil),     // 28: falcon.v1.VerificationRequest
+	(*VerificationResponse)(nil),    // 29: falcon.v1.VerificationResponse
+	(*BashClassifyRequest)(nil),     // 30: falcon.v1.BashClassifyRequest
+	(*BashClassifyResponse)(nil),    // 31: falcon.v1.BashClassifyResponse
+	(*VoiceModeRequest)(nil),        // 32: falcon.v1.VoiceModeRequest
+	(*VoiceModeResponse)(nil),       // 33: falcon.v1.VoiceModeResponse
+	(*HistoryPickerRequest)(nil),    // 34: falcon.v1.HistoryPickerRequest
+	(*HistoryPickerResponse)(nil),   // 35: falcon.v1.HistoryPickerResponse
+	(*MessageActionsRequest)(nil),   // 36: falcon.v1.MessageActionsRequest
+	(*MessageActionsResponse)(nil),  // 37: falcon.v1.MessageActionsResponse
 }
 var file_falcon_v1_falcon_proto_depIdxs = []int32{
-	0, // 0: falcon.v1.FalconService.Ping:input_type -> falcon.v1.PingRequest
-	2, // 1: falcon.v1.FalconService.StartUltrathink:input_type -> falcon.v1.UltrathinkRequest
-	4, // 2: falcon.v1.FalconService.StartUltraplan:input_type -> falcon.v1.UltraplanRequest
-	6, // 3: falcon.v1.FalconService.DispatchAction:input_type -> falcon.v1.ActionRequest
-	8, // 4: falcon.v1.FalconService.QuickSearch:input_type -> falcon.v1.SearchRequest
-	1, // 5: falcon.v1.FalconService.Ping:output_type -> falcon.v1.PingResponse
-	3, // 6: falcon.v1.FalconService.StartUltrathink:output_type -> falcon.v1.UltrathinkResponse
-	5, // 7: falcon.v1.FalconService.StartUltraplan:output_type -> falcon.v1.UltraplanResponse
-	7, // 8: falcon.v1.FalconService.DispatchAction:output_type -> falcon.v1.ActionResponse
-	9, // 9: falcon.v1.FalconService.QuickSearch:output_type -> falcon.v1.SearchResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: falcon.v1.FalconService.Ping:input_type -> falcon.v1.PingRequest
+	2,  // 1: falcon.v1.FalconService.StartUltrathink:input_type -> falcon.v1.UltrathinkRequest
+	4,  // 2: falcon.v1.FalconService.StartUltraplan:input_type -> falcon.v1.UltraplanRequest
+	6,  // 3: falcon.v1.FalconService.DispatchAction:input_type -> falcon.v1.ActionRequest
+	8,  // 4: falcon.v1.FalconService.QuickSearch:input_type -> falcon.v1.SearchRequest
+	10, // 5: falcon.v1.FalconService.GetTokenBudget:input_type -> falcon.v1.BudgetRequest
+	12, // 6: falcon.v1.FalconService.GetTeamMem:input_type -> falcon.v1.TeamMemRequest
+	14, // 7: falcon.v1.FalconService.StartBridgeMode:input_type -> falcon.v1.BridgeModeRequest
+	16, // 8: falcon.v1.FalconService.SetAgentTrigger:input_type -> falcon.v1.TriggerRequest
+	18, // 9: falcon.v1.FalconService.SetAgentTriggerRemote:input_type -> falcon.v1.TriggerRemoteRequest
+	20, // 10: falcon.v1.FalconService.ExtractMemories:input_type -> falcon.v1.ExtractMemoriesRequest
+	22, // 11: falcon.v1.FalconService.GetCompactionReminders:input_type -> falcon.v1.CompactionRequest
+	24, // 12: falcon.v1.FalconService.CachedMicrocompact:input_type -> falcon.v1.MicrocompactRequest
+	26, // 13: falcon.v1.FalconService.GetShotStats:input_type -> falcon.v1.ShotStatsRequest
+	28, // 14: falcon.v1.FalconService.StartVerification:input_type -> falcon.v1.VerificationRequest
+	30, // 15: falcon.v1.FalconService.ClassifyBash:input_type -> falcon.v1.BashClassifyRequest
+	32, // 16: falcon.v1.FalconService.GetVoiceMode:input_type -> falcon.v1.VoiceModeRequest
+	34, // 17: falcon.v1.FalconService.GetHistoryPicker:input_type -> falcon.v1.HistoryPickerRequest
+	36, // 18: falcon.v1.FalconService.MessageActions:input_type -> falcon.v1.MessageActionsRequest
+	1,  // 19: falcon.v1.FalconService.Ping:output_type -> falcon.v1.PingResponse
+	3,  // 20: falcon.v1.FalconService.StartUltrathink:output_type -> falcon.v1.UltrathinkResponse
+	5,  // 21: falcon.v1.FalconService.StartUltraplan:output_type -> falcon.v1.UltraplanResponse
+	7,  // 22: falcon.v1.FalconService.DispatchAction:output_type -> falcon.v1.ActionResponse
+	9,  // 23: falcon.v1.FalconService.QuickSearch:output_type -> falcon.v1.SearchResponse
+	11, // 24: falcon.v1.FalconService.GetTokenBudget:output_type -> falcon.v1.BudgetResponse
+	13, // 25: falcon.v1.FalconService.GetTeamMem:output_type -> falcon.v1.TeamMemResponse
+	15, // 26: falcon.v1.FalconService.StartBridgeMode:output_type -> falcon.v1.BridgeModeResponse
+	17, // 27: falcon.v1.FalconService.SetAgentTrigger:output_type -> falcon.v1.TriggerResponse
+	19, // 28: falcon.v1.FalconService.SetAgentTriggerRemote:output_type -> falcon.v1.TriggerRemoteResponse
+	21, // 29: falcon.v1.FalconService.ExtractMemories:output_type -> falcon.v1.ExtractMemoriesResponse
+	23, // 30: falcon.v1.FalconService.GetCompactionReminders:output_type -> falcon.v1.CompactionResponse
+	25, // 31: falcon.v1.FalconService.CachedMicrocompact:output_type -> falcon.v1.MicrocompactResponse
+	27, // 32: falcon.v1.FalconService.GetShotStats:output_type -> falcon.v1.ShotStatsResponse
+	29, // 33: falcon.v1.FalconService.StartVerification:output_type -> falcon.v1.VerificationResponse
+	31, // 34: falcon.v1.FalconService.ClassifyBash:output_type -> falcon.v1.BashClassifyResponse
+	33, // 35: falcon.v1.FalconService.GetVoiceMode:output_type -> falcon.v1.VoiceModeResponse
+	35, // 36: falcon.v1.FalconService.GetHistoryPicker:output_type -> falcon.v1.HistoryPickerResponse
+	37, // 37: falcon.v1.FalconService.MessageActions:output_type -> falcon.v1.MessageActionsResponse
+	19, // [19:38] is the sub-list for method output_type
+	0,  // [0:19] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_falcon_v1_falcon_proto_init() }
@@ -565,7 +1924,7 @@ func file_falcon_v1_falcon_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_falcon_v1_falcon_proto_rawDesc), len(file_falcon_v1_falcon_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   38,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

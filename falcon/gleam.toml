@@ -21,6 +21,7 @@ jido = ">= 2.2.0 and < 3.0.0"
 wisp = ">= 2.2.2 and < 3.0.0"
 mist = ">= 6.0.3 and < 7.0.0"
 msgpack = ">= 0.8.1 and < 1.0.0"
+simplifile = ">= 2.0.0 and < 3.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"

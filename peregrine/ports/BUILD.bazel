@@ -5,5 +5,5 @@ go_library(
     srcs = ["interfaces.go"],
     importpath = "github.com/alexthotse/peregrine/ports",
     visibility = ["//visibility:public"],
-    deps = ["//peregrine/vendor/github.com/charmbracelet/bubbletea"],
+    deps = ["@com_github_charmbracelet_bubbletea//:bubbletea"],
 )

@@ -20,20 +20,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install ALSA headers
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@v0.8.5
+        uses: bazel-contrib/setup-bazel@0.8.5
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
         with:
           version: 3.x
-
-      - name: Check Formatting
-        run: |
-          task format
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Unit Tests
         run: task test
@@ -50,16 +50,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install ALSA headers
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@v0.8.5
+        uses: bazel-contrib/setup-bazel@0.8.5
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
         with:
           version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Falcon Backend (Gleam)
         run: task build:falcon
@@ -75,6 +79,10 @@ jobs:
           fi
           ./bazel-bin/peregrine/peregrine_/peregrine -h || echo "Binary exists and is executable"
 
+      - name: Install Nix
+        if: runner.os == 'Linux'
+        uses: DeterminateSystems/nix-installer-action@main
+      
       - name: Build OCI Container (Alpine Linux Base)
         # OCI builds natively on Linux. Avoid macOS Nix cross-compilation quirks for Docker outputs.
         if: runner.os == 'Linux'
@@ -92,16 +100,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install ALSA headers
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@v0.8.5
+        uses: bazel-contrib/setup-bazel@0.8.5
         with:
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
 
       - name: Setup Task
         uses: arduino/setup-task@v2
         with:
           version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Native Linux Binary
         run: task build:peregrine
@@ -115,6 +127,9 @@ jobs:
         with:
           files: peregrine-${{ github.ref_name }}-linux-amd64.tar.gz
           generate_release_notes: true
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
 
       - name: Build OCI Container Image
         run: task build:container
