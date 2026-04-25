@@ -1,0 +1,217 @@
+﻿2026-04-25T09:09:51.6319269Z Current runner version: '2.333.1'
+2026-04-25T09:09:51.6344675Z ##[group]Runner Image Provisioner
+2026-04-25T09:09:51.6345548Z Hosted Compute Agent
+2026-04-25T09:09:51.6346378Z Version: 20260213.493
+2026-04-25T09:09:51.6346967Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-04-25T09:09:51.6347752Z Build Date: 2026-02-13T00:28:41Z
+2026-04-25T09:09:51.6348396Z Worker ID: {9b52607c-9648-498e-8136-81ed49af0edc}
+2026-04-25T09:09:51.6349109Z Azure Region: westcentralus
+2026-04-25T09:09:51.6349758Z ##[endgroup]
+2026-04-25T09:09:51.6351398Z ##[group]Operating System
+2026-04-25T09:09:51.6352026Z Ubuntu
+2026-04-25T09:09:51.6352547Z 24.04.4
+2026-04-25T09:09:51.6353059Z LTS
+2026-04-25T09:09:51.6353510Z ##[endgroup]
+2026-04-25T09:09:51.6354074Z ##[group]Runner Image
+2026-04-25T09:09:51.6354652Z Image: ubuntu-24.04
+2026-04-25T09:09:51.6355203Z Version: 20260413.86.1
+2026-04-25T09:09:51.6356724Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+2026-04-25T09:09:51.6358145Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+2026-04-25T09:09:51.6359081Z ##[endgroup]
+2026-04-25T09:09:51.6360281Z ##[group]GITHUB_TOKEN Permissions
+2026-04-25T09:09:51.6362438Z Contents: read
+2026-04-25T09:09:51.6363103Z Metadata: read
+2026-04-25T09:09:51.6363594Z Packages: read
+2026-04-25T09:09:51.6364108Z ##[endgroup]
+2026-04-25T09:09:51.6366436Z Secret source: Actions
+2026-04-25T09:09:51.6367387Z Prepare workflow directory
+2026-04-25T09:09:51.6703452Z Prepare all required actions
+2026-04-25T09:09:51.6741874Z Getting action download info
+2026-04-25T09:09:52.1201586Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-04-25T09:09:52.2534915Z Download action repository 'bazel-contrib/setup-bazel@0.8.5' (SHA:e403ad507104847c3539436f64a9e9eecc73eeec)
+2026-04-25T09:09:53.5035246Z Download action repository 'arduino/setup-task@v2' (SHA:b91d5d2c96a56797b48ac1e0e89220bf64044611)
+2026-04-25T09:09:54.3466867Z Complete job name: Lint & Test (ubuntu-latest)
+2026-04-25T09:09:54.4301620Z ##[group]Run actions/checkout@v4
+2026-04-25T09:09:54.4303341Z with:
+2026-04-25T09:09:54.4304318Z   repository: alexthotse/opal
+2026-04-25T09:09:54.4306316Z   token: ***
+2026-04-25T09:09:54.4307360Z   ssh-strict: true
+2026-04-25T09:09:54.4308273Z   ssh-user: git
+2026-04-25T09:09:54.4309094Z   persist-credentials: true
+2026-04-25T09:09:54.4309988Z   clean: true
+2026-04-25T09:09:54.4310819Z   sparse-checkout-cone-mode: true
+2026-04-25T09:09:54.4311805Z   fetch-depth: 1
+2026-04-25T09:09:54.4312599Z   fetch-tags: false
+2026-04-25T09:09:54.4313414Z   show-progress: true
+2026-04-25T09:09:54.4314238Z   lfs: false
+2026-04-25T09:09:54.4314996Z   submodules: false
+2026-04-25T09:09:54.4316059Z   set-safe-directory: true
+2026-04-25T09:09:54.4317392Z ##[endgroup]
+2026-04-25T09:09:54.5432559Z Syncing repository: alexthotse/opal
+2026-04-25T09:09:54.5435034Z ##[group]Getting Git version info
+2026-04-25T09:09:54.5436839Z Working directory is '/home/runner/work/opal/opal'
+2026-04-25T09:09:54.5439434Z [command]/usr/bin/git version
+2026-04-25T09:09:54.5475373Z git version 2.53.0
+2026-04-25T09:09:54.5504072Z ##[endgroup]
+2026-04-25T09:09:54.5518042Z Temporarily overriding HOME='/home/runner/work/_temp/4815d91c-2212-43a5-857c-9b6f5fc26dd7' before making global git config changes
+2026-04-25T09:09:54.5520711Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-25T09:09:54.5523637Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/opal/opal
+2026-04-25T09:09:54.5557437Z Deleting the contents of '/home/runner/work/opal/opal'
+2026-04-25T09:09:54.5561009Z ##[group]Initializing the repository
+2026-04-25T09:09:54.5564656Z [command]/usr/bin/git init /home/runner/work/opal/opal
+2026-04-25T09:09:54.5629690Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-25T09:09:54.5632614Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-25T09:09:54.5635777Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-25T09:09:54.5638203Z hint: call:
+2026-04-25T09:09:54.5639221Z hint:
+2026-04-25T09:09:54.5640737Z hint: 	git config --global init.defaultBranch <name>
+2026-04-25T09:09:54.5642452Z hint:
+2026-04-25T09:09:54.5644068Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-25T09:09:54.5646973Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-25T09:09:54.5649275Z hint:
+2026-04-25T09:09:54.5650152Z hint: 	git branch -m <name>
+2026-04-25T09:09:54.5651013Z hint:
+2026-04-25T09:09:54.5652171Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-25T09:09:54.5654015Z Initialized empty Git repository in /home/runner/work/opal/opal/.git/
+2026-04-25T09:09:54.5658487Z [command]/usr/bin/git remote add origin https://github.com/alexthotse/opal
+2026-04-25T09:09:54.5676122Z ##[endgroup]
+2026-04-25T09:09:54.5678138Z ##[group]Disabling automatic garbage collection
+2026-04-25T09:09:54.5680270Z [command]/usr/bin/git config --local gc.auto 0
+2026-04-25T09:09:54.5709628Z ##[endgroup]
+2026-04-25T09:09:54.5711052Z ##[group]Setting up auth
+2026-04-25T09:09:54.5716138Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-25T09:09:54.5747989Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-25T09:09:54.6033517Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-25T09:09:54.6068887Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-25T09:09:54.6311099Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-25T09:09:54.6351833Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-25T09:09:54.6588120Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-25T09:09:54.6624858Z ##[endgroup]
+2026-04-25T09:09:54.6626501Z ##[group]Fetching the repository
+2026-04-25T09:09:54.6634517Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2d36de14ddc7a4fa565ca9042d6e2e4e98aad2c1:refs/remotes/pull/3/merge
+2026-04-25T09:09:57.8478494Z From https://github.com/alexthotse/opal
+2026-04-25T09:09:57.8479042Z  * [new ref]         2d36de14ddc7a4fa565ca9042d6e2e4e98aad2c1 -> pull/3/merge
+2026-04-25T09:09:57.8508885Z ##[endgroup]
+2026-04-25T09:09:57.8509428Z ##[group]Determining the checkout info
+2026-04-25T09:09:57.8511929Z ##[endgroup]
+2026-04-25T09:09:57.8517642Z [command]/usr/bin/git sparse-checkout disable
+2026-04-25T09:09:57.8555459Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-04-25T09:09:57.8581575Z ##[group]Checking out the ref
+2026-04-25T09:09:57.8585406Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/3/merge
+2026-04-25T09:09:58.3669002Z Note: switching to 'refs/remotes/pull/3/merge'.
+2026-04-25T09:09:58.3670040Z 
+2026-04-25T09:09:58.3670336Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-04-25T09:09:58.3671031Z changes and commit them, and you can discard any commits you make in this
+2026-04-25T09:09:58.3671714Z state without impacting any branches by switching back to a branch.
+2026-04-25T09:09:58.3672212Z 
+2026-04-25T09:09:58.3672514Z If you want to create a new branch to retain commits you create, you may
+2026-04-25T09:09:58.3673190Z do so (now or later) by using -c with the switch command. Example:
+2026-04-25T09:09:58.3673578Z 
+2026-04-25T09:09:58.3673725Z   git switch -c <new-branch-name>
+2026-04-25T09:09:58.3673994Z 
+2026-04-25T09:09:58.3674475Z Or undo this operation with:
+2026-04-25T09:09:58.3674734Z 
+2026-04-25T09:09:58.3674855Z   git switch -
+2026-04-25T09:09:58.3675072Z 
+2026-04-25T09:09:58.3675396Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-04-25T09:09:58.3676060Z 
+2026-04-25T09:09:58.3676609Z HEAD is now at 2d36de1 Merge 5ff32ee365f59a10c416473ed86944db1fdf5134 into a726bebdd1136ee17478561cce70bff0a6e783d1
+2026-04-25T09:09:58.3705322Z ##[endgroup]
+2026-04-25T09:09:58.3752512Z [command]/usr/bin/git log -1 --format=%H
+2026-04-25T09:09:58.3784852Z 2d36de14ddc7a4fa565ca9042d6e2e4e98aad2c1
+2026-04-25T09:09:58.4009639Z ##[group]Run bazel-contrib/setup-bazel@0.8.5
+2026-04-25T09:09:58.4009946Z with:
+2026-04-25T09:09:58.4010142Z   bazelisk-cache: true
+2026-04-25T09:09:58.4010360Z   disk-cache: Peregrine CI/CD
+2026-04-25T09:09:58.4010594Z   cache-version: 1
+2026-04-25T09:09:58.4010792Z   repository-cache: false
+2026-04-25T09:09:58.4011132Z   token: ***
+2026-04-25T09:09:58.4011358Z ##[endgroup]
+2026-04-25T09:09:58.5727527Z ##[group]Configure Bazel
+2026-04-25T09:09:58.5728017Z Configuration:
+2026-04-25T09:09:58.5728318Z {
+2026-04-25T09:09:58.5728627Z   "baseCacheKey": "setup-bazel-1-linux",
+2026-04-25T09:09:58.5729020Z   "bazeliskCache": {
+2026-04-25T09:09:58.5729343Z     "enabled": true,
+2026-04-25T09:09:58.5729611Z     "files": [
+2026-04-25T09:09:58.5729879Z       ".bazelversion"
+2026-04-25T09:09:58.5730155Z     ],
+2026-04-25T09:09:58.5730414Z     "name": "bazelisk",
+2026-04-25T09:09:58.5730702Z     "paths": [
+2026-04-25T09:09:58.5730996Z       "/home/runner/.cache/bazelisk"
+2026-04-25T09:09:58.5731435Z     ]
+2026-04-25T09:09:58.5731661Z   },
+2026-04-25T09:09:58.5731840Z   "bazeliskVersion": "",
+2026-04-25T09:09:58.5732053Z   "bazelrc": [
+2026-04-25T09:09:58.5732313Z     "build --disk_cache=/home/runner/.cache/bazel-disk"
+2026-04-25T09:09:58.5732706Z   ],
+2026-04-25T09:09:58.5732944Z   "diskCache": {
+2026-04-25T09:09:58.5733254Z     "enabled": true,
+2026-04-25T09:09:58.5733539Z     "files": [
+2026-04-25T09:09:58.5733848Z       "**/BUILD.bazel",
+2026-04-25T09:09:58.5734284Z       "**/BUILD"
+2026-04-25T09:09:58.5734915Z     ],
+2026-04-25T09:09:58.5735273Z     "name": "disk-Peregrine CI/CD",
+2026-04-25T09:09:58.5735749Z     "paths": [
+2026-04-25T09:09:58.5736431Z       "/home/runner/.cache/bazel-disk"
+2026-04-25T09:09:58.5736934Z     ]
+2026-04-25T09:09:58.5737252Z   },
+2026-04-25T09:09:58.5737699Z   "externalCache": {},
+2026-04-25T09:09:58.5738081Z   "paths": {
+2026-04-25T09:09:58.5738557Z     "bazelExternal": "/home/runner/.bazel/external",
+2026-04-25T09:09:58.5739154Z     "bazelOutputBase": "/home/runner/.bazel",
+2026-04-25T09:09:58.5739759Z     "bazelrc": [
+2026-04-25T09:09:58.5740186Z       "/home/runner/.bazelrc"
+2026-04-25T09:09:58.5740618Z     ]
+2026-04-25T09:09:58.5741015Z   },
+2026-04-25T09:09:58.5741332Z   "os": {
+2026-04-25T09:09:58.5741728Z     "arch": "x64",
+2026-04-25T09:09:58.5742048Z     "platform": "linux"
+2026-04-25T09:09:58.5742360Z   },
+2026-04-25T09:09:58.5742584Z   "repositoryCache": {
+2026-04-25T09:09:58.5742983Z     "enabled": false,
+2026-04-25T09:09:58.5743250Z     "files": [
+2026-04-25T09:09:58.5743529Z       "MODULE.bazel",
+2026-04-25T09:09:58.5743937Z       "WORKSPACE.bazel",
+2026-04-25T09:09:58.5744224Z       "WORKSPACE.bzlmod",
+2026-04-25T09:09:58.5744526Z       "WORKSPACE"
+2026-04-25T09:09:58.5744849Z     ],
+2026-04-25T09:09:58.5745143Z     "name": "repository",
+2026-04-25T09:09:58.5745419Z     "paths": [
+2026-04-25T09:09:58.5746003Z       "/home/runner/.cache/bazel-repo"
+2026-04-25T09:09:58.5746380Z     ]
+2026-04-25T09:09:58.5746661Z   }
+2026-04-25T09:09:58.5746920Z }
+2026-04-25T09:09:58.5747500Z ##[endgroup]
+2026-04-25T09:09:58.5748044Z ##[group]Restore cache for bazelisk
+2026-04-25T09:09:58.7038910Z ##[warning]Failed to restore: Cache service responded with 400
+2026-04-25T09:09:58.7047519Z Failed to restore bazelisk cache
+2026-04-25T09:09:58.7047946Z ##[endgroup]
+2026-04-25T09:09:59.5158704Z ##[group]Restore cache for disk-Peregrine CI/CD
+2026-04-25T09:09:59.5266264Z Error: EACCES: permission denied, stat '/home/runner/work/opal/opal/bazel-bin'
+2026-04-25T09:09:59.5267203Z     at Object.stat (node:internal/fs/promises:1026:18)
+2026-04-25T09:09:59.5406204Z Post job cleanup.
+2026-04-25T09:09:59.7090727Z ##[group]Save cache for bazelisk
+2026-04-25T09:09:59.8561414Z ##[warning]Error: Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.
+    at Object.<anonymous> (/home/runner/work/_actions/bazel-contrib/setup-bazel/0.8.5/dist/node_modules/@actions/cache/lib/cache.js:175:1)
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/runner/work/_actions/bazel-contrib/setup-bazel/0.8.5/dist/node_modules/@actions/cache/lib/cache.js:28:1)
+2026-04-25T09:09:59.8564329Z ##[endgroup]
+2026-04-25T09:09:59.8564815Z ##[group]Save cache for disk-Peregrine CI/CD
+2026-04-25T09:10:00.2363149Z ##[warning]Error: Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.
+    at Object.<anonymous> (/home/runner/work/_actions/bazel-contrib/setup-bazel/0.8.5/dist/node_modules/@actions/cache/lib/cache.js:175:1)
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/runner/work/_actions/bazel-contrib/setup-bazel/0.8.5/dist/node_modules/@actions/cache/lib/cache.js:28:1)
+2026-04-25T09:10:00.2366043Z ##[endgroup]
+2026-04-25T09:10:00.2568162Z Post job cleanup.
+2026-04-25T09:10:00.3523617Z [command]/usr/bin/git version
+2026-04-25T09:10:00.3560248Z git version 2.53.0
+2026-04-25T09:10:00.3600806Z Temporarily overriding HOME='/home/runner/work/_temp/b1061a49-08e1-4886-a6c4-e28eada20e43' before making global git config changes
+2026-04-25T09:10:00.3601918Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-25T09:10:00.3614071Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/opal/opal
+2026-04-25T09:10:00.3649212Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-25T09:10:00.3681660Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-25T09:10:00.3905383Z fatal: No url found for submodule path 'opal' in .gitmodules
+2026-04-25T09:10:00.3934011Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+2026-04-25T09:10:00.4034144Z Cleaning up orphan processes
+2026-04-25T09:10:00.4302004Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, bazel-contrib/setup-bazel@0.8.5. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

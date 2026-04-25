@@ -1,0 +1,206 @@
+﻿2026-04-25T09:18:18.8347310Z Current runner version: '2.333.1'
+2026-04-25T09:18:18.8363290Z ##[group]Runner Image Provisioner
+2026-04-25T09:18:18.8363830Z Hosted Compute Agent
+2026-04-25T09:18:18.8364180Z Version: 20260415.520
+2026-04-25T09:18:18.8364550Z Commit: af089020f5f67b61ccc91db6c07980876c02bf7b
+2026-04-25T09:18:18.8364980Z Build Date: 2026-04-15T18:07:08Z
+2026-04-25T09:18:18.8365390Z Worker ID: {ad9cac81-e34d-46ad-b406-1f4ebefd08a4}
+2026-04-25T09:18:18.8365810Z Azure Region: westus
+2026-04-25T09:18:18.8366150Z ##[endgroup]
+2026-04-25T09:18:18.8367070Z ##[group]Operating System
+2026-04-25T09:18:18.8367420Z macOS
+2026-04-25T09:18:18.8367690Z 15.7.4
+2026-04-25T09:18:18.8367950Z 24G517
+2026-04-25T09:18:18.8368230Z ##[endgroup]
+2026-04-25T09:18:18.8368530Z ##[group]Runner Image
+2026-04-25T09:18:18.8368850Z Image: macos-15-arm64
+2026-04-25T09:18:18.8369170Z Version: 20260421.0007.1
+2026-04-25T09:18:18.8369970Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20260421.0007/images/macos/macos-15-arm64-Readme.md
+2026-04-25T09:18:18.8370920Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20260421.0007
+2026-04-25T09:18:18.8371510Z ##[endgroup]
+2026-04-25T09:18:18.8372210Z ##[group]GITHUB_TOKEN Permissions
+2026-04-25T09:18:18.8373670Z Contents: read
+2026-04-25T09:18:18.8373970Z Metadata: read
+2026-04-25T09:18:18.8374270Z Packages: read
+2026-04-25T09:18:18.8374560Z ##[endgroup]
+2026-04-25T09:18:18.8376050Z Secret source: Actions
+2026-04-25T09:18:18.8376640Z Prepare workflow directory
+2026-04-25T09:18:18.8591170Z Prepare all required actions
+2026-04-25T09:18:18.8618190Z Getting action download info
+2026-04-25T09:18:19.1160420Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-04-25T09:18:19.4853530Z Download action repository 'bazel-contrib/setup-bazel@0.8.5' (SHA:e403ad507104847c3539436f64a9e9eecc73eeec)
+2026-04-25T09:18:21.1322360Z Download action repository 'arduino/setup-task@v2' (SHA:b91d5d2c96a56797b48ac1e0e89220bf64044611)
+2026-04-25T09:18:22.5261970Z Complete job name: Lint & Test (macos-latest)
+2026-04-25T09:18:22.5726300Z ##[group]Run actions/checkout@v4
+2026-04-25T09:18:22.5727070Z with:
+2026-04-25T09:18:22.5727510Z   repository: alexthotse/opal
+2026-04-25T09:18:22.5728370Z   token: ***
+2026-04-25T09:18:22.5728800Z   ssh-strict: true
+2026-04-25T09:18:22.5729240Z   ssh-user: git
+2026-04-25T09:18:22.5729700Z   persist-credentials: true
+2026-04-25T09:18:22.5730200Z   clean: true
+2026-04-25T09:18:22.5730660Z   sparse-checkout-cone-mode: true
+2026-04-25T09:18:22.5731240Z   fetch-depth: 1
+2026-04-25T09:18:22.5731750Z   fetch-tags: false
+2026-04-25T09:18:22.5732210Z   show-progress: true
+2026-04-25T09:18:22.5732700Z   lfs: false
+2026-04-25T09:18:22.5733150Z   submodules: false
+2026-04-25T09:18:22.5733710Z   set-safe-directory: true
+2026-04-25T09:18:22.5734370Z ##[endgroup]
+2026-04-25T09:18:22.9006630Z Syncing repository: alexthotse/opal
+2026-04-25T09:18:22.9010160Z ##[group]Getting Git version info
+2026-04-25T09:18:22.9013250Z Working directory is '/Users/runner/work/opal/opal'
+2026-04-25T09:18:22.9013840Z [command]/opt/homebrew/bin/git version
+2026-04-25T09:18:22.9203420Z git version 2.54.0
+2026-04-25T09:18:22.9231850Z ##[endgroup]
+2026-04-25T09:18:22.9238150Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/9c768637-021f-400b-be21-b57ecfd409ac/.gitconfig'
+2026-04-25T09:18:22.9244850Z Temporarily overriding HOME='/Users/runner/work/_temp/9c768637-021f-400b-be21-b57ecfd409ac' before making global git config changes
+2026-04-25T09:18:22.9246200Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-25T09:18:22.9248850Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/opal/opal
+2026-04-25T09:18:22.9343070Z Deleting the contents of '/Users/runner/work/opal/opal'
+2026-04-25T09:18:22.9346050Z ##[group]Initializing the repository
+2026-04-25T09:18:22.9350970Z [command]/opt/homebrew/bin/git init /Users/runner/work/opal/opal
+2026-04-25T09:18:22.9572220Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-25T09:18:22.9573660Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-25T09:18:22.9574240Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-25T09:18:22.9574700Z hint: call:
+2026-04-25T09:18:22.9574990Z hint:
+2026-04-25T09:18:22.9575390Z hint: 	git config --global init.defaultBranch <name>
+2026-04-25T09:18:22.9575880Z hint:
+2026-04-25T09:18:22.9576250Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-25T09:18:22.9576810Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-25T09:18:22.9577240Z hint:
+2026-04-25T09:18:22.9577520Z hint: 	git branch -m <name>
+2026-04-25T09:18:22.9578220Z hint:
+2026-04-25T09:18:22.9578810Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-25T09:18:22.9579540Z Initialized empty Git repository in /Users/runner/work/opal/opal/.git/
+2026-04-25T09:18:22.9580930Z [command]/opt/homebrew/bin/git remote add origin https://github.com/alexthotse/opal
+2026-04-25T09:18:22.9727710Z ##[endgroup]
+2026-04-25T09:18:22.9728590Z ##[group]Disabling automatic garbage collection
+2026-04-25T09:18:22.9729340Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-04-25T09:18:22.9753900Z ##[endgroup]
+2026-04-25T09:18:22.9754420Z ##[group]Setting up auth
+2026-04-25T09:18:22.9759320Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-25T09:18:22.9830240Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-25T09:18:23.0776340Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-25T09:18:23.0835770Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-25T09:18:23.1559190Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-25T09:18:23.1623910Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-25T09:18:23.2428550Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-25T09:18:23.2493450Z ##[endgroup]
+2026-04-25T09:18:23.2493850Z ##[group]Fetching the repository
+2026-04-25T09:18:23.2499530Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cb2ae00ef0715410470661c0890d3441f06d1b9f:refs/remotes/pull/3/merge
+2026-04-25T09:18:26.3894690Z From https://github.com/alexthotse/opal
+2026-04-25T09:18:26.3896230Z  * [new ref]         cb2ae00ef0715410470661c0890d3441f06d1b9f -> pull/3/merge
+2026-04-25T09:18:26.3976580Z ##[endgroup]
+2026-04-25T09:18:26.3977070Z ##[group]Determining the checkout info
+2026-04-25T09:18:26.3977420Z ##[endgroup]
+2026-04-25T09:18:26.3978040Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-04-25T09:18:26.4047250Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-04-25T09:18:26.4105700Z ##[group]Checking out the ref
+2026-04-25T09:18:26.4108280Z [command]/opt/homebrew/bin/git checkout --progress --force refs/remotes/pull/3/merge
+2026-04-25T09:18:26.9086550Z HEAD is now at cb2ae00 Merge ebfce59dcc470dfe75f0a7ad31900ff26740fc89 into a726bebdd1136ee17478561cce70bff0a6e783d1
+2026-04-25T09:18:26.9389340Z ##[endgroup]
+2026-04-25T09:18:26.9467720Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-04-25T09:18:26.9468300Z cb2ae00ef0715410470661c0890d3441f06d1b9f
+2026-04-25T09:18:26.9615180Z ##[group]Run bazel-contrib/setup-bazel@0.8.5
+2026-04-25T09:18:26.9615470Z with:
+2026-04-25T09:18:26.9615850Z   bazelisk-cache: true
+2026-04-25T09:18:26.9616000Z   cache-version: 1
+2026-04-25T09:18:26.9616130Z   disk-cache: false
+2026-04-25T09:18:26.9616280Z   repository-cache: false
+2026-04-25T09:18:26.9616570Z   token: ***
+2026-04-25T09:18:26.9616690Z ##[endgroup]
+2026-04-25T09:18:27.1404690Z ##[group]Configure Bazel
+2026-04-25T09:18:27.1505030Z Configuration:
+2026-04-25T09:18:27.1606100Z {
+2026-04-25T09:18:27.1706540Z   "baseCacheKey": "setup-bazel-1-darwin",
+2026-04-25T09:18:27.1807530Z   "bazeliskCache": {
+2026-04-25T09:18:27.1882350Z     "enabled": true,
+2026-04-25T09:18:27.1924830Z     "files": [
+2026-04-25T09:18:27.2004170Z       ".bazelversion"
+2026-04-25T09:18:27.2026390Z     ],
+2026-04-25T09:18:27.2060090Z     "name": "bazelisk",
+2026-04-25T09:18:27.2081160Z     "paths": [
+2026-04-25T09:18:27.2139180Z       "/Users/runner/Library/Caches/bazelisk"
+2026-04-25T09:18:27.2170420Z     ]
+2026-04-25T09:18:27.2192620Z   },
+2026-04-25T09:18:27.2205810Z   "bazeliskVersion": "",
+2026-04-25T09:18:27.2214840Z   "bazelrc": [],
+2026-04-25T09:18:27.2314250Z   "diskCache": {
+2026-04-25T09:18:27.2325480Z     "enabled": false,
+2026-04-25T09:18:27.2325830Z     "files": [
+2026-04-25T09:18:27.2326110Z       "**/BUILD.bazel",
+2026-04-25T09:18:27.2326390Z       "**/BUILD"
+2026-04-25T09:18:27.2326650Z     ],
+2026-04-25T09:18:27.2326930Z     "name": "disk",
+2026-04-25T09:18:27.2327380Z     "paths": [
+2026-04-25T09:18:27.2327840Z       "/Users/runner/.cache/bazel-disk"
+2026-04-25T09:18:27.2328150Z     ]
+2026-04-25T09:18:27.2328400Z   },
+2026-04-25T09:18:27.2328650Z   "externalCache": {},
+2026-04-25T09:18:27.2328920Z   "paths": {
+2026-04-25T09:18:27.2329220Z     "bazelExternal": "/Users/runner/.bazel/external",
+2026-04-25T09:18:27.2329720Z     "bazelOutputBase": "/Users/runner/.bazel",
+2026-04-25T09:18:27.2330030Z     "bazelrc": [
+2026-04-25T09:18:27.2330290Z       "/Users/runner/.bazelrc"
+2026-04-25T09:18:27.2330710Z     ]
+2026-04-25T09:18:27.2330930Z   },
+2026-04-25T09:18:27.2331160Z   "os": {
+2026-04-25T09:18:27.2331390Z     "arch": "arm64",
+2026-04-25T09:18:27.2331690Z     "platform": "darwin"
+2026-04-25T09:18:27.2332000Z   },
+2026-04-25T09:18:27.2332290Z   "repositoryCache": {
+2026-04-25T09:18:27.2332640Z     "enabled": false,
+2026-04-25T09:18:27.2332960Z     "files": [
+2026-04-25T09:18:27.2333200Z       "MODULE.bazel",
+2026-04-25T09:18:27.2333480Z       "WORKSPACE.bazel",
+2026-04-25T09:18:27.2333780Z       "WORKSPACE.bzlmod",
+2026-04-25T09:18:27.2334040Z       "WORKSPACE"
+2026-04-25T09:18:27.2334280Z     ],
+2026-04-25T09:18:27.2334530Z     "name": "repository",
+2026-04-25T09:18:27.2334840Z     "paths": [
+2026-04-25T09:18:27.2335160Z       "/Users/runner/.cache/bazel-repo"
+2026-04-25T09:18:27.2335460Z     ]
+2026-04-25T09:18:27.2335700Z   }
+2026-04-25T09:18:27.2335940Z }
+2026-04-25T09:18:27.2336520Z ##[endgroup]
+2026-04-25T09:18:27.2336950Z ##[group]Restore cache for bazelisk
+2026-04-25T09:18:27.2591090Z ##[warning]Failed to restore: Cache service responded with 400
+2026-04-25T09:18:27.2595310Z Failed to restore bazelisk cache
+2026-04-25T09:18:27.2595620Z ##[endgroup]
+2026-04-25T09:18:27.5489310Z ##[group]Run arduino/setup-task@v2
+2026-04-25T09:18:27.5489530Z with:
+2026-04-25T09:18:27.5489650Z   version: 3.x
+2026-04-25T09:18:27.5489780Z ##[endgroup]
+2026-04-25T09:18:28.6155070Z [command]/usr/bin/tar xz -C /Users/runner/work/_temp/005394be-1bea-4abf-9144-62fbd453fa05 -f /Users/runner/work/_temp/63244070-e71e-478c-a21a-257487d23022
+2026-04-25T09:18:28.8023210Z Successfully setup Task version v3.50.0
+2026-04-25T09:18:28.8109890Z ##[group]Run task format:peregrine
+2026-04-25T09:18:28.8110200Z [36;1mtask format:peregrine[0m
+2026-04-25T09:18:28.8170550Z shell: /bin/bash -e {0}
+2026-04-25T09:18:28.8170810Z ##[endgroup]
+2026-04-25T09:18:28.9041740Z [32mtask: [format:peregrine] cd peregrine && go fmt ./...
+2026-04-25T09:18:28.9105940Z [0m"go": executable file not found in $PATH
+2026-04-25T09:18:28.9109080Z ##[error]exit status 127
+2026-04-25T09:18:28.9110060Z [31mtask: Failed to run task "format:peregrine": exit status 127
+2026-04-25T09:18:28.9113520Z [0m
+2026-04-25T09:18:28.9116900Z ##[error]Process completed with exit code 201.
+2026-04-25T09:18:28.9170270Z Post job cleanup.
+2026-04-25T09:18:29.0729640Z ##[group]Save cache for bazelisk
+2026-04-25T09:18:29.0878420Z [command]/opt/homebrew/bin/gtar --posix -cf cache.tzst --exclude cache.tzst -P -C /Users/runner/work/opal/opal --files-from manifest.txt --delay-directory-restore --use-compress-program zstdmt
+2026-04-25T09:18:29.3283560Z ##[warning]Failed to save: <h2>Our services aren't available right now</h2><p>We're working to restore all services as soon as possible. Please check back soon.</p>05YbsaQAAAAAOtLOdqIZUSI1NZGg9W0VWUEhMMzBFREdFMDIwNwBFZGdl
+2026-04-25T09:18:29.3289820Z Successfully saved cache
+2026-04-25T09:18:29.3290470Z ##[endgroup]
+2026-04-25T09:18:29.3396330Z Post job cleanup.
+2026-04-25T09:18:29.4599230Z [command]/opt/homebrew/bin/git version
+2026-04-25T09:18:29.4669390Z git version 2.54.0
+2026-04-25T09:18:29.4695040Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/fd3dd21e-6076-4317-8396-f6bf366b691c/.gitconfig'
+2026-04-25T09:18:29.4702140Z Temporarily overriding HOME='/Users/runner/work/_temp/fd3dd21e-6076-4317-8396-f6bf366b691c' before making global git config changes
+2026-04-25T09:18:29.4702900Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-25T09:18:29.4706040Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/opal/opal
+2026-04-25T09:18:29.4767420Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-25T09:18:29.4829210Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-25T09:18:29.5816900Z fatal: No url found for submodule path 'opal' in .gitmodules
+2026-04-25T09:18:29.5840020Z ##[warning]The process '/opt/homebrew/bin/git' failed with exit code 128
+2026-04-25T09:18:29.5966550Z Cleaning up orphan processes
+2026-04-25T09:18:29.8580730Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, arduino/setup-task@v2, bazel-contrib/setup-bazel@0.8.5. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
