@@ -6,7 +6,7 @@ go_library(
     importpath = "github.com/alexthotse/peregrine/gen/peregrine/v1",
     visibility = ["//visibility:public"],
     deps = [
-        "//peregrine/vendor/google.golang.org/protobuf/reflect/protoreflect",
-        "//peregrine/vendor/google.golang.org/protobuf/runtime/protoimpl",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
     ],
 )

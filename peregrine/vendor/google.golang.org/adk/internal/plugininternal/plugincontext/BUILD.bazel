@@ -1,9 +1,0 @@
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "plugincontext",
-    srcs = ["context.go"],
-    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/internal/plugininternal/plugincontext",
-    importpath = "google.golang.org/adk/internal/plugininternal/plugincontext",
-    visibility = ["//peregrine/vendor/google.golang.org/adk:__subpackages__"],
-)

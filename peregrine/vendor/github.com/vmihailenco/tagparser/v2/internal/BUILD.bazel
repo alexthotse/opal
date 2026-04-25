@@ -1,9 +1,0 @@
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "internal",
-    srcs = ["unsafe.go"],
-    importmap = "github.com/alexthotse/peregrine/vendor/github.com/vmihailenco/tagparser/v2/internal",
-    importpath = "github.com/vmihailenco/tagparser/v2/internal",
-    visibility = ["//peregrine/vendor/github.com/vmihailenco/tagparser/v2:__subpackages__"],
-)

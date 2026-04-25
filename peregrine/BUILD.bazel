@@ -11,9 +11,9 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//peregrine/adapters",
-        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
-        "//peregrine/vendor/github.com/spf13/cobra",
         "//peregrine/viewmodel",
+        "@com_github_charmbracelet_bubbletea//:bubbletea",
+        "@com_github_spf13_cobra//:cobra",
     ],
 )
 
@@ -29,7 +29,7 @@ go_test(
     embed = [":peregrine_lib"],
     deps = [
         "//peregrine/adapters",
-        "//peregrine/vendor/github.com/charmbracelet/x/exp/teatest",
         "//peregrine/viewmodel",
+        "@com_github_charmbracelet_x_exp_teatest//:teatest",
     ],
 )

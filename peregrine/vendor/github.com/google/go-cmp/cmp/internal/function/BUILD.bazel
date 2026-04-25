@@ -1,9 +1,0 @@
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "function",
-    srcs = ["func.go"],
-    importmap = "github.com/alexthotse/peregrine/vendor/github.com/google/go-cmp/cmp/internal/function",
-    importpath = "github.com/google/go-cmp/cmp/internal/function",
-    visibility = ["//peregrine/vendor/github.com/google/go-cmp/cmp:__subpackages__"],
-)

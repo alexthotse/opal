@@ -13,10 +13,11 @@ go_library(
     deps = [
         "//peregrine/adapters",
         "//peregrine/domain",
-        "//peregrine/vendor/github.com/charmbracelet/bubbles/textinput",
-        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
-        "//peregrine/vendor/github.com/charmbracelet/lipgloss",
         "//peregrine/view",
+        "@com_github_charmbracelet_bubbles//textinput",
+        "@com_github_charmbracelet_bubbletea//:bubbletea",
+        "@com_github_charmbracelet_lipgloss//:lipgloss",
+        "@com_github_gen2brain_malgo//:malgo",
     ],
 )
 
@@ -26,7 +27,7 @@ go_test(
     deps = [
         ":viewmodel",
         "//peregrine/adapters",
-        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
-        "//peregrine/vendor/github.com/charmbracelet/x/exp/teatest",
+        "@com_github_charmbracelet_bubbletea//:bubbletea",
+        "@com_github_charmbracelet_x_exp_teatest//:teatest",
     ],
 )

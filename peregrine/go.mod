@@ -9,6 +9,9 @@ require (
 	github.com/charmbracelet/harmonica v0.2.0
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/charmbracelet/x/exp/teatest v0.0.0-20260422141420-a6cbdff8a7e2
+	github.com/gen2brain/malgo v0.11.24
+	github.com/liushuangls/go-anthropic/v2 v2.18.0
+	github.com/sashabaranov/go-openai v1.41.2
 	github.com/spf13/cobra v1.8.1
 	github.com/vmihailenco/msgpack/v5 v5.4.1
 	google.golang.org/adk v1.2.0

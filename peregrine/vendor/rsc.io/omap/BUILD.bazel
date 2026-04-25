@@ -1,9 +1,0 @@
-load("@rules_go//go:def.bzl", "go_library")
-
-go_library(
-    name = "omap",
-    srcs = ["omap.go"],
-    importmap = "github.com/alexthotse/peregrine/vendor/rsc.io/omap",
-    importpath = "rsc.io/omap",
-    visibility = ["//visibility:public"],
-)
