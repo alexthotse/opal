@@ -1,0 +1,1665 @@
+diff --git a/MODULE.bazel b/MODULE.bazel
+index 2decd17..b6deda7 100644
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -15,12 +15,16 @@ go_deps.from_file(go_mod = "//peregrine:go.mod")
+ use_repo(
+     go_deps,
+     "com_connectrpc_connect",
++    "com_github_charmbracelet_bubbles",
+     "com_github_charmbracelet_bubbletea",
+     "com_github_charmbracelet_harmonica",
+     "com_github_charmbracelet_lipgloss",
++    "com_github_charmbracelet_x_exp_teatest",
++    "com_github_spf13_cobra",
+     "com_github_vmihailenco_msgpack_v5",
+     "org_golang_google_adk",
+     "org_golang_google_genai",
++    "org_golang_google_protobuf",
+ )
+ 
+ bazel_dep(name = "rules_gleam", version = "0.1.13")
+@@ -95,7 +99,7 @@ use_repo(
+ 
+ single_version_override(
+     module_name = "rules_gleam",
+-    version = "0.1.13",
+-    patches = ["//:rules_gleam.patch"],
+     patch_strip = 1,
++    patches = ["//:rules_gleam.patch"],
++    version = "0.1.13",
+ )
+diff --git a/buf b/buf
+new file mode 100755
+index 0000000..d8c9fb6
+Binary files /dev/null and b/buf differ
+diff --git a/falcon/BUILD.bazel b/falcon/BUILD.bazel
+index 0946a46..ca7bb97 100644
+--- a/falcon/BUILD.bazel
++++ b/falcon/BUILD.bazel
+@@ -6,10 +6,10 @@ exports_files([
+     "manifest.toml",
+ ])
+ 
+-gazelle(
+-    name = "gazelle",
+-    gazelle = "@rules_gleam//gazelle",
+-)
++# gazelle(
++#     name = "gazelle",
++#     gazelle = "@rules_gleam//gazelle",
++# )
+ 
+ gleam_library(
+     name = "falcon_lib",
+@@ -17,16 +17,17 @@ gleam_library(
+         "src/**/*.gleam",
+         "src/**/*.erl",
+     ]),
++    strip_src_prefix = "falcon/src",
++    visibility = ["//visibility:public"],
+     deps = [
+         "@hex_gleam_erlang//:gleam",
+         "@hex_gleam_json//:gleam",
+         "@hex_gleam_stdlib//:gleam",
+         "@hex_mist//:gleam",
+         "@hex_msgpack//:gleam",
++        "@hex_simplifile//:gleam",
+         "@hex_wisp//:gleam",
+     ],
+-    strip_src_prefix = "falcon/src",
+-    visibility = ["//visibility:public"],
+ )
+ 
+ alias(
+diff --git a/falcon/bin/BUILD.bazel b/falcon/bin/BUILD.bazel
+index 5f72a39..ccdf32c 100644
+--- a/falcon/bin/BUILD.bazel
++++ b/falcon/bin/BUILD.bazel
+@@ -2,8 +2,8 @@ load("@rules_gleam//gleam:defs.bzl", "gleam_binary")
+ 
+ gleam_binary(
+     name = "falcon_bin",
+-    main_module = "falcon",
+     srcs = ["//falcon:gleam.toml"],
++    main_module = "falcon",
+     visibility = ["//visibility:public"],
+     deps = [
+         "//falcon:falcon_lib",
+diff --git a/falcon/gleam.toml b/falcon/gleam.toml
+index 84cb41d..3392e1e 100644
+--- a/falcon/gleam.toml
++++ b/falcon/gleam.toml
+@@ -21,6 +21,7 @@ jido = ">= 2.2.0 and < 3.0.0"
+ wisp = ">= 2.2.2 and < 3.0.0"
+ mist = ">= 6.0.3 and < 7.0.0"
+ msgpack = ">= 0.8.1 and < 1.0.0"
++simplifile = ">= 2.0.0 and < 3.0.0"
+ 
+ [dev-dependencies]
+ gleeunit = ">= 1.0.0 and < 2.0.0"
+diff --git a/falcon/src/domain/security.gleam b/falcon/src/domain/security.gleam
+index 2002e4f..b0a87ea 100644
+--- a/falcon/src/domain/security.gleam
++++ b/falcon/src/domain/security.gleam
+@@ -1,19 +1,14 @@
+ import gleam/string
+-import gleam/list
+ 
+ pub type SecurityRule {
+   SecurityRule(pattern: String, action: String)
+ }
+ 
+-pub fn bash_classifier() -> String {
+-  let rules = [
+-    SecurityRule("rm -rf /", "BLOCK"),
+-    SecurityRule("ls -la", "ALLOW")
+-  ]
+-  let check_command = "ls -la"
+-  let rule_str = rules
+-    |> list.map(fn(r) { "Rule '" <> r.pattern <> "' -> " <> r.action })
+-    |> string.join("\n")
++pub fn bash_classifier(command: String) -> String {
++  let is_unsafe = string.contains(command, "rm -rf") || string.contains(command, "sudo")
+   
+-  "Bash Classifier Safe check for '" <> check_command <> "':\n" <> rule_str <> "\nResult: SAFE"
++  case is_unsafe {
++    True -> "Bash Classifier Safe check for '" <> command <> "':\nResult: BLOCK"
++    False -> "Bash Classifier Safe check for '" <> command <> "':\nResult: ALLOW"
++  }
+ }
+diff --git a/falcon/src/domain/stats.gleam b/falcon/src/domain/stats.gleam
+index 3dd21ca..890d50a 100644
+--- a/falcon/src/domain/stats.gleam
++++ b/falcon/src/domain/stats.gleam
+@@ -1,10 +1,19 @@
+ import gleam/string
++import gleam/erlang/charlist.{type Charlist}
++
++@external(erlang, "os", "cmd")
++fn os_cmd(command: Charlist) -> Charlist
+ 
+ pub type SystemStats {
+   SystemStats(cpu_usage: Float, mem_usage: Float, uptime_sec: Int)
+ }
+ 
+ pub fn get_stats() -> String {
+-  let stats = SystemStats(cpu_usage: 45.2, mem_usage: 68.9, uptime_sec: 3600)
+-  "System Stats: CPU " <> string.inspect(stats.cpu_usage) <> "%, RAM " <> string.inspect(stats.mem_usage) <> "%, Uptime " <> string.inspect(stats.uptime_sec) <> "s"
++  let uptime_out = os_cmd(charlist.from_string("cat /proc/uptime"))
++  let mem_out = os_cmd(charlist.from_string("free -m | awk '/^Mem:/ {print $3\"/\"$2\" MB\"}'"))
++  let cpu_out = os_cmd(charlist.from_string("top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'"))
++
++  "System Stats: CPU " <> string.trim(charlist.to_string(cpu_out)) <> 
++  "%, RAM " <> string.trim(charlist.to_string(mem_out)) <> 
++  ", Uptime " <> string.trim(charlist.to_string(uptime_out))
+ }
+diff --git a/falcon/src/domain/teammem.gleam b/falcon/src/domain/teammem.gleam
+index 1583ab3..8c6dfeb 100644
+--- a/falcon/src/domain/teammem.gleam
++++ b/falcon/src/domain/teammem.gleam
+@@ -1,17 +1,12 @@
+-import gleam/string
+-import gleam/list
++import simplifile
+ 
+ pub type TeamMember {
+   TeamMember(name: String, role: String, status: String)
+ }
+ 
+ pub fn get_teammem() -> String {
+-  let members = [
+-    TeamMember("Alice", "Frontend", "Active"),
+-    TeamMember("Bob", "Backend", "Reviewing PR")
+-  ]
+-  let members_str = members
+-    |> list.map(fn(m) { m.name <> " (" <> m.role <> "): " <> m.status })
+-    |> string.join("\n")
+-  "Team Members Context:\n" <> members_str
++  case simplifile.read("teammem.md") {
++    Ok(content) -> "Team Members Context:\n" <> content
++    Error(_) -> "Team Members Context:\nCould not read teammem.md"
++  }
+ }
+diff --git a/falcon/test/BUILD.bazel b/falcon/test/BUILD.bazel
+index 4188bea..c750922 100644
+--- a/falcon/test/BUILD.bazel
++++ b/falcon/test/BUILD.bazel
+@@ -9,4 +9,5 @@ gleam_test(
+         "//falcon:falcon_lib",
+         "@hex_gleeunit//:gleam",
+     ],
++    strip_src_prefix = "falcon/test",
+ )
+diff --git a/falcon/test/falcon_test.gleam b/falcon/test/falcon_test.gleam
+index 605f472..cb477e0 100644
+--- a/falcon/test/falcon_test.gleam
++++ b/falcon/test/falcon_test.gleam
+@@ -3,6 +3,10 @@ import gleeunit/should
+ import gleam/string
+ import domain/reasoning
+ import domain/planning
++import domain/stats
++import domain/teammem
++import domain/security
++import simplifile
+ 
+ pub fn main() {
+   gleeunit.main()
+@@ -24,3 +28,39 @@ pub fn ultraplan_test() {
+   string.contains(result, "ULTRAPLAN initialized")
+   |> should.be_true()
+ }
++
++pub fn stats_test() {
++  let result = stats.get_stats()
++  string.contains(result, "System Stats:")
++  |> should.be_true()
++  string.contains(result, "CPU")
++  |> should.be_true()
++  string.contains(result, "RAM")
++  |> should.be_true()
++}
++
++pub fn teammem_test() {
++  let _ = simplifile.write("teammem.md", "Real Team Member Data")
++  let result = teammem.get_teammem()
++  string.contains(result, "Real Team Member Data")
++  |> should.be_true()
++  let _ = simplifile.delete("teammem.md")
++}
++
++pub fn security_safe_test() {
++  let result = security.bash_classifier("ls -la")
++  string.contains(result, "ALLOW")
++  |> should.be_true()
++}
++
++pub fn security_unsafe_rm_test() {
++  let result = security.bash_classifier("rm -rf /")
++  string.contains(result, "BLOCK")
++  |> should.be_true()
++}
++
++pub fn security_unsafe_sudo_test() {
++  let result = security.bash_classifier("sudo su")
++  string.contains(result, "BLOCK")
++  |> should.be_true()
++}
+diff --git a/peregrine/BUILD.bazel b/peregrine/BUILD.bazel
+index 6be9e7d..b3d6c22 100644
+--- a/peregrine/BUILD.bazel
++++ b/peregrine/BUILD.bazel
+@@ -1,5 +1,5 @@
+ load("@gazelle//:def.bzl", "gazelle")
+-load("@rules_go//go:def.bzl", "go_binary", "go_library")
++load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+ 
+ # gazelle:prefix github.com/alexthotse/peregrine
+ gazelle(name = "gazelle")
+@@ -12,6 +12,7 @@ go_library(
+     deps = [
+         "//peregrine/adapters",
+         "//peregrine/vendor/github.com/charmbracelet/bubbletea",
++        "//peregrine/vendor/github.com/spf13/cobra",
+         "//peregrine/viewmodel",
+     ],
+ )
+@@ -21,3 +22,14 @@ go_binary(
+     embed = [":peregrine_lib"],
+     visibility = ["//visibility:public"],
+ )
++
++go_test(
++    name = "peregrine_test",
++    srcs = ["main_test.go"],
++    embed = [":peregrine_lib"],
++    deps = [
++        "//peregrine/adapters",
++        "//peregrine/vendor/github.com/charmbracelet/x/exp/teatest",
++        "//peregrine/viewmodel",
++    ],
++)
+diff --git a/peregrine/adapters/BUILD.bazel b/peregrine/adapters/BUILD.bazel
+index f1f9bae..4e63602 100644
+--- a/peregrine/adapters/BUILD.bazel
++++ b/peregrine/adapters/BUILD.bazel
+@@ -13,12 +13,12 @@ go_library(
+     deps = [
+         "//peregrine/gen/falcon/v1:falcon",
+         "//peregrine/gen/falcon/v1/falconv1connect",
++        "//peregrine/vendor/connectrpc.com/connect",
+         "//peregrine/vendor/github.com/charmbracelet/harmonica",
++        "//peregrine/vendor/github.com/vmihailenco/msgpack/v5:msgpack",
+         "//peregrine/vendor/google.golang.org/adk/agent",
+         "//peregrine/vendor/google.golang.org/adk/agent/llmagent",
+         "//peregrine/vendor/google.golang.org/adk/model",
+         "//peregrine/vendor/google.golang.org/genai",
+-        "@com_connectrpc_connect//:connect",
+-        "@com_github_vmihailenco_msgpack_v5//:msgpack",
+     ],
+ )
+diff --git a/peregrine/adapters/backend_client.go b/peregrine/adapters/backend_client.go
+index 216dfc9..9f93e13 100644
+--- a/peregrine/adapters/backend_client.go
++++ b/peregrine/adapters/backend_client.go
+@@ -54,3 +54,147 @@ func (b *BackendClient) DispatchAction(ctx context.Context, id, action string) (
+ 	}
+ 	return res.Msg.Result, nil
+ }
++
++func (b *BackendClient) StartUltraplan(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.UltraplanRequest{Id: id})
++        res, err := b.client.StartUltraplan(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) QuickSearch(ctx context.Context, id, query string) (string, error) {
++        req := connect.NewRequest(&falconv1.SearchRequest{Id: id, Query: query})
++        res, err := b.client.QuickSearch(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetTokenBudget(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.BudgetRequest{Id: id})
++        res, err := b.client.GetTokenBudget(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetTeamMem(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.TeamMemRequest{Id: id})
++        res, err := b.client.GetTeamMem(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) StartBridgeMode(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.BridgeModeRequest{Id: id})
++        res, err := b.client.StartBridgeMode(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) SetAgentTrigger(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.TriggerRequest{Id: id})
++        res, err := b.client.SetAgentTrigger(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) SetAgentTriggerRemote(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.TriggerRemoteRequest{Id: id})
++        res, err := b.client.SetAgentTriggerRemote(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) ExtractMemories(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.ExtractMemoriesRequest{Id: id})
++        res, err := b.client.ExtractMemories(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetCompactionReminders(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.CompactionRequest{Id: id})
++        res, err := b.client.GetCompactionReminders(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) CachedMicrocompact(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.MicrocompactRequest{Id: id})
++        res, err := b.client.CachedMicrocompact(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetShotStats(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.ShotStatsRequest{Id: id})
++        res, err := b.client.GetShotStats(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) StartVerification(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.VerificationRequest{Id: id})
++        res, err := b.client.StartVerification(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) ClassifyBash(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.BashClassifyRequest{Id: id})
++        res, err := b.client.ClassifyBash(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetVoiceMode(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.VoiceModeRequest{Id: id})
++        res, err := b.client.GetVoiceMode(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetHistoryPicker(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.HistoryPickerRequest{Id: id})
++        res, err := b.client.GetHistoryPicker(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) MessageActions(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.MessageActionsRequest{Id: id})
++        res, err := b.client.MessageActions(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
+diff --git a/peregrine/go.mod b/peregrine/go.mod
+index aee4db3..edd6958 100644
+--- a/peregrine/go.mod
++++ b/peregrine/go.mod
+@@ -4,24 +4,34 @@ go 1.25.1
+ 
+ require (
+ 	connectrpc.com/connect v1.19.2
++	github.com/charmbracelet/bubbles v1.0.0
+ 	github.com/charmbracelet/bubbletea v1.3.10
+ 	github.com/charmbracelet/harmonica v0.2.0
+ 	github.com/charmbracelet/lipgloss v1.1.0
++	github.com/charmbracelet/x/exp/teatest v0.0.0-20260422141420-a6cbdff8a7e2
++	github.com/spf13/cobra v1.8.1
+ 	github.com/vmihailenco/msgpack/v5 v5.4.1
+ 	google.golang.org/adk v1.2.0
+ 	google.golang.org/genai v1.40.0
++	google.golang.org/protobuf v1.36.11
+ )
+ 
+ require (
+ 	cloud.google.com/go v0.123.0 // indirect
+ 	cloud.google.com/go/auth v0.18.2 // indirect
+ 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
++	github.com/atotto/clipboard v0.1.4 // indirect
+ 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
++	github.com/aymanbagabas/go-udiff v0.3.1 // indirect
+ 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+-	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
+-	github.com/charmbracelet/x/ansi v0.10.1 // indirect
+-	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
+-	github.com/charmbracelet/x/term v0.2.1 // indirect
++	github.com/charmbracelet/colorprofile v0.4.1 // indirect
++	github.com/charmbracelet/x/ansi v0.11.6 // indirect
++	github.com/charmbracelet/x/cellbuf v0.0.15 // indirect
++	github.com/charmbracelet/x/exp/golden v0.0.0-20241011142426-46044092ad91 // indirect
++	github.com/charmbracelet/x/term v0.2.2 // indirect
++	github.com/clipperhouse/displaywidth v0.9.0 // indirect
++	github.com/clipperhouse/stringish v0.1.1 // indirect
++	github.com/clipperhouse/uax29/v2 v2.5.0 // indirect
+ 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
+ 	github.com/felixge/httpsnoop v1.0.4 // indirect
+ 	github.com/go-logr/logr v1.4.3 // indirect
+@@ -33,14 +43,16 @@ require (
+ 	github.com/googleapis/enterprise-certificate-proxy v0.3.14 // indirect
+ 	github.com/googleapis/gax-go/v2 v2.18.0 // indirect
+ 	github.com/gorilla/websocket v1.5.3 // indirect
+-	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
++	github.com/inconshreveable/mousetrap v1.1.0 // indirect
++	github.com/lucasb-eyer/go-colorful v1.3.0 // indirect
+ 	github.com/mattn/go-isatty v0.0.20 // indirect
+ 	github.com/mattn/go-localereader v0.0.1 // indirect
+-	github.com/mattn/go-runewidth v0.0.16 // indirect
++	github.com/mattn/go-runewidth v0.0.19 // indirect
+ 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
+ 	github.com/muesli/cancelreader v0.2.2 // indirect
+ 	github.com/muesli/termenv v0.16.0 // indirect
+ 	github.com/rivo/uniseg v0.4.7 // indirect
++	github.com/spf13/pflag v1.0.10 // indirect
+ 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
+ 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
+ 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
+@@ -55,7 +67,6 @@ require (
+ 	golang.org/x/text v0.35.0 // indirect
+ 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260316180232-0b37fe3546d5 // indirect
+ 	google.golang.org/grpc v1.79.3 // indirect
+-	google.golang.org/protobuf v1.36.11 // indirect
+ 	rsc.io/omap v1.2.0 // indirect
+ 	rsc.io/ordered v1.1.1 // indirect
+ )
+diff --git a/peregrine/go.sum b/peregrine/go.sum
+index ec50db2..aa8e250 100644
+--- a/peregrine/go.sum
++++ b/peregrine/go.sum
+@@ -6,24 +6,41 @@ cloud.google.com/go/compute/metadata v0.9.0 h1:pDUj4QMoPejqq20dK0Pg2N4yG9zIkYGdB
+ cloud.google.com/go/compute/metadata v0.9.0/go.mod h1:E0bWwX5wTnLPedCKqk3pJmVgCBSM6qQI1yTBdEb3C10=
+ connectrpc.com/connect v1.19.2 h1:McQ83FGdzL+t60peksi0gXC7MQ/iLKgLduAnThbM0mo=
+ connectrpc.com/connect v1.19.2/go.mod h1:tN20fjdGlewnSFeZxLKb0xwIZ6ozc3OQs2hTXy4du9w=
++github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z4=
++github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
+ github.com/aymanbagabas/go-osc52/v2 v2.0.1 h1:HwpRHbFMcZLEVr42D4p7XBqjyuxQH5SMiErDT4WkJ2k=
+ github.com/aymanbagabas/go-osc52/v2 v2.0.1/go.mod h1:uYgXzlJ7ZpABp8OJ+exZzJJhRNQ2ASbcXHWsFqH8hp8=
++github.com/aymanbagabas/go-udiff v0.3.1 h1:LV+qyBQ2pqe0u42ZsUEtPiCaUoqgA9gYRDs3vj1nolY=
++github.com/aymanbagabas/go-udiff v0.3.1/go.mod h1:G0fsKmG+P6ylD0r6N/KgQD/nWzgfnl8ZBcNLgcbrw8E=
+ github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
+ github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
++github.com/charmbracelet/bubbles v1.0.0 h1:12J8/ak/uCZEMQ6KU7pcfwceyjLlWsDLAxB5fXonfvc=
++github.com/charmbracelet/bubbles v1.0.0/go.mod h1:9d/Zd5GdnauMI5ivUIVisuEm3ave1XwXtD1ckyV6r3E=
+ github.com/charmbracelet/bubbletea v1.3.10 h1:otUDHWMMzQSB0Pkc87rm691KZ3SWa4KUlvF9nRvCICw=
+ github.com/charmbracelet/bubbletea v1.3.10/go.mod h1:ORQfo0fk8U+po9VaNvnV95UPWA1BitP1E0N6xJPlHr4=
+-github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc h1:4pZI35227imm7yK2bGPcfpFEmuY1gc2YSTShr4iJBfs=
+-github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc/go.mod h1:X4/0JoqgTIPSFcRA/P6INZzIuyqdFY5rm8tb41s9okk=
++github.com/charmbracelet/colorprofile v0.4.1 h1:a1lO03qTrSIRaK8c3JRxJDZOvhvIeSco3ej+ngLk1kk=
++github.com/charmbracelet/colorprofile v0.4.1/go.mod h1:U1d9Dljmdf9DLegaJ0nGZNJvoXAhayhmidOdcBwAvKk=
+ github.com/charmbracelet/harmonica v0.2.0 h1:8NxJWRWg/bzKqqEaaeFNipOu77YR5t8aSwG4pgaUBiQ=
+ github.com/charmbracelet/harmonica v0.2.0/go.mod h1:KSri/1RMQOZLbw7AHqgcBycp8pgJnQMYYT8QZRqZ1Ao=
+ github.com/charmbracelet/lipgloss v1.1.0 h1:vYXsiLHVkK7fp74RkV7b2kq9+zDLoEU4MZoFqR/noCY=
+ github.com/charmbracelet/lipgloss v1.1.0/go.mod h1:/6Q8FR2o+kj8rz4Dq0zQc3vYf7X+B0binUUBwA0aL30=
+-github.com/charmbracelet/x/ansi v0.10.1 h1:rL3Koar5XvX0pHGfovN03f5cxLbCF2YvLeyz7D2jVDQ=
+-github.com/charmbracelet/x/ansi v0.10.1/go.mod h1:3RQDQ6lDnROptfpWuUVIUG64bD2g2BgntdxH0Ya5TeE=
+-github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd h1:vy0GVL4jeHEwG5YOXDmi86oYw2yuYUGqz6a8sLwg0X8=
+-github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd/go.mod h1:xe0nKWGd3eJgtqZRaN9RjMtK7xUYchjzPr7q6kcvCCs=
+-github.com/charmbracelet/x/term v0.2.1 h1:AQeHeLZ1OqSXhrAWpYUtZyX1T3zVxfpZuEQMIQaGIAQ=
+-github.com/charmbracelet/x/term v0.2.1/go.mod h1:oQ4enTYFV7QN4m0i9mzHrViD7TQKvNEEkHUMCmsxdUg=
++github.com/charmbracelet/x/ansi v0.11.6 h1:GhV21SiDz/45W9AnV2R61xZMRri5NlLnl6CVF7ihZW8=
++github.com/charmbracelet/x/ansi v0.11.6/go.mod h1:2JNYLgQUsyqaiLovhU2Rv/pb8r6ydXKS3NIttu3VGZQ=
++github.com/charmbracelet/x/cellbuf v0.0.15 h1:ur3pZy0o6z/R7EylET877CBxaiE1Sp1GMxoFPAIztPI=
++github.com/charmbracelet/x/cellbuf v0.0.15/go.mod h1:J1YVbR7MUuEGIFPCaaZ96KDl5NoS0DAWkskup+mOY+Q=
++github.com/charmbracelet/x/exp/golden v0.0.0-20241011142426-46044092ad91 h1:payRxjMjKgx2PaCWLZ4p3ro9y97+TVLZNaRZgJwSVDQ=
++github.com/charmbracelet/x/exp/golden v0.0.0-20241011142426-46044092ad91/go.mod h1:wDlXFlCrmJ8J+swcL/MnGUuYnqgQdW9rhSD61oNMb6U=
++github.com/charmbracelet/x/exp/teatest v0.0.0-20260422141420-a6cbdff8a7e2 h1:FBYm3qSLjd51O4JkD3tDc/np9lJQlqq8RQSIy/3R09w=
++github.com/charmbracelet/x/exp/teatest v0.0.0-20260422141420-a6cbdff8a7e2/go.mod h1:aPVjFrBwbJgj5Qz1F0IXsnbcOVJcMKgu1ySUfTAxh7k=
++github.com/charmbracelet/x/term v0.2.2 h1:xVRT/S2ZcKdhhOuSP4t5cLi5o+JxklsoEObBSgfgZRk=
++github.com/charmbracelet/x/term v0.2.2/go.mod h1:kF8CY5RddLWrsgVwpw4kAa6TESp6EB5y3uxGLeCqzAI=
++github.com/clipperhouse/displaywidth v0.9.0 h1:Qb4KOhYwRiN3viMv1v/3cTBlz3AcAZX3+y9OLhMtAtA=
++github.com/clipperhouse/displaywidth v0.9.0/go.mod h1:aCAAqTlh4GIVkhQnJpbL0T/WfcrJXHcj8C0yjYcjOZA=
++github.com/clipperhouse/stringish v0.1.1 h1:+NSqMOr3GR6k1FdRhhnXrLfztGzuG+VuFDfatpWHKCs=
++github.com/clipperhouse/stringish v0.1.1/go.mod h1:v/WhFtE1q0ovMta2+m+UbpZ+2/HEXNWYXQgCt4hdOzA=
++github.com/clipperhouse/uax29/v2 v2.5.0 h1:x7T0T4eTHDONxFJsL94uKNKPHrclyFI0lm7+w94cO8U=
++github.com/clipperhouse/uax29/v2 v2.5.0/go.mod h1:Wn1g7MK6OoeDT0vL+Q0SQLDz/KpfsVRgg6W7ihQeh4g=
++github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
+ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+ github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f h1:Y/CXytFA4m6baUTXGLOoWe4PQhGxaX0KpnayAqC48p4=
+@@ -53,14 +70,16 @@ github.com/googleapis/gax-go/v2 v2.18.0 h1:jxP5Uuo3bxm3M6gGtV94P4lliVetoCB4Wk2x8
+ github.com/googleapis/gax-go/v2 v2.18.0/go.mod h1:uSzZN4a356eRG985CzJ3WfbFSpqkLTjsnhWGJR6EwrE=
+ github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
+ github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
+-github.com/lucasb-eyer/go-colorful v1.2.0 h1:1nnpGOrhyZZuNyfu1QjKiUICQ74+3FNCN69Aj6K7nkY=
+-github.com/lucasb-eyer/go-colorful v1.2.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
++github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
++github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
++github.com/lucasb-eyer/go-colorful v1.3.0 h1:2/yBRLdWBZKrf7gB40FoiKfAWYQ0lqNcbuQwVHXptag=
++github.com/lucasb-eyer/go-colorful v1.3.0/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
+ github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
+ github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
+ github.com/mattn/go-localereader v0.0.1 h1:ygSAOl7ZXTx4RdPYinUpg6W99U8jWvWi9Ye2JC/oIi4=
+ github.com/mattn/go-localereader v0.0.1/go.mod h1:8fBrzywKY7BI3czFoHkuzRoWE9C+EiG4R1k4Cjx5p88=
+-github.com/mattn/go-runewidth v0.0.16 h1:E5ScNMtiwvlvB5paMFdw9p4kSQzbXFikJ5SQO6TULQc=
+-github.com/mattn/go-runewidth v0.0.16/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
++github.com/mattn/go-runewidth v0.0.19 h1:v++JhqYnZuu5jSKrk9RbgF5v4CGUjqRfBm05byFGLdw=
++github.com/mattn/go-runewidth v0.0.19/go.mod h1:XBkDxAl56ILZc9knddidhrOlY5R/pDhgLpndooCuJAs=
+ github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 h1:ZK8zHtRHOkbHy6Mmr5D264iyp3TiX5OmNcI5cIARiQI=
+ github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6/go.mod h1:CJlz5H+gyd6CUWT45Oy4q24RdLyn7Md9Vj2/ldJBSIo=
+ github.com/muesli/cancelreader v0.2.2 h1:3I4Kt4BQjOR54NavqnDogx/MIoWBFa0StPA8ELUXHmA=
+@@ -69,9 +88,14 @@ github.com/muesli/termenv v0.16.0 h1:S5AlUN9dENB57rsbnkPyfdGuWIlkmzJjbFf0Tf5FWUc
+ github.com/muesli/termenv v0.16.0/go.mod h1:ZRfOIKPFDYQoDFF4Olj7/QJbW60Ol/kL1pU3VfY/Cnk=
+ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+-github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
+ github.com/rivo/uniseg v0.4.7 h1:WUdvkW8uEhrYfLC4ZzdpI2ztxP1I582+49Oc5Mq64VQ=
+ github.com/rivo/uniseg v0.4.7/go.mod h1:FN3SvrM+Zdj16jyLfmOkMNblXMcoc8DfTHruCPUcx88=
++github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
++github.com/spf13/cobra v1.8.1 h1:e5/vxKd/rZsfSJMUX1agtjeTDf+qv1/JdBF8gg5k9ZM=
++github.com/spf13/cobra v1.8.1/go.mod h1:wHxEcudfqmLYa8iTfL+OuZPbBZkmvliBWKIezN3kD9Y=
++github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
++github.com/spf13/pflag v1.0.10 h1:4EBh2KAYBwaONj6b2Ye1GiHfwjqyROoF4RwYO+vPwFk=
++github.com/spf13/pflag v1.0.10/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
+ github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
+ github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
+ github.com/vmihailenco/msgpack/v5 v5.4.1 h1:cQriyiUvjTwOHg8QZaPihLWeRAAVoCpE00IUPn0Bjt8=
+@@ -100,8 +124,8 @@ go.opentelemetry.io/otel/trace v1.40.0 h1:WA4etStDttCSYuhwvEa8OP8I5EWu24lkOzp+ZY
+ go.opentelemetry.io/otel/trace v1.40.0/go.mod h1:zeAhriXecNGP/s2SEG3+Y8X9ujcJOTqQ5RgdEJcawiA=
+ golang.org/x/crypto v0.49.0 h1:+Ng2ULVvLHnJ/ZFEq4KdcDd/cfjrrjjNSXNzxg0Y4U4=
+ golang.org/x/crypto v0.49.0/go.mod h1:ErX4dUh2UM+CFYiXZRTcMpEcN8b/1gxEuv3nODoYtCA=
+-golang.org/x/exp v0.0.0-20220909182711-5c715a9e8561 h1:MDc5xs78ZrZr3HMQugiXOAkSZtfTpbJLDr/lwfgO53E=
+-golang.org/x/exp v0.0.0-20220909182711-5c715a9e8561/go.mod h1:cyybsKvd6eL0RnXn6p/Grxp8F5bW7iYuBgsNCOHpMYE=
++golang.org/x/exp v0.0.0-20231006140011-7918f672742d h1:jtJma62tbqLibJ5sFQz8bKtEM8rJBtfilJ2qTU199MI=
++golang.org/x/exp v0.0.0-20231006140011-7918f672742d/go.mod h1:ldy0pHrwJyGW56pPQzzkH36rKxoZW1tw7ZJpeKx+hdo=
+ golang.org/x/net v0.52.0 h1:He/TN1l0e4mmR3QqHMT2Xab3Aj3L9qjbhRm78/6jrW0=
+ golang.org/x/net v0.52.0/go.mod h1:R1MAz7uMZxVMualyPXb+VaqGSa3LIaUqk0eEt3w36Sw=
+ golang.org/x/sync v0.20.0 h1:e0PTpb7pjO8GAtTs2dQ6jYa5BWYlMuX047Dco/pItO4=
+@@ -126,6 +150,7 @@ google.golang.org/grpc v1.79.3 h1:sybAEdRIEtvcD68Gx7dmnwjZKlyfuc61Dyo9pGXXkKE=
+ google.golang.org/grpc v1.79.3/go.mod h1:KmT0Kjez+0dde/v2j9vzwoAScgEPx/Bw1CYChhHLrHQ=
+ google.golang.org/protobuf v1.36.11 h1:fV6ZwhNocDyBLK0dj+fg8ektcVegBBuEolpbTQyBNVE=
+ google.golang.org/protobuf v1.36.11/go.mod h1:HTf+CrKn2C3g5S8VImy6tdcUvCska2kB7j23XfzDpco=
++gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+ gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+ gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+ rsc.io/omap v1.2.0 h1:c1M8jchnHbzmJALzGLclfH3xDWXrPxSUHXzH5C+8Kdw=
+diff --git a/peregrine/main.go b/peregrine/main.go
+index 9f25d77..e65373b 100644
+--- a/peregrine/main.go
++++ b/peregrine/main.go
+@@ -1,39 +1,63 @@
+ package main
+ 
+ import (
+-	"fmt"
+-	"log"
+-	"os"
++        "fmt"
++        "log"
++        "os"
+ 
+-	tea "github.com/charmbracelet/bubbletea"
++        tea "github.com/charmbracelet/bubbletea"
++        "github.com/spf13/cobra"
+ 
+-	"github.com/alexthotse/peregrine/adapters"
+-	"github.com/alexthotse/peregrine/viewmodel"
++        "github.com/alexthotse/peregrine/adapters"
++        "github.com/alexthotse/peregrine/viewmodel"
++)
++
++var (
++        theme    string
++        provider string
+ )
+ 
+ func main() {
+-	f, err := tea.LogToFile("debug.log", "debug")
+-	if err != nil {
+-		fmt.Println("fatal:", err)
+-		os.Exit(1)
+-	}
+-	defer f.Close()
+-
+-	// Hexagonal Architecture Initialization
+-	backendClient := adapters.NewDefaultBackendClient()
+-
+-	agentClient, err := adapters.NewADKAgentClient()
+-	if err != nil {
+-		log.Fatalf("Failed to initialize ADK Agent: %v", err)
+-	}
+-
+-	animatorClient := adapters.NewAnimator()
+-
+-	// MVVM Bootstrap
+-	appViewModel := viewmodel.NewAppViewModel(backendClient, agentClient, animatorClient)
+-
+-	p := tea.NewProgram(appViewModel)
+-	if _, err := p.Run(); err != nil {
+-		log.Fatal(err)
+-	}
++        var rootCmd = &cobra.Command{
++                Use:   "peregrine",
++                Short: "Peregrine is a terminal-based AI assistant system",
++                Run: func(cmd *cobra.Command, args []string) {
++                        runApp()
++                },
++        }
++
++        rootCmd.PersistentFlags().StringVar(&theme, "theme", "pi", "Theme to use (pi, freecode, crush)")
++        rootCmd.PersistentFlags().StringVar(&provider, "provider", "anthropic", "LLM provider to use")
++
++        if err := rootCmd.Execute(); err != nil {
++                fmt.Println(err)
++                os.Exit(1)
++        }
++}
++
++func runApp() {
++        f, err := tea.LogToFile("debug.log", "debug")
++        if err != nil {
++                fmt.Println("fatal:", err)
++                os.Exit(1)
++        }
++        defer f.Close()
++
++        // Hexagonal Architecture Initialization
++        backendClient := adapters.NewDefaultBackendClient()
++
++        agentClient, err := adapters.NewADKAgentClient()
++        if err != nil {
++                log.Fatalf("Failed to initialize ADK Agent: %v", err)
++        }
++
++        animatorClient := adapters.NewAnimator()
++
++        // MVVM Bootstrap
++        appViewModel := viewmodel.NewAppViewModel(backendClient, agentClient, animatorClient)
++
++        p := tea.NewProgram(appViewModel)
++        if _, err := p.Run(); err != nil {
++                log.Fatal(err)
++        }
+ }
+diff --git a/peregrine/main_test.go b/peregrine/main_test.go
+new file mode 100644
+index 0000000..e0424a6
+--- /dev/null
++++ b/peregrine/main_test.go
+@@ -0,0 +1,31 @@
++package main
++
++import (
++	"bytes"
++	"testing"
++	"time"
++
++	"github.com/alexthotse/peregrine/adapters"
++	"github.com/alexthotse/peregrine/viewmodel"
++	"github.com/charmbracelet/x/exp/teatest"
++)
++
++func TestMainApp(t *testing.T) {
++	bc := adapters.NewDefaultBackendClient()
++	ac, err := adapters.NewADKAgentClient()
++	if err != nil {
++		t.Fatalf("Failed to initialize ADK Agent: %v", err)
++	}
++	anim := adapters.NewAnimator()
++	app := viewmodel.NewAppViewModel(bc, ac, anim)
++
++	tm := teatest.NewTestModel(t, app, teatest.WithInitialTermSize(80, 24))
++
++	// Ensure the app starts and renders something
++	teatest.WaitFor(t, tm.Output(), func(b []byte) bool {
++		return bytes.Contains(b, []byte("Peregrine")) || bytes.Contains(b, []byte("Backend")) || bytes.Contains(b, []byte("RPC Error"))
++	}, teatest.WithDuration(time.Second*3))
++
++	tm.Quit()
++	tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second))
++}
+diff --git a/peregrine/viewmodel/BUILD.bazel b/peregrine/viewmodel/BUILD.bazel
+index 7854601..9fa367b 100644
+--- a/peregrine/viewmodel/BUILD.bazel
++++ b/peregrine/viewmodel/BUILD.bazel
+@@ -1,4 +1,4 @@
+-load("@rules_go//go:def.bzl", "go_library")
++load("@rules_go//go:def.bzl", "go_library", "go_test")
+ 
+ go_library(
+     name = "viewmodel",
+@@ -13,8 +13,20 @@ go_library(
+     deps = [
+         "//peregrine/adapters",
+         "//peregrine/domain",
++        "//peregrine/vendor/github.com/charmbracelet/bubbles/textinput",
+         "//peregrine/vendor/github.com/charmbracelet/bubbletea",
+         "//peregrine/vendor/github.com/charmbracelet/lipgloss",
+         "//peregrine/view",
+     ],
+ )
++
++go_test(
++    name = "viewmodel_test",
++    srcs = ["viewmodel_test.go"],
++    deps = [
++        ":viewmodel",
++        "//peregrine/adapters",
++        "//peregrine/vendor/github.com/charmbracelet/bubbletea",
++        "//peregrine/vendor/github.com/charmbracelet/x/exp/teatest",
++    ],
++)
+diff --git a/peregrine/viewmodel/viewmodel.go b/peregrine/viewmodel/viewmodel.go
+index bc8e9fd..f74f68f 100644
+--- a/peregrine/viewmodel/viewmodel.go
++++ b/peregrine/viewmodel/viewmodel.go
+@@ -1,154 +1,296 @@
+ package viewmodel
+ 
+ import (
+-	"context"
+-	"fmt"
+-	"time"
++        "context"
++        "fmt"
++        "strings"
++        "time"
+ 
+-	tea "github.com/charmbracelet/bubbletea"
++        "github.com/charmbracelet/bubbles/textinput"
++        tea "github.com/charmbracelet/bubbletea"
+ 
+-	"github.com/alexthotse/peregrine/adapters"
+-	"github.com/alexthotse/peregrine/domain"
+-	"github.com/alexthotse/peregrine/view"
++        "github.com/alexthotse/peregrine/adapters"
++        "github.com/alexthotse/peregrine/domain"
++        "github.com/alexthotse/peregrine/view"
+ )
+ 
+ type AppViewModel struct {
+-	state          domain.State
+-	backendClient  *adapters.BackendClient
+-	animatorClient *adapters.Animator
+-	agentClient    *adapters.ADKAgentClient
+-
+-	voice   VoiceModel
+-	history HistoryModel
+-	actions ActionsModel
++        state          domain.State
++        backendClient  *adapters.BackendClient
++        animatorClient *adapters.Animator
++        agentClient    *adapters.ADKAgentClient
++
++        textInput textinput.Model
++        voice     VoiceModel
++        history   HistoryModel
++        actions   ActionsModel
+ }
+ 
+ func NewAppViewModel(bc *adapters.BackendClient, ac *adapters.ADKAgentClient, anim *adapters.Animator) *AppViewModel {
+-	return &AppViewModel{
+-		state:          domain.InitialState(),
+-		backendClient:  bc,
+-		animatorClient: anim,
+-		agentClient:    ac,
+-		voice:          NewVoiceModel(),
+-		history:        NewHistoryModel(),
+-		actions:        NewActionsModel(),
+-	}
++        ti := textinput.New()
++        ti.Placeholder = "Type a command (/budget, /teammem, /bridge, etc)..."
++        ti.Focus()
++        ti.CharLimit = 156
++        ti.Width = 40
++
++        return &AppViewModel{
++                state:          domain.InitialState(),
++                backendClient:  bc,
++                animatorClient: anim,
++                agentClient:    ac,
++                textInput:      ti,
++                voice:          NewVoiceModel(),
++                history:        NewHistoryModel(),
++                actions:        NewActionsModel(),
++        }
+ }
+ 
+ type tickMsg time.Time
+ 
+ func tick() tea.Cmd {
+-	return tea.Tick(time.Second/60, func(t time.Time) tea.Msg {
+-		return tickMsg(t)
+-	})
++        return tea.Tick(time.Second/60, func(t time.Time) tea.Msg {
++                return tickMsg(t)
++        })
+ }
+ 
+ type rpcResultMsg string
+ 
+ func (m *AppViewModel) Init() tea.Cmd {
+-	return tea.Batch(
+-		tick(),
+-		func() tea.Msg {
+-			// Initially ping the backend to ensure connectivity
+-			res, err := m.backendClient.Ping(context.Background(), "init-ping")
+-			if err != nil {
+-				return rpcResultMsg(fmt.Sprintf("RPC Error: %v", err))
+-			}
+-			return rpcResultMsg(fmt.Sprintf("Backend says: %s", res))
+-		},
+-	)
++        return tea.Batch(
++                textinput.Blink,
++                tick(),
++                func() tea.Msg {
++                        res, err := m.backendClient.Ping(context.Background(), "init-ping")
++                        if err != nil {
++                                return rpcResultMsg(fmt.Sprintf("RPC Error: %v", err))
++                        }
++                        return rpcResultMsg(fmt.Sprintf("Backend says: %s", res))
++                },
++        )
+ }
+ 
+ func (m *AppViewModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+-	var cmd tea.Cmd
+-
+-	switch msg := msg.(type) {
+-
+-	case tea.KeyMsg:
+-		// Let sub-models handle keys first if they are active
+-		if m.voice.active {
+-			m.voice, cmd = m.voice.Update(msg)
+-			return m, cmd
+-		}
+-		if m.history.active {
+-			m.history, cmd = m.history.Update(msg)
+-			return m, cmd
+-		}
+-		if m.actions.active {
+-			m.actions, cmd = m.actions.Update(msg)
+-			return m, cmd
+-		}
+-
+-		switch msg.String() {
+-		case "q", "ctrl+c":
+-			return m, tea.Quit
+-		case "v":
+-			m.voice.active = true
+-			return m, nil
+-		case "h":
+-			m.history.active = true
+-			return m, nil
+-		case "m":
+-			m.actions.active = true
+-			return m, nil
+-		case "t":
+-			// Cycle themes
+-			newTheme := (m.state.ThemeType + 1) % 3
+-			m.state = domain.SetTheme(m.state, newTheme)
+-			return m, nil
+-		case "u":
+-			// Trigger Ultrathink via RPC
+-			m.state = domain.AddMessage(m.state, "Triggering ULTRATHINK...")
+-			m.animatorClient.SetTarget(20.0) // Bounce right
+-			return m, func() tea.Msg {
+-				res, err := m.backendClient.StartUltrathink(context.Background(), "u-req")
+-				if err != nil {
+-					return rpcResultMsg(fmt.Sprintf("Ultrathink failed: %v", err))
+-				}
+-				return rpcResultMsg(fmt.Sprintf("Ultrathink result: %s", res))
+-			}
+-		case "j":
+-			// Trigger Jido Action via RPC
+-			m.state = domain.AddMessage(m.state, "Dispatching Jido Action...")
+-			return m, func() tea.Msg {
+-				res, err := m.backendClient.DispatchAction(context.Background(), "j-req", "test_action")
+-				if err != nil {
+-					return rpcResultMsg(fmt.Sprintf("Jido Action failed: %v", err))
+-				}
+-				return rpcResultMsg(fmt.Sprintf("Jido Action result: %s", res))
+-			}
+-		case "space":
+-			m.animatorClient.SetTarget(0.0) // Bounce back
+-			m.state = domain.IncrementRequestID(m.state)
+-			m.state = domain.AddMessage(m.state, fmt.Sprintf("Ping %d", m.state.RequestID))
+-			return m, nil
+-		}
+-
+-	case rpcResultMsg:
+-		m.state = domain.AddMessage(m.state, string(msg))
+-		m.animatorClient.SetTarget(0.0) // Reset position
+-		return m, nil
+-
+-	case tickMsg:
+-		m.animatorClient.Update()
+-		return m, tick()
+-	}
+-
+-	return m, nil
++        var cmds []tea.Cmd
++        var cmd tea.Cmd
++
++        switch msg := msg.(type) {
++        case tea.KeyMsg:
++                if m.voice.active {
++                        m.voice, cmd = m.voice.Update(msg)
++                        return m, cmd
++                }
++                if m.history.active {
++                        m.history, cmd = m.history.Update(msg)
++                        return m, cmd
++                }
++                if m.actions.active {
++                        m.actions, cmd = m.actions.Update(msg)
++                        return m, cmd
++                }
++
++                switch msg.Type {
++                case tea.KeyCtrlC, tea.KeyEsc:
++                        return m, tea.Quit
++                case tea.KeyEnter:
++                        val := m.textInput.Value()
++                        m.textInput.SetValue("")
++                        if val != "" {
++                                return m.handleCommand(val)
++                        }
++                default:
++                        m.textInput, cmd = m.textInput.Update(msg)
++                        cmds = append(cmds, cmd)
++                }
++
++                // Handle global shortcuts if they are not eating input
++                // Or maybe don't if textInput is focused.
++                // Actually, if we just type, it goes to textInput.
++
++        case rpcResultMsg:
++                m.state = domain.AddMessage(m.state, string(msg))
++                m.animatorClient.SetTarget(0.0)
++                return m, nil
++
++        case tickMsg:
++                m.animatorClient.Update()
++                cmds = append(cmds, tick())
++        }
++
++        return m, tea.Batch(cmds...)
++}
++
++func (m *AppViewModel) handleCommand(val string) (tea.Model, tea.Cmd) {
++        m.state = domain.AddMessage(m.state, "> "+val)
++        m.animatorClient.SetTarget(20.0)
++
++        id := "cmd-" + fmt.Sprint(m.state.RequestID)
++        m.state = domain.IncrementRequestID(m.state)
++
++        var cmd tea.Cmd
++        ctx := context.Background()
++
++        switch {
++        case strings.HasPrefix(val, "/budget"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.GetTokenBudget(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/teammem"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.GetTeamMem(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/bridge"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.StartBridgeMode(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/ultraplan"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.StartUltraplan(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/ultrathink"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.StartUltrathink(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/triggerremote"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.SetAgentTriggerRemote(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/trigger"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.SetAgentTrigger(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/extract"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.ExtractMemories(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/microcompact"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.CachedMicrocompact(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/verify"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.StartVerification(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/stats"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.GetShotStats(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/classify"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.ClassifyBash(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/compact"):
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.GetCompactionReminders(ctx, id)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case strings.HasPrefix(val, "/search"):
++                parts := strings.SplitN(val, " ", 2)
++                q := ""
++                if len(parts) > 1 {
++                        q = parts[1]
++                }
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.QuickSearch(ctx, id, q)
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        case val == "v":
++                m.voice.active = true
++                return m, nil
++        case val == "h":
++                m.history.active = true
++                return m, nil
++        case val == "m":
++                m.actions.active = true
++                return m, nil
++        case val == "t":
++                newTheme := (m.state.ThemeType + 1) % 3
++                m.state = domain.SetTheme(m.state, newTheme)
++                return m, nil
++        case val == "j":
++                cmd = func() tea.Msg {
++                        res, err := m.backendClient.DispatchAction(ctx, id, "test_action")
++                        if err != nil {
++                                return rpcResultMsg("Error: " + err.Error())
++                        }
++                        return rpcResultMsg(res)
++                }
++        default:
++                m.animatorClient.SetTarget(0.0)
++                cmd = func() tea.Msg {
++                        return rpcResultMsg("Unknown command: " + val)
++                }
++        }
++        return m, cmd
+ }
+ 
+ func (m *AppViewModel) View() string {
+-	baseView := view.Render(m.state, m.animatorClient.Position())
+-	
+-	if m.voice.active {
+-		baseView += "\n\n" + m.voice.View()
+-	}
+-	if m.history.active {
+-		baseView += "\n\n" + m.history.View()
+-	}
+-	if m.actions.active {
+-		baseView += "\n\n" + m.actions.View()
+-	}
+-
+-	return baseView
++        baseView := view.Render(m.state, m.animatorClient.Position())
++
++        baseView += "\n\n" + m.textInput.View()
++
++        if m.voice.active {
++                baseView += "\n\n" + m.voice.View()
++        }
++        if m.history.active {
++                baseView += "\n\n" + m.history.View()
++        }
++        if m.actions.active {
++                baseView += "\n\n" + m.actions.View()
++        }
++
++        return baseView
+ }
+diff --git a/peregrine/viewmodel/viewmodel_test.go b/peregrine/viewmodel/viewmodel_test.go
+new file mode 100644
+index 0000000..1fd9ccc
+--- /dev/null
++++ b/peregrine/viewmodel/viewmodel_test.go
+@@ -0,0 +1,40 @@
++package viewmodel_test
++
++import (
++        "bytes"
++        "testing"
++        "time"
++
++        "github.com/alexthotse/peregrine/adapters"
++        "github.com/alexthotse/peregrine/viewmodel"
++        tea "github.com/charmbracelet/bubbletea"
++        "github.com/charmbracelet/x/exp/teatest"
++)
++
++func TestAppViewModel(t *testing.T) {
++        bc := adapters.NewDefaultBackendClient()
++        ac, err := adapters.NewADKAgentClient()
++        if err != nil {
++                t.Fatalf("Failed to initialize ADK Agent: %v", err)
++        }
++        anim := adapters.NewAnimator()
++        app := viewmodel.NewAppViewModel(bc, ac, anim)
++
++        tm := teatest.NewTestModel(t, app, teatest.WithInitialTermSize(80, 24))
++
++        teatest.WaitFor(t, tm.Output(), func(b []byte) bool {
++                return bytes.Contains(b, []byte("Peregrine")) || bytes.Contains(b, []byte("Backend")) || bytes.Contains(b, []byte("RPC Error"))
++        }, teatest.WithDuration(time.Second*2))
++
++        tm.Send(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'v'}})
++        tm.Send(tea.KeyMsg{Type: tea.KeyEnter})
++
++        teatest.WaitFor(t, tm.Output(), func(b []byte) bool {
++                return bytes.Contains(b, []byte("Voice Mode"))
++        }, teatest.WithDuration(time.Second))
++
++        tm.Send(tea.KeyMsg{Type: tea.KeyEsc})
++        tm.Send(tea.KeyMsg{Type: tea.KeyEsc})
++        
++        //tm.WaitFinished(t, teatest.WithFinalTimeout(time.Second))
++}
+diff --git a/peregrine/viewmodel/voice.go b/peregrine/viewmodel/voice.go
+index 327d5ca..40f4f0f 100644
+--- a/peregrine/viewmodel/voice.go
++++ b/peregrine/viewmodel/voice.go
+@@ -1,16 +1,52 @@
+ package viewmodel
+ 
+ import (
++	"log"
++
+ 	tea "github.com/charmbracelet/bubbletea"
+ 	"github.com/charmbracelet/lipgloss"
+ )
+ 
++type AudioRecorder interface {
++	Start() error
++	Stop() error
++	Read(p []int16) (int, error)
++	Close() error
++}
++
++type MockAudioRecorder struct{}
++
++func (m *MockAudioRecorder) Start() error {
++	log.Println("MockAudioRecorder: Start recording (hardware absent)")
++	return nil
++}
++
++func (m *MockAudioRecorder) Stop() error {
++	log.Println("MockAudioRecorder: Stop recording")
++	return nil
++}
++
++func (m *MockAudioRecorder) Read(p []int16) (int, error) {
++	for i := range p {
++		p[i] = 0
++	}
++	return len(p), nil
++}
++
++func (m *MockAudioRecorder) Close() error {
++	return nil
++}
++
+ type VoiceModel struct {
+-	active bool
++	active   bool
++	recorder AudioRecorder
+ }
+ 
+ func NewVoiceModel() VoiceModel {
+-	return VoiceModel{active: false}
++	return VoiceModel{
++		active:   false,
++		recorder: &MockAudioRecorder{},
++	}
+ }
+ 
+ func (m VoiceModel) Init() tea.Cmd {
+diff --git a/proto/falcon/v1/falcon.proto b/proto/falcon/v1/falcon.proto
+index 15c30d5..36a8bc2 100644
+--- a/proto/falcon/v1/falcon.proto
++++ b/proto/falcon/v1/falcon.proto
+@@ -8,6 +8,20 @@ service FalconService {
+   rpc StartUltraplan(UltraplanRequest) returns (UltraplanResponse) {}
+   rpc DispatchAction(ActionRequest) returns (ActionResponse) {}
+   rpc QuickSearch(SearchRequest) returns (SearchResponse) {}
++  rpc GetTokenBudget(BudgetRequest) returns (BudgetResponse) {}
++  rpc GetTeamMem(TeamMemRequest) returns (TeamMemResponse) {}
++  rpc StartBridgeMode(BridgeModeRequest) returns (BridgeModeResponse) {}
++  rpc SetAgentTrigger(TriggerRequest) returns (TriggerResponse) {}
++  rpc SetAgentTriggerRemote(TriggerRemoteRequest) returns (TriggerRemoteResponse) {}
++  rpc ExtractMemories(ExtractMemoriesRequest) returns (ExtractMemoriesResponse) {}
++  rpc GetCompactionReminders(CompactionRequest) returns (CompactionResponse) {}
++  rpc CachedMicrocompact(MicrocompactRequest) returns (MicrocompactResponse) {}
++  rpc GetShotStats(ShotStatsRequest) returns (ShotStatsResponse) {}
++  rpc StartVerification(VerificationRequest) returns (VerificationResponse) {}
++  rpc ClassifyBash(BashClassifyRequest) returns (BashClassifyResponse) {}
++  rpc GetVoiceMode(VoiceModeRequest) returns (VoiceModeResponse) {}
++  rpc GetHistoryPicker(HistoryPickerRequest) returns (HistoryPickerResponse) {}
++  rpc MessageActions(MessageActionsRequest) returns (MessageActionsResponse) {}
+ }
+ 
+ message PingRequest { string id = 1; }
+@@ -24,3 +38,45 @@ message ActionResponse { string result = 1; }
+ 
+ message SearchRequest { string id = 1; string query = 2; }
+ message SearchResponse { string result = 1; }
++
++message BudgetRequest { string id = 1; }
++message BudgetResponse { string result = 1; }
++
++message TeamMemRequest { string id = 1; }
++message TeamMemResponse { string result = 1; }
++
++message BridgeModeRequest { string id = 1; }
++message BridgeModeResponse { string result = 1; }
++
++message TriggerRequest { string id = 1; }
++message TriggerResponse { string result = 1; }
++
++message TriggerRemoteRequest { string id = 1; }
++message TriggerRemoteResponse { string result = 1; }
++
++message ExtractMemoriesRequest { string id = 1; }
++message ExtractMemoriesResponse { string result = 1; }
++
++message CompactionRequest { string id = 1; }
++message CompactionResponse { string result = 1; }
++
++message MicrocompactRequest { string id = 1; }
++message MicrocompactResponse { string result = 1; }
++
++message ShotStatsRequest { string id = 1; }
++message ShotStatsResponse { string result = 1; }
++
++message VerificationRequest { string id = 1; }
++message VerificationResponse { string result = 1; }
++
++message BashClassifyRequest { string id = 1; }
++message BashClassifyResponse { string result = 1; }
++
++message VoiceModeRequest { string id = 1; }
++message VoiceModeResponse { string result = 1; }
++
++message HistoryPickerRequest { string id = 1; }
++message HistoryPickerResponse { string result = 1; }
++
++message MessageActionsRequest { string id = 1; }
++message MessageActionsResponse { string result = 1; }
+diff --git a/rules_gleam.patch b/rules_gleam.patch
+index d46814d..4dd5c58 100644
+--- a/rules_gleam.patch
++++ b/rules_gleam.patch
+@@ -1,3 +1,15 @@
++diff -urN a/gleam/gleam_test.bzl b/gleam/gleam_test.bzl
++--- a/gleam/gleam_test.bzl	2025-10-26 07:30:47.000000000 +0000
+++++ b/gleam/gleam_test.bzl	2026-04-24 21:33:24.562222564 +0000
++@@ -4,7 +4,7 @@
++ 
++ def _gleam_test_impl(ctx):
++     package_dir = ctx.files.srcs[0].dirname
++-    main_module = (package_dir.replace("/", "@") + "/") if package_dir != "." else "" + "gleam_test"
+++    main_module = "gleam_test"
++     test_main = ctx.actions.declare_file("gleam_test.gleam")
++     ctx.actions.expand_template(
++         template = ctx.file._main_test_module_tmpl,
+ diff -urN a/gleam/gleam_binary.bzl b/gleam/gleam_binary.bzl
+ --- a/gleam/gleam_binary.bzl	2025-10-26 07:30:47.000000000 +0000
+ +++ b/gleam/gleam_binary.bzl	2026-04-24 21:33:24.562222564 +0000
+@@ -115,3 +127,24 @@ diff -urN a/gleam_hex/repositories.bzl b/gleam_hex/repositories.bzl
+      if result.return_code:
+          fail("failed to generate BUILD files for %s: %s. err: %s" % (
+              ctx.attr.module_name,
++diff -urN a/gleam/templates/[[main_module]].sh b/gleam/templates/[[main_module]].sh
++--- a/gleam/templates/[[main_module]].sh	2025-10-26 07:30:47.000000000 +0000
+++++ b/gleam/templates/[[main_module]].sh	2026-04-24 21:33:24.562222564 +0000
++@@ -5,12 +5,14 @@
++ set -eu
++ 
++ PACKAGE={PACKAGE}
++-BASE=$(echo "$0.runfiles/_main")
+++BASE=$(pwd)
+++BEAM_DIRS=$(find "$BASE" -name "*.beam" -exec dirname {} \; | sort -u)
+++PA_ARGS=""
+++for d in $BEAM_DIRS; do PA_ARGS="$PA_ARGS -pa $d"; done
++ 
++ run() {
++-  exec {ERL} \
++-    -pa "$BASE" \
+++  exec {ERL} $PA_ARGS \
++     -eval "$PACKAGE@@main:run($PACKAGE)" \
++     -noshell \
++     -extra "$@"
++ }
+diff --git a/update_backend_client.sh b/update_backend_client.sh
+new file mode 100644
+index 0000000..c61fe25
+--- /dev/null
++++ b/update_backend_client.sh
+@@ -0,0 +1,146 @@
++cat << 'GO' >> /workspace/peregrine/adapters/backend_client.go
++
++func (b *BackendClient) StartUltraplan(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.UltraplanRequest{Id: id})
++        res, err := b.client.StartUltraplan(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) QuickSearch(ctx context.Context, id, query string) (string, error) {
++        req := connect.NewRequest(&falconv1.SearchRequest{Id: id, Query: query})
++        res, err := b.client.QuickSearch(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetTokenBudget(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.BudgetRequest{Id: id})
++        res, err := b.client.GetTokenBudget(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetTeamMem(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.TeamMemRequest{Id: id})
++        res, err := b.client.GetTeamMem(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) StartBridgeMode(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.BridgeModeRequest{Id: id})
++        res, err := b.client.StartBridgeMode(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) SetAgentTrigger(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.TriggerRequest{Id: id})
++        res, err := b.client.SetAgentTrigger(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) SetAgentTriggerRemote(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.TriggerRemoteRequest{Id: id})
++        res, err := b.client.SetAgentTriggerRemote(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) ExtractMemories(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.ExtractMemoriesRequest{Id: id})
++        res, err := b.client.ExtractMemories(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetCompactionReminders(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.CompactionRequest{Id: id})
++        res, err := b.client.GetCompactionReminders(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) CachedMicrocompact(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.MicrocompactRequest{Id: id})
++        res, err := b.client.CachedMicrocompact(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetShotStats(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.ShotStatsRequest{Id: id})
++        res, err := b.client.GetShotStats(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) StartVerification(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.VerificationRequest{Id: id})
++        res, err := b.client.StartVerification(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) ClassifyBash(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.BashClassifyRequest{Id: id})
++        res, err := b.client.ClassifyBash(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetVoiceMode(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.VoiceModeRequest{Id: id})
++        res, err := b.client.GetVoiceMode(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) GetHistoryPicker(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.HistoryPickerRequest{Id: id})
++        res, err := b.client.GetHistoryPicker(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++
++func (b *BackendClient) MessageActions(ctx context.Context, id string) (string, error) {
++        req := connect.NewRequest(&falconv1.MessageActionsRequest{Id: id})
++        res, err := b.client.MessageActions(ctx, req)
++        if err != nil {
++                return "", err
++        }
++        return res.Msg.Result, nil
++}
++GO
+diff --git a/update_proto.sh b/update_proto.sh
+new file mode 100644
+index 0000000..89b5bd6
+--- /dev/null
++++ b/update_proto.sh
+@@ -0,0 +1,60 @@
++sed -i '/^}/i \
++  rpc GetTokenBudget(BudgetRequest) returns (BudgetResponse) {}\
++  rpc GetTeamMem(TeamMemRequest) returns (TeamMemResponse) {}\
++  rpc StartBridgeMode(BridgeModeRequest) returns (BridgeModeResponse) {}\
++  rpc SetAgentTrigger(TriggerRequest) returns (TriggerResponse) {}\
++  rpc SetAgentTriggerRemote(TriggerRemoteRequest) returns (TriggerRemoteResponse) {}\
++  rpc ExtractMemories(ExtractMemoriesRequest) returns (ExtractMemoriesResponse) {}\
++  rpc GetCompactionReminders(CompactionRequest) returns (CompactionResponse) {}\
++  rpc CachedMicrocompact(MicrocompactRequest) returns (MicrocompactResponse) {}\
++  rpc GetShotStats(ShotStatsRequest) returns (ShotStatsResponse) {}\
++  rpc StartVerification(VerificationRequest) returns (VerificationResponse) {}\
++  rpc ClassifyBash(BashClassifyRequest) returns (BashClassifyResponse) {}\
++  rpc GetVoiceMode(VoiceModeRequest) returns (VoiceModeResponse) {}\
++  rpc GetHistoryPicker(HistoryPickerRequest) returns (HistoryPickerResponse) {}\
++  rpc MessageActions(MessageActionsRequest) returns (MessageActionsResponse) {}' /workspace/proto/falcon/v1/falcon.proto
++
++cat << 'PROTO' >> /workspace/proto/falcon/v1/falcon.proto
++
++message BudgetRequest { string id = 1; }
++message BudgetResponse { string result = 1; }
++
++message TeamMemRequest { string id = 1; }
++message TeamMemResponse { string result = 1; }
++
++message BridgeModeRequest { string id = 1; }
++message BridgeModeResponse { string result = 1; }
++
++message TriggerRequest { string id = 1; }
++message TriggerResponse { string result = 1; }
++
++message TriggerRemoteRequest { string id = 1; }
++message TriggerRemoteResponse { string result = 1; }
++
++message ExtractMemoriesRequest { string id = 1; }
++message ExtractMemoriesResponse { string result = 1; }
++
++message CompactionRequest { string id = 1; }
++message CompactionResponse { string result = 1; }
++
++message MicrocompactRequest { string id = 1; }
++message MicrocompactResponse { string result = 1; }
++
++message ShotStatsRequest { string id = 1; }
++message ShotStatsResponse { string result = 1; }
++
++message VerificationRequest { string id = 1; }
++message VerificationResponse { string result = 1; }
++
++message BashClassifyRequest { string id = 1; }
++message BashClassifyResponse { string result = 1; }
++
++message VoiceModeRequest { string id = 1; }
++message VoiceModeResponse { string result = 1; }
++
++message HistoryPickerRequest { string id = 1; }
++message HistoryPickerResponse { string result = 1; }
++
++message MessageActionsRequest { string id = 1; }
++message MessageActionsResponse { string result = 1; }
++PROTO
