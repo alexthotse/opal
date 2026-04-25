@@ -46,7 +46,7 @@
           # Setting to empty string forces Nix to calculate and show the new hash
           # during the first build if it's incorrect.
           # vendorHash = "sha256-n6V8YgR3bSjJqG9Yy25p50yK2263v7K15E9L41V35G8=";
-          vendorHash = pkgs.lib.fakeHash;
+          vendorHash = "sha256-QN0lvGul2z6+XjPqssdf6K9RmY/oFVgJKfTLkgdIj5c=";
           
           # Don't check during build to avoid issues with bubbletea tests in nix sandbox
           doCheck = false;
@@ -71,7 +71,7 @@
           fromImage = pkgs.dockerTools.pullImage {
             imageName = "alpine";
             imageDigest = "sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5"; # alpine:3.21.3
-            sha256 = "07s5xka323xmn8jvv8s8i9mgs7b36y4g8iwhiwh4b648l9n6hss7";
+            sha256 = "sha256-p+iV7+tp4QeS7Scuk9H/TdUk6dwfCQNvr/lqO+eDL9M=";
             finalImageName = "alpine";
             finalImageTag = "latest";
           };
