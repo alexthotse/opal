@@ -421,7 +421,6 @@ func wrap(m Method, s string, limit int, breakpoints string) string {
 				if curWidth == limit {
 					addNewline()
 				}
-
 				word.WriteRune(r)
 				wordLen++
 
