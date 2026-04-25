@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,96 +24,96 @@ import (
 	"strings"
 )
 
-func fetchPredictOperationParametersToVertex(fromObject map[string]any, parentObject map[string]any) (toObject map[string]any, err error) {
+func fetchPredictOperationParametersToVertex(fromObject map[string]any, parentObject map[string]any, rootObject map[string]any) (toObject map[string]any, err error) {
 	toObject = make(map[string]any)
 
-	fromOperationName := getValueByPath(fromObject, []string{"operationName"})
+	fromOperationName := InternalGetValueByPath(fromObject, []string{"operationName"})
 	if fromOperationName != nil {
-		setValueByPath(toObject, []string{"operationName"}, fromOperationName)
+		InternalSetValueByPath(toObject, []string{"operationName"}, fromOperationName)
 	}
 
-	fromResourceName := getValueByPath(fromObject, []string{"resourceName"})
+	fromResourceName := InternalGetValueByPath(fromObject, []string{"resourceName"})
 	if fromResourceName != nil {
-		setValueByPath(toObject, []string{"_url", "resourceName"}, fromResourceName)
+		InternalSetValueByPath(toObject, []string{"_url", "resourceName"}, fromResourceName)
 	}
 
 	return toObject, nil
 }
 
-func getOperationParametersToMldev(fromObject map[string]any, parentObject map[string]any) (toObject map[string]any, err error) {
+func getOperationParametersToMldev(fromObject map[string]any, parentObject map[string]any, rootObject map[string]any) (toObject map[string]any, err error) {
 	toObject = make(map[string]any)
 
-	fromOperationName := getValueByPath(fromObject, []string{"operationName"})
+	fromOperationName := InternalGetValueByPath(fromObject, []string{"operationName"})
 	if fromOperationName != nil {
-		setValueByPath(toObject, []string{"_url", "operationName"}, fromOperationName)
+		InternalSetValueByPath(toObject, []string{"_url", "operationName"}, fromOperationName)
 	}
 
 	return toObject, nil
 }
 
-func getOperationParametersToVertex(fromObject map[string]any, parentObject map[string]any) (toObject map[string]any, err error) {
+func getOperationParametersToVertex(fromObject map[string]any, parentObject map[string]any, rootObject map[string]any) (toObject map[string]any, err error) {
 	toObject = make(map[string]any)
 
-	fromOperationName := getValueByPath(fromObject, []string{"operationName"})
+	fromOperationName := InternalGetValueByPath(fromObject, []string{"operationName"})
 	if fromOperationName != nil {
-		setValueByPath(toObject, []string{"_url", "operationName"}, fromOperationName)
+		InternalSetValueByPath(toObject, []string{"_url", "operationName"}, fromOperationName)
 	}
 
 	return toObject, nil
 }
 
-func uploadToFileSearchStoreOperationFromMldev(fromObject map[string]any, parentObject map[string]any) (toObject map[string]any, err error) {
+func uploadToFileSearchStoreOperationFromMldev(fromObject map[string]any, parentObject map[string]any, rootObject map[string]any) (toObject map[string]any, err error) {
 	toObject = make(map[string]any)
 
-	fromName := getValueByPath(fromObject, []string{"name"})
+	fromName := InternalGetValueByPath(fromObject, []string{"name"})
 	if fromName != nil {
-		setValueByPath(toObject, []string{"name"}, fromName)
+		InternalSetValueByPath(toObject, []string{"name"}, fromName)
 	}
 
-	fromMetadata := getValueByPath(fromObject, []string{"metadata"})
+	fromMetadata := InternalGetValueByPath(fromObject, []string{"metadata"})
 	if fromMetadata != nil {
-		setValueByPath(toObject, []string{"metadata"}, fromMetadata)
+		InternalSetValueByPath(toObject, []string{"metadata"}, fromMetadata)
 	}
 
-	fromDone := getValueByPath(fromObject, []string{"done"})
+	fromDone := InternalGetValueByPath(fromObject, []string{"done"})
 	if fromDone != nil {
-		setValueByPath(toObject, []string{"done"}, fromDone)
+		InternalSetValueByPath(toObject, []string{"done"}, fromDone)
 	}
 
-	fromError := getValueByPath(fromObject, []string{"error"})
+	fromError := InternalGetValueByPath(fromObject, []string{"error"})
 	if fromError != nil {
-		setValueByPath(toObject, []string{"error"}, fromError)
+		InternalSetValueByPath(toObject, []string{"error"}, fromError)
 	}
 
-	fromResponse := getValueByPath(fromObject, []string{"response"})
+	fromResponse := InternalGetValueByPath(fromObject, []string{"response"})
 	if fromResponse != nil {
-		fromResponse, err = uploadToFileSearchStoreResponseFromMldev(fromResponse.(map[string]any), toObject)
+		fromResponse, err = uploadToFileSearchStoreResponseFromMldev(fromResponse.(map[string]any), toObject, rootObject)
 		if err != nil {
 			return nil, err
 		}
 
-		setValueByPath(toObject, []string{"response"}, fromResponse)
+		InternalSetValueByPath(toObject, []string{"response"}, fromResponse)
 	}
 
 	return toObject, nil
 }
 
-func uploadToFileSearchStoreResponseFromMldev(fromObject map[string]any, parentObject map[string]any) (toObject map[string]any, err error) {
+func uploadToFileSearchStoreResponseFromMldev(fromObject map[string]any, parentObject map[string]any, rootObject map[string]any) (toObject map[string]any, err error) {
 	toObject = make(map[string]any)
 
-	fromSdkHttpResponse := getValueByPath(fromObject, []string{"sdkHttpResponse"})
+	fromSdkHttpResponse := InternalGetValueByPath(fromObject, []string{"sdkHttpResponse"})
 	if fromSdkHttpResponse != nil {
-		setValueByPath(toObject, []string{"sdkHttpResponse"}, fromSdkHttpResponse)
+		InternalSetValueByPath(toObject, []string{"sdkHttpResponse"}, fromSdkHttpResponse)
 	}
 
-	fromParent := getValueByPath(fromObject, []string{"parent"})
+	fromParent := InternalGetValueByPath(fromObject, []string{"parent"})
 	if fromParent != nil {
-		setValueByPath(toObject, []string{"parent"}, fromParent)
+		InternalSetValueByPath(toObject, []string{"parent"}, fromParent)
 	}
 
-	fromDocumentName := getValueByPath(fromObject, []string{"documentName"})
+	fromDocumentName := InternalGetValueByPath(fromObject, []string{"documentName"})
 	if fromDocumentName != nil {
-		setValueByPath(toObject, []string{"documentName"}, fromDocumentName)
+		InternalSetValueByPath(toObject, []string{"documentName"}, fromDocumentName)
 	}
 
 	return toObject, nil
@@ -123,14 +123,14 @@ func uploadToFileSearchStoreResponseFromMldev(fromObject map[string]any, parentO
 // You don't need to initiate this struct. Create a client instance via NewClient, and
 // then access Operations through client.Operations field.
 type Operations struct {
-	apiClient *apiClient
+	apiClient *InternalAPIClient
 }
 
 func (m Operations) getVideosOperation(ctx context.Context, operationName string, config *GetOperationConfig) (*GenerateVideosOperation, error) {
 	parameterMap := make(map[string]any)
 
 	kwargs := map[string]any{"operationName": operationName, "config": config}
-	deepMarshal(kwargs, &parameterMap)
+	InternalDeepMarshal(kwargs, &parameterMap)
 
 	var httpOptions *HTTPOptions
 	if config == nil || config.HTTPOptions == nil {
@@ -143,9 +143,9 @@ func (m Operations) getVideosOperation(ctx context.Context, operationName string
 	}
 	var response = new(GenerateVideosOperation)
 	var responseMap map[string]any
-	var fromConverter func(map[string]any, map[string]any) (map[string]any, error)
-	var toConverter func(map[string]any, map[string]any) (map[string]any, error)
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
+	var fromConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	var toConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
 		toConverter = getOperationParametersToVertex
 		fromConverter = generateVideosOperationFromVertex
 	} else {
@@ -153,26 +153,27 @@ func (m Operations) getVideosOperation(ctx context.Context, operationName string
 		fromConverter = generateVideosOperationFromMldev
 	}
 
-	body, err := toConverter(parameterMap, nil)
+	body, err := toConverter(parameterMap, nil, parameterMap)
 	if err != nil {
 		return nil, err
 	}
+
 	var path string
 	var urlParams map[string]any
 	if _, ok := body["_url"]; ok {
 		urlParams = body["_url"].(map[string]any)
 		delete(body, "_url")
 	}
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
-		path, err = formatMap("{operationName}", urlParams)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
+		path, err = InternalFormatMap("{operationName}", urlParams)
 	} else {
-		path, err = formatMap("{operationName}", urlParams)
+		path, err = InternalFormatMap("{operationName}", urlParams)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("invalid url params: %#v.\n%w", urlParams, err)
 	}
 	if _, ok := body["_query"]; ok {
-		query, err := createURLQuery(body["_query"].(map[string]any))
+		query, err := InternalCreateURLQuery(body["_query"].(map[string]any))
 		if err != nil {
 			return nil, err
 		}
@@ -184,12 +185,12 @@ func (m Operations) getVideosOperation(ctx context.Context, operationName string
 		return nil, err
 	}
 	if fromConverter != nil {
-		responseMap, err = fromConverter(responseMap, nil)
+		responseMap, err = fromConverter(responseMap, nil, parameterMap)
 	}
 	if err != nil {
 		return nil, err
 	}
-	err = mapToStruct(responseMap, response)
+	err = InternalMapToStruct(responseMap, response)
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +212,7 @@ func (m Operations) fetchPredictVideosOperation(ctx context.Context, operationNa
 	parameterMap := make(map[string]any)
 
 	kwargs := map[string]any{"operationName": operationName, "resourceName": resourceName, "config": config}
-	deepMarshal(kwargs, &parameterMap)
+	InternalDeepMarshal(kwargs, &parameterMap)
 
 	var httpOptions *HTTPOptions
 	if config == nil || config.HTTPOptions == nil {
@@ -224,9 +225,9 @@ func (m Operations) fetchPredictVideosOperation(ctx context.Context, operationNa
 	}
 	var response = new(GenerateVideosOperation)
 	var responseMap map[string]any
-	var fromConverter func(map[string]any, map[string]any) (map[string]any, error)
-	var toConverter func(map[string]any, map[string]any) (map[string]any, error)
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
+	var fromConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	var toConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
 		toConverter = fetchPredictOperationParametersToVertex
 		fromConverter = generateVideosOperationFromVertex
 	} else {
@@ -235,26 +236,27 @@ func (m Operations) fetchPredictVideosOperation(ctx context.Context, operationNa
 
 	}
 
-	body, err := toConverter(parameterMap, nil)
+	body, err := toConverter(parameterMap, nil, parameterMap)
 	if err != nil {
 		return nil, err
 	}
+
 	var path string
 	var urlParams map[string]any
 	if _, ok := body["_url"]; ok {
 		urlParams = body["_url"].(map[string]any)
 		delete(body, "_url")
 	}
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
-		path, err = formatMap("{resourceName}:fetchPredictOperation", urlParams)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
+		path, err = InternalFormatMap("{resourceName}:fetchPredictOperation", urlParams)
 	} else {
-		path, err = formatMap("None", urlParams)
+		path, err = InternalFormatMap("None", urlParams)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("invalid url params: %#v.\n%w", urlParams, err)
 	}
 	if _, ok := body["_query"]; ok {
-		query, err := createURLQuery(body["_query"].(map[string]any))
+		query, err := InternalCreateURLQuery(body["_query"].(map[string]any))
 		if err != nil {
 			return nil, err
 		}
@@ -266,12 +268,12 @@ func (m Operations) fetchPredictVideosOperation(ctx context.Context, operationNa
 		return nil, err
 	}
 	if fromConverter != nil {
-		responseMap, err = fromConverter(responseMap, nil)
+		responseMap, err = fromConverter(responseMap, nil, parameterMap)
 	}
 	if err != nil {
 		return nil, err
 	}
-	err = mapToStruct(responseMap, response)
+	err = InternalMapToStruct(responseMap, response)
 	if err != nil {
 		return nil, err
 	}
@@ -293,7 +295,7 @@ func (m Operations) getUploadToFileSearchStoreOperation(ctx context.Context, ope
 	parameterMap := make(map[string]any)
 
 	kwargs := map[string]any{"operationName": operationName, "config": config}
-	deepMarshal(kwargs, &parameterMap)
+	InternalDeepMarshal(kwargs, &parameterMap)
 
 	var httpOptions *HTTPOptions
 	if config == nil || config.HTTPOptions == nil {
@@ -306,9 +308,9 @@ func (m Operations) getUploadToFileSearchStoreOperation(ctx context.Context, ope
 	}
 	var response = new(UploadToFileSearchStoreOperation)
 	var responseMap map[string]any
-	var fromConverter func(map[string]any, map[string]any) (map[string]any, error)
-	var toConverter func(map[string]any, map[string]any) (map[string]any, error)
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
+	var fromConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	var toConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
 		toConverter = getOperationParametersToVertex
 
 	} else {
@@ -316,26 +318,27 @@ func (m Operations) getUploadToFileSearchStoreOperation(ctx context.Context, ope
 		fromConverter = uploadToFileSearchStoreOperationFromMldev
 	}
 
-	body, err := toConverter(parameterMap, nil)
+	body, err := toConverter(parameterMap, nil, parameterMap)
 	if err != nil {
 		return nil, err
 	}
+
 	var path string
 	var urlParams map[string]any
 	if _, ok := body["_url"]; ok {
 		urlParams = body["_url"].(map[string]any)
 		delete(body, "_url")
 	}
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
-		path, err = formatMap("{operationName}", urlParams)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
+		path, err = InternalFormatMap("{operationName}", urlParams)
 	} else {
-		path, err = formatMap("{operationName}", urlParams)
+		path, err = InternalFormatMap("{operationName}", urlParams)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("invalid url params: %#v.\n%w", urlParams, err)
 	}
 	if _, ok := body["_query"]; ok {
-		query, err := createURLQuery(body["_query"].(map[string]any))
+		query, err := InternalCreateURLQuery(body["_query"].(map[string]any))
 		if err != nil {
 			return nil, err
 		}
@@ -347,12 +350,12 @@ func (m Operations) getUploadToFileSearchStoreOperation(ctx context.Context, ope
 		return nil, err
 	}
 	if fromConverter != nil {
-		responseMap, err = fromConverter(responseMap, nil)
+		responseMap, err = fromConverter(responseMap, nil, parameterMap)
 	}
 	if err != nil {
 		return nil, err
 	}
-	err = mapToStruct(responseMap, response)
+	err = InternalMapToStruct(responseMap, response)
 	if err != nil {
 		return nil, err
 	}
@@ -374,7 +377,7 @@ func (m Operations) getImportFileOperation(ctx context.Context, operationName st
 	parameterMap := make(map[string]any)
 
 	kwargs := map[string]any{"operationName": operationName, "config": config}
-	deepMarshal(kwargs, &parameterMap)
+	InternalDeepMarshal(kwargs, &parameterMap)
 
 	var httpOptions *HTTPOptions
 	if config == nil || config.HTTPOptions == nil {
@@ -387,9 +390,9 @@ func (m Operations) getImportFileOperation(ctx context.Context, operationName st
 	}
 	var response = new(ImportFileOperation)
 	var responseMap map[string]any
-	var fromConverter func(map[string]any, map[string]any) (map[string]any, error)
-	var toConverter func(map[string]any, map[string]any) (map[string]any, error)
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
+	var fromConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	var toConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
 		toConverter = getOperationParametersToVertex
 
 	} else {
@@ -397,26 +400,27 @@ func (m Operations) getImportFileOperation(ctx context.Context, operationName st
 		fromConverter = importFileOperationFromMldev
 	}
 
-	body, err := toConverter(parameterMap, nil)
+	body, err := toConverter(parameterMap, nil, parameterMap)
 	if err != nil {
 		return nil, err
 	}
+
 	var path string
 	var urlParams map[string]any
 	if _, ok := body["_url"]; ok {
 		urlParams = body["_url"].(map[string]any)
 		delete(body, "_url")
 	}
-	if m.apiClient.clientConfig.Backend == BackendVertexAI {
-		path, err = formatMap("{operationName}", urlParams)
+	if m.apiClient.ClientConfig().Backend == BackendVertexAI {
+		path, err = InternalFormatMap("{operationName}", urlParams)
 	} else {
-		path, err = formatMap("{operationName}", urlParams)
+		path, err = InternalFormatMap("{operationName}", urlParams)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("invalid url params: %#v.\n%w", urlParams, err)
 	}
 	if _, ok := body["_query"]; ok {
-		query, err := createURLQuery(body["_query"].(map[string]any))
+		query, err := InternalCreateURLQuery(body["_query"].(map[string]any))
 		if err != nil {
 			return nil, err
 		}
@@ -428,12 +432,12 @@ func (m Operations) getImportFileOperation(ctx context.Context, operationName st
 		return nil, err
 	}
 	if fromConverter != nil {
-		responseMap, err = fromConverter(responseMap, nil)
+		responseMap, err = fromConverter(responseMap, nil, parameterMap)
 	}
 	if err != nil {
 		return nil, err
 	}
-	err = mapToStruct(responseMap, response)
+	err = InternalMapToStruct(responseMap, response)
 	if err != nil {
 		return nil, err
 	}

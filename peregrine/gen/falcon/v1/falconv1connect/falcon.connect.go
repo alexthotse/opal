@@ -47,15 +47,59 @@ const (
 	// FalconServiceQuickSearchProcedure is the fully-qualified name of the FalconService's QuickSearch
 	// RPC.
 	FalconServiceQuickSearchProcedure = "/falcon.v1.FalconService/QuickSearch"
+	// FalconServiceExtractMemoriesProcedure is the fully-qualified name of the FalconService's
+	// ExtractMemories RPC.
+	FalconServiceExtractMemoriesProcedure = "/falcon.v1.FalconService/ExtractMemories"
+	// FalconServiceCompactionRemindersProcedure is the fully-qualified name of the FalconService's
+	// CompactionReminders RPC.
+	FalconServiceCompactionRemindersProcedure = "/falcon.v1.FalconService/CompactionReminders"
+	// FalconServiceCachedMicrocompactProcedure is the fully-qualified name of the FalconService's
+	// CachedMicrocompact RPC.
+	FalconServiceCachedMicrocompactProcedure = "/falcon.v1.FalconService/CachedMicrocompact"
+	// FalconServiceGetTeammemProcedure is the fully-qualified name of the FalconService's GetTeammem
+	// RPC.
+	FalconServiceGetTeammemProcedure = "/falcon.v1.FalconService/GetTeammem"
+	// FalconServiceVerifyTaskProcedure is the fully-qualified name of the FalconService's VerifyTask
+	// RPC.
+	FalconServiceVerifyTaskProcedure = "/falcon.v1.FalconService/VerifyTask"
+	// FalconServiceRunTriggersProcedure is the fully-qualified name of the FalconService's RunTriggers
+	// RPC.
+	FalconServiceRunTriggersProcedure = "/falcon.v1.FalconService/RunTriggers"
+	// FalconServiceCheckBudgetProcedure is the fully-qualified name of the FalconService's CheckBudget
+	// RPC.
+	FalconServiceCheckBudgetProcedure = "/falcon.v1.FalconService/CheckBudget"
+	// FalconServiceGetStatsProcedure is the fully-qualified name of the FalconService's GetStats RPC.
+	FalconServiceGetStatsProcedure = "/falcon.v1.FalconService/GetStats"
+	// FalconServiceBridgeModeProcedure is the fully-qualified name of the FalconService's BridgeMode
+	// RPC.
+	FalconServiceBridgeModeProcedure = "/falcon.v1.FalconService/BridgeMode"
+	// FalconServiceBashClassifierProcedure is the fully-qualified name of the FalconService's
+	// BashClassifier RPC.
+	FalconServiceBashClassifierProcedure = "/falcon.v1.FalconService/BashClassifier"
 )
 
 // FalconServiceClient is a client for the falcon.v1.FalconService service.
 type FalconServiceClient interface {
 	Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error)
+	// Core Reasoning & Planning
 	StartUltrathink(context.Context, *connect.Request[v1.UltrathinkRequest]) (*connect.Response[v1.UltrathinkResponse], error)
 	StartUltraplan(context.Context, *connect.Request[v1.UltraplanRequest]) (*connect.Response[v1.UltraplanResponse], error)
 	DispatchAction(context.Context, *connect.Request[v1.ActionRequest]) (*connect.Response[v1.ActionResponse], error)
 	QuickSearch(context.Context, *connect.Request[v1.SearchRequest]) (*connect.Response[v1.SearchResponse], error)
+	// Memory & Context
+	ExtractMemories(context.Context, *connect.Request[v1.ExtractMemoriesRequest]) (*connect.Response[v1.ExtractMemoriesResponse], error)
+	CompactionReminders(context.Context, *connect.Request[v1.CompactionRemindersRequest]) (*connect.Response[v1.CompactionRemindersResponse], error)
+	CachedMicrocompact(context.Context, *connect.Request[v1.CachedMicrocompactRequest]) (*connect.Response[v1.CachedMicrocompactResponse], error)
+	GetTeammem(context.Context, *connect.Request[v1.GetTeammemRequest]) (*connect.Response[v1.GetTeammemResponse], error)
+	// Agents & Triggers
+	VerifyTask(context.Context, *connect.Request[v1.VerifyTaskRequest]) (*connect.Response[v1.VerifyTaskResponse], error)
+	RunTriggers(context.Context, *connect.Request[v1.RunTriggersRequest]) (*connect.Response[v1.RunTriggersResponse], error)
+	// Budget & Stats
+	CheckBudget(context.Context, *connect.Request[v1.CheckBudgetRequest]) (*connect.Response[v1.CheckBudgetResponse], error)
+	GetStats(context.Context, *connect.Request[v1.GetStatsRequest]) (*connect.Response[v1.GetStatsResponse], error)
+	// Security & Bridge
+	BridgeMode(context.Context, *connect.Request[v1.BridgeModeRequest]) (*connect.Response[v1.BridgeModeResponse], error)
+	BashClassifier(context.Context, *connect.Request[v1.BashClassifierRequest]) (*connect.Response[v1.BashClassifierResponse], error)
 }
 
 // NewFalconServiceClient constructs a client for the falcon.v1.FalconService service. By default,
@@ -99,16 +143,86 @@ func NewFalconServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(falconServiceMethods.ByName("QuickSearch")),
 			connect.WithClientOptions(opts...),
 		),
+		extractMemories: connect.NewClient[v1.ExtractMemoriesRequest, v1.ExtractMemoriesResponse](
+			httpClient,
+			baseURL+FalconServiceExtractMemoriesProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("ExtractMemories")),
+			connect.WithClientOptions(opts...),
+		),
+		compactionReminders: connect.NewClient[v1.CompactionRemindersRequest, v1.CompactionRemindersResponse](
+			httpClient,
+			baseURL+FalconServiceCompactionRemindersProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("CompactionReminders")),
+			connect.WithClientOptions(opts...),
+		),
+		cachedMicrocompact: connect.NewClient[v1.CachedMicrocompactRequest, v1.CachedMicrocompactResponse](
+			httpClient,
+			baseURL+FalconServiceCachedMicrocompactProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("CachedMicrocompact")),
+			connect.WithClientOptions(opts...),
+		),
+		getTeammem: connect.NewClient[v1.GetTeammemRequest, v1.GetTeammemResponse](
+			httpClient,
+			baseURL+FalconServiceGetTeammemProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("GetTeammem")),
+			connect.WithClientOptions(opts...),
+		),
+		verifyTask: connect.NewClient[v1.VerifyTaskRequest, v1.VerifyTaskResponse](
+			httpClient,
+			baseURL+FalconServiceVerifyTaskProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("VerifyTask")),
+			connect.WithClientOptions(opts...),
+		),
+		runTriggers: connect.NewClient[v1.RunTriggersRequest, v1.RunTriggersResponse](
+			httpClient,
+			baseURL+FalconServiceRunTriggersProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("RunTriggers")),
+			connect.WithClientOptions(opts...),
+		),
+		checkBudget: connect.NewClient[v1.CheckBudgetRequest, v1.CheckBudgetResponse](
+			httpClient,
+			baseURL+FalconServiceCheckBudgetProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("CheckBudget")),
+			connect.WithClientOptions(opts...),
+		),
+		getStats: connect.NewClient[v1.GetStatsRequest, v1.GetStatsResponse](
+			httpClient,
+			baseURL+FalconServiceGetStatsProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("GetStats")),
+			connect.WithClientOptions(opts...),
+		),
+		bridgeMode: connect.NewClient[v1.BridgeModeRequest, v1.BridgeModeResponse](
+			httpClient,
+			baseURL+FalconServiceBridgeModeProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("BridgeMode")),
+			connect.WithClientOptions(opts...),
+		),
+		bashClassifier: connect.NewClient[v1.BashClassifierRequest, v1.BashClassifierResponse](
+			httpClient,
+			baseURL+FalconServiceBashClassifierProcedure,
+			connect.WithSchema(falconServiceMethods.ByName("BashClassifier")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // falconServiceClient implements FalconServiceClient.
 type falconServiceClient struct {
-	ping            *connect.Client[v1.PingRequest, v1.PingResponse]
-	startUltrathink *connect.Client[v1.UltrathinkRequest, v1.UltrathinkResponse]
-	startUltraplan  *connect.Client[v1.UltraplanRequest, v1.UltraplanResponse]
-	dispatchAction  *connect.Client[v1.ActionRequest, v1.ActionResponse]
-	quickSearch     *connect.Client[v1.SearchRequest, v1.SearchResponse]
+	ping                *connect.Client[v1.PingRequest, v1.PingResponse]
+	startUltrathink     *connect.Client[v1.UltrathinkRequest, v1.UltrathinkResponse]
+	startUltraplan      *connect.Client[v1.UltraplanRequest, v1.UltraplanResponse]
+	dispatchAction      *connect.Client[v1.ActionRequest, v1.ActionResponse]
+	quickSearch         *connect.Client[v1.SearchRequest, v1.SearchResponse]
+	extractMemories     *connect.Client[v1.ExtractMemoriesRequest, v1.ExtractMemoriesResponse]
+	compactionReminders *connect.Client[v1.CompactionRemindersRequest, v1.CompactionRemindersResponse]
+	cachedMicrocompact  *connect.Client[v1.CachedMicrocompactRequest, v1.CachedMicrocompactResponse]
+	getTeammem          *connect.Client[v1.GetTeammemRequest, v1.GetTeammemResponse]
+	verifyTask          *connect.Client[v1.VerifyTaskRequest, v1.VerifyTaskResponse]
+	runTriggers         *connect.Client[v1.RunTriggersRequest, v1.RunTriggersResponse]
+	checkBudget         *connect.Client[v1.CheckBudgetRequest, v1.CheckBudgetResponse]
+	getStats            *connect.Client[v1.GetStatsRequest, v1.GetStatsResponse]
+	bridgeMode          *connect.Client[v1.BridgeModeRequest, v1.BridgeModeResponse]
+	bashClassifier      *connect.Client[v1.BashClassifierRequest, v1.BashClassifierResponse]
 }
 
 // Ping calls falcon.v1.FalconService.Ping.
@@ -136,13 +250,78 @@ func (c *falconServiceClient) QuickSearch(ctx context.Context, req *connect.Requ
 	return c.quickSearch.CallUnary(ctx, req)
 }
 
+// ExtractMemories calls falcon.v1.FalconService.ExtractMemories.
+func (c *falconServiceClient) ExtractMemories(ctx context.Context, req *connect.Request[v1.ExtractMemoriesRequest]) (*connect.Response[v1.ExtractMemoriesResponse], error) {
+	return c.extractMemories.CallUnary(ctx, req)
+}
+
+// CompactionReminders calls falcon.v1.FalconService.CompactionReminders.
+func (c *falconServiceClient) CompactionReminders(ctx context.Context, req *connect.Request[v1.CompactionRemindersRequest]) (*connect.Response[v1.CompactionRemindersResponse], error) {
+	return c.compactionReminders.CallUnary(ctx, req)
+}
+
+// CachedMicrocompact calls falcon.v1.FalconService.CachedMicrocompact.
+func (c *falconServiceClient) CachedMicrocompact(ctx context.Context, req *connect.Request[v1.CachedMicrocompactRequest]) (*connect.Response[v1.CachedMicrocompactResponse], error) {
+	return c.cachedMicrocompact.CallUnary(ctx, req)
+}
+
+// GetTeammem calls falcon.v1.FalconService.GetTeammem.
+func (c *falconServiceClient) GetTeammem(ctx context.Context, req *connect.Request[v1.GetTeammemRequest]) (*connect.Response[v1.GetTeammemResponse], error) {
+	return c.getTeammem.CallUnary(ctx, req)
+}
+
+// VerifyTask calls falcon.v1.FalconService.VerifyTask.
+func (c *falconServiceClient) VerifyTask(ctx context.Context, req *connect.Request[v1.VerifyTaskRequest]) (*connect.Response[v1.VerifyTaskResponse], error) {
+	return c.verifyTask.CallUnary(ctx, req)
+}
+
+// RunTriggers calls falcon.v1.FalconService.RunTriggers.
+func (c *falconServiceClient) RunTriggers(ctx context.Context, req *connect.Request[v1.RunTriggersRequest]) (*connect.Response[v1.RunTriggersResponse], error) {
+	return c.runTriggers.CallUnary(ctx, req)
+}
+
+// CheckBudget calls falcon.v1.FalconService.CheckBudget.
+func (c *falconServiceClient) CheckBudget(ctx context.Context, req *connect.Request[v1.CheckBudgetRequest]) (*connect.Response[v1.CheckBudgetResponse], error) {
+	return c.checkBudget.CallUnary(ctx, req)
+}
+
+// GetStats calls falcon.v1.FalconService.GetStats.
+func (c *falconServiceClient) GetStats(ctx context.Context, req *connect.Request[v1.GetStatsRequest]) (*connect.Response[v1.GetStatsResponse], error) {
+	return c.getStats.CallUnary(ctx, req)
+}
+
+// BridgeMode calls falcon.v1.FalconService.BridgeMode.
+func (c *falconServiceClient) BridgeMode(ctx context.Context, req *connect.Request[v1.BridgeModeRequest]) (*connect.Response[v1.BridgeModeResponse], error) {
+	return c.bridgeMode.CallUnary(ctx, req)
+}
+
+// BashClassifier calls falcon.v1.FalconService.BashClassifier.
+func (c *falconServiceClient) BashClassifier(ctx context.Context, req *connect.Request[v1.BashClassifierRequest]) (*connect.Response[v1.BashClassifierResponse], error) {
+	return c.bashClassifier.CallUnary(ctx, req)
+}
+
 // FalconServiceHandler is an implementation of the falcon.v1.FalconService service.
 type FalconServiceHandler interface {
 	Ping(context.Context, *connect.Request[v1.PingRequest]) (*connect.Response[v1.PingResponse], error)
+	// Core Reasoning & Planning
 	StartUltrathink(context.Context, *connect.Request[v1.UltrathinkRequest]) (*connect.Response[v1.UltrathinkResponse], error)
 	StartUltraplan(context.Context, *connect.Request[v1.UltraplanRequest]) (*connect.Response[v1.UltraplanResponse], error)
 	DispatchAction(context.Context, *connect.Request[v1.ActionRequest]) (*connect.Response[v1.ActionResponse], error)
 	QuickSearch(context.Context, *connect.Request[v1.SearchRequest]) (*connect.Response[v1.SearchResponse], error)
+	// Memory & Context
+	ExtractMemories(context.Context, *connect.Request[v1.ExtractMemoriesRequest]) (*connect.Response[v1.ExtractMemoriesResponse], error)
+	CompactionReminders(context.Context, *connect.Request[v1.CompactionRemindersRequest]) (*connect.Response[v1.CompactionRemindersResponse], error)
+	CachedMicrocompact(context.Context, *connect.Request[v1.CachedMicrocompactRequest]) (*connect.Response[v1.CachedMicrocompactResponse], error)
+	GetTeammem(context.Context, *connect.Request[v1.GetTeammemRequest]) (*connect.Response[v1.GetTeammemResponse], error)
+	// Agents & Triggers
+	VerifyTask(context.Context, *connect.Request[v1.VerifyTaskRequest]) (*connect.Response[v1.VerifyTaskResponse], error)
+	RunTriggers(context.Context, *connect.Request[v1.RunTriggersRequest]) (*connect.Response[v1.RunTriggersResponse], error)
+	// Budget & Stats
+	CheckBudget(context.Context, *connect.Request[v1.CheckBudgetRequest]) (*connect.Response[v1.CheckBudgetResponse], error)
+	GetStats(context.Context, *connect.Request[v1.GetStatsRequest]) (*connect.Response[v1.GetStatsResponse], error)
+	// Security & Bridge
+	BridgeMode(context.Context, *connect.Request[v1.BridgeModeRequest]) (*connect.Response[v1.BridgeModeResponse], error)
+	BashClassifier(context.Context, *connect.Request[v1.BashClassifierRequest]) (*connect.Response[v1.BashClassifierResponse], error)
 }
 
 // NewFalconServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -182,6 +361,66 @@ func NewFalconServiceHandler(svc FalconServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(falconServiceMethods.ByName("QuickSearch")),
 		connect.WithHandlerOptions(opts...),
 	)
+	falconServiceExtractMemoriesHandler := connect.NewUnaryHandler(
+		FalconServiceExtractMemoriesProcedure,
+		svc.ExtractMemories,
+		connect.WithSchema(falconServiceMethods.ByName("ExtractMemories")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceCompactionRemindersHandler := connect.NewUnaryHandler(
+		FalconServiceCompactionRemindersProcedure,
+		svc.CompactionReminders,
+		connect.WithSchema(falconServiceMethods.ByName("CompactionReminders")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceCachedMicrocompactHandler := connect.NewUnaryHandler(
+		FalconServiceCachedMicrocompactProcedure,
+		svc.CachedMicrocompact,
+		connect.WithSchema(falconServiceMethods.ByName("CachedMicrocompact")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceGetTeammemHandler := connect.NewUnaryHandler(
+		FalconServiceGetTeammemProcedure,
+		svc.GetTeammem,
+		connect.WithSchema(falconServiceMethods.ByName("GetTeammem")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceVerifyTaskHandler := connect.NewUnaryHandler(
+		FalconServiceVerifyTaskProcedure,
+		svc.VerifyTask,
+		connect.WithSchema(falconServiceMethods.ByName("VerifyTask")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceRunTriggersHandler := connect.NewUnaryHandler(
+		FalconServiceRunTriggersProcedure,
+		svc.RunTriggers,
+		connect.WithSchema(falconServiceMethods.ByName("RunTriggers")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceCheckBudgetHandler := connect.NewUnaryHandler(
+		FalconServiceCheckBudgetProcedure,
+		svc.CheckBudget,
+		connect.WithSchema(falconServiceMethods.ByName("CheckBudget")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceGetStatsHandler := connect.NewUnaryHandler(
+		FalconServiceGetStatsProcedure,
+		svc.GetStats,
+		connect.WithSchema(falconServiceMethods.ByName("GetStats")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceBridgeModeHandler := connect.NewUnaryHandler(
+		FalconServiceBridgeModeProcedure,
+		svc.BridgeMode,
+		connect.WithSchema(falconServiceMethods.ByName("BridgeMode")),
+		connect.WithHandlerOptions(opts...),
+	)
+	falconServiceBashClassifierHandler := connect.NewUnaryHandler(
+		FalconServiceBashClassifierProcedure,
+		svc.BashClassifier,
+		connect.WithSchema(falconServiceMethods.ByName("BashClassifier")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/falcon.v1.FalconService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case FalconServicePingProcedure:
@@ -194,6 +433,26 @@ func NewFalconServiceHandler(svc FalconServiceHandler, opts ...connect.HandlerOp
 			falconServiceDispatchActionHandler.ServeHTTP(w, r)
 		case FalconServiceQuickSearchProcedure:
 			falconServiceQuickSearchHandler.ServeHTTP(w, r)
+		case FalconServiceExtractMemoriesProcedure:
+			falconServiceExtractMemoriesHandler.ServeHTTP(w, r)
+		case FalconServiceCompactionRemindersProcedure:
+			falconServiceCompactionRemindersHandler.ServeHTTP(w, r)
+		case FalconServiceCachedMicrocompactProcedure:
+			falconServiceCachedMicrocompactHandler.ServeHTTP(w, r)
+		case FalconServiceGetTeammemProcedure:
+			falconServiceGetTeammemHandler.ServeHTTP(w, r)
+		case FalconServiceVerifyTaskProcedure:
+			falconServiceVerifyTaskHandler.ServeHTTP(w, r)
+		case FalconServiceRunTriggersProcedure:
+			falconServiceRunTriggersHandler.ServeHTTP(w, r)
+		case FalconServiceCheckBudgetProcedure:
+			falconServiceCheckBudgetHandler.ServeHTTP(w, r)
+		case FalconServiceGetStatsProcedure:
+			falconServiceGetStatsHandler.ServeHTTP(w, r)
+		case FalconServiceBridgeModeProcedure:
+			falconServiceBridgeModeHandler.ServeHTTP(w, r)
+		case FalconServiceBashClassifierProcedure:
+			falconServiceBashClassifierHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -221,4 +480,44 @@ func (UnimplementedFalconServiceHandler) DispatchAction(context.Context, *connec
 
 func (UnimplementedFalconServiceHandler) QuickSearch(context.Context, *connect.Request[v1.SearchRequest]) (*connect.Response[v1.SearchResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.QuickSearch is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) ExtractMemories(context.Context, *connect.Request[v1.ExtractMemoriesRequest]) (*connect.Response[v1.ExtractMemoriesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.ExtractMemories is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) CompactionReminders(context.Context, *connect.Request[v1.CompactionRemindersRequest]) (*connect.Response[v1.CompactionRemindersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.CompactionReminders is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) CachedMicrocompact(context.Context, *connect.Request[v1.CachedMicrocompactRequest]) (*connect.Response[v1.CachedMicrocompactResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.CachedMicrocompact is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) GetTeammem(context.Context, *connect.Request[v1.GetTeammemRequest]) (*connect.Response[v1.GetTeammemResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.GetTeammem is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) VerifyTask(context.Context, *connect.Request[v1.VerifyTaskRequest]) (*connect.Response[v1.VerifyTaskResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.VerifyTask is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) RunTriggers(context.Context, *connect.Request[v1.RunTriggersRequest]) (*connect.Response[v1.RunTriggersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.RunTriggers is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) CheckBudget(context.Context, *connect.Request[v1.CheckBudgetRequest]) (*connect.Response[v1.CheckBudgetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.CheckBudget is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) GetStats(context.Context, *connect.Request[v1.GetStatsRequest]) (*connect.Response[v1.GetStatsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.GetStats is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) BridgeMode(context.Context, *connect.Request[v1.BridgeModeRequest]) (*connect.Response[v1.BridgeModeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.BridgeMode is not implemented"))
+}
+
+func (UnimplementedFalconServiceHandler) BashClassifier(context.Context, *connect.Request[v1.BashClassifierRequest]) (*connect.Response[v1.BashClassifierResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("falcon.v1.FalconService.BashClassifier is not implemented"))
 }

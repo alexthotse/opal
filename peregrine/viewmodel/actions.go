@@ -7,6 +7,21 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+var (
+	actionTitleStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("39")).
+		MarginBottom(1)
+
+	actionItemStyle = lipgloss.NewStyle().
+		PaddingLeft(2)
+
+	actionSelectedItemStyle = lipgloss.NewStyle().
+		PaddingLeft(2).
+		Foreground(lipgloss.Color("39")).
+		Bold(true)
+)
+
 type ActionsModel struct {
 	active  bool
 	actions []string
@@ -17,10 +32,10 @@ func NewActionsModel() ActionsModel {
 	return ActionsModel{
 		active: false,
 		actions: []string{
-			"Copy to clipboard",
-			"Save to file",
-			"Regenerate response",
-			"Clear chat",
+			"Edit",
+			"Copy",
+			"Retry",
+			"Explain",
 		},
 		cursor: 0,
 	}
@@ -60,15 +75,17 @@ func (m ActionsModel) View() string {
 		return ""
 	}
 	
-	s := "⚡ Inline Actions\n\n"
+	s := actionTitleStyle.Render("⚡ Inline Actions") + "\n"
 	for i, action := range m.actions {
-		cursor := " "
 		if m.cursor == i {
-			cursor = ">"
+			s += actionSelectedItemStyle.Render(fmt.Sprintf("▶ %s", action)) + "\n"
+		} else {
+			s += actionItemStyle.Render(fmt.Sprintf("  %s", action)) + "\n"
 		}
-		s += fmt.Sprintf("%s %s\n", cursor, action)
 	}
-	s += "\nPress 'm' or 'esc' to close."
+	
+	helpStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("241")).MarginTop(1)
+	s += helpStyle.Render("Press 'enter' to select, 'm' or 'esc' to close.")
 
 	style := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).

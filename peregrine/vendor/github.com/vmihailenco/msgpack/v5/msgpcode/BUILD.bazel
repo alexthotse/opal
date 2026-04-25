@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "msgpcode",
+    srcs = ["msgpcode.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/vmihailenco/msgpack/v5/msgpcode",
+    importpath = "github.com/vmihailenco/msgpack/v5/msgpcode",
+    visibility = ["//visibility:public"],
+)

@@ -107,6 +107,15 @@ func (rac *replayAPIClient) ServeHTTP(w http.ResponseWriter, req *http.Request) 
 
 	// Set Content-Type header
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	for k, v := range interaction.Response.Headers {
+		// Skip transport-level headers that don't apply to the mock server's
+		// uncompressed response body.
+		lk := strings.ToLower(k)
+		if lk == "content-encoding" || lk == "transfer-encoding" || lk == "content-length" {
+			continue
+		}
+		w.Header().Set(k, v)
+	}
 
 	var bodySegments []string
 	for i := 0; i < len(interaction.Response.BodySegments); i++ {
@@ -357,6 +366,8 @@ func convertKeysToCamelCase(v any, parentKey string) any {
 			camelCaseKey := toCamelCase(key)
 			if parentKey == "response" && key == "body_segments" {
 				newMap[camelCaseKey] = value
+			} else if parentKey == "tool_response" && key == "response" {
+				newMap[camelCaseKey] = value
 			} else {
 				newMap[camelCaseKey] = convertKeysToCamelCase(value, key)
 			}
@@ -421,16 +432,28 @@ func sanitizeHeadersForComparison(item map[string]any) {
 
 	// TODO(b/441125206): Support reading response headers for replay tests.
 	ignoreHeaders := map[string]bool{
-		"content-encoding":             true,
-		"server":                       true,
-		"server-timing":                true,
-		"transfer-encoding":            true,
-		"vary":                         true,
-		"x-xss-protection":             true,
-		"x-frame-options":              true,
-		"x-content-type-options":       true,
-		"x-vertex-ai-llm-request-type": true,
-		"date":                         true,
+		"access-control-allow-origin": true,
+		"content-encoding":            true,
+		"date":                        true,
+		"internal-input-tokens":       true,
+		"internal-output-tokens":      true,
+		"server":                      true,
+		"server-timing":               true,
+		"transfer-encoding":           true,
+		"vary":                        true,
+		"x-compute-characters":        true,
+		"x-compute-time":              true,
+		"x-compute-tokens":            true,
+		"x-compute-type":              true,
+		"x-content-type-options":      true,
+		"x-frame-options":             true,
+		"x-inference-time":            true,
+		"x-queue-time":                true,
+		"x-tokenization-time":         true,
+		"x-total-time":                true,
+		"x-vertex-ai-internal-prediction-backend": true,
+		"x-vertex-ai-llm-request-type":            true,
+		"x-xss-protection":                        true,
 	}
 
 	processedHeaders := make(map[string][]string)

@@ -40,11 +40,14 @@ type converterFuncWithClientWithRoot func(*apiClient, map[string]any, map[string
 
 type converterFuncWithRoot func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
 
-type converterFuncWithClient func(*apiClient, map[string]any, map[string]any) (map[string]any, error)
-
-type converterFunc func(map[string]any, map[string]any) (map[string]any, error)
-
 type transformerFunc[T any] func(T) (T, error)
+
+// InternalSetValueByPath is an internal function used for setting values by path.
+// This function is public only for internal purposes and its support is not guaranteed in future
+// versions. External consumers must not use it.
+func InternalSetValueByPath(data map[string]any, keys []string, value any) {
+	setValueByPath(data, keys, value)
+}
 
 // setValueByPath handles setting values within nested maps, including handling array-like structures.
 //
@@ -163,6 +166,13 @@ func setValueByPath(data map[string]any, keys []string, value any) {
 	}
 }
 
+// InternalGetValueByPath is an internal function used for retrieving values by path.
+// This function is public only for internal purposes and its support is not guaranteed in future
+// versions. External consumers must not use it.
+func InternalGetValueByPath(data any, keys []string) any {
+	return getValueByPath(data, keys)
+}
+
 // getValueByPath retrieves a value from a nested map or slice or struct based on a path of keys.
 //
 // Examples:
@@ -274,6 +284,13 @@ func getValueByPathOrDefault(data any, keys []string, defaultValue any) any {
 	return current
 }
 
+// InternalFormatMap is an internal function used for formatting maps.
+// This function is public only for internal purposes and its support is not guaranteed in future
+// versions. External consumers must not use it.
+func InternalFormatMap(template string, variables map[string]any) (string, error) {
+	return formatMap(template, variables)
+}
+
 func formatMap(template string, variables map[string]any) (string, error) {
 	var buffer bytes.Buffer
 	for i := 0; i < len(template); i++ {
@@ -331,32 +348,6 @@ func applyConverterToSliceWithRoot(inputs []any, converter converterFuncWithRoot
 	return outputs, nil
 }
 
-// applyConverterToSliceWithClient calls converter function (with API client) to each element of the slice.
-func applyConverterToSliceWithClient(ac *apiClient, inputs []any, converter converterFuncWithClient) ([]map[string]any, error) {
-	var outputs []map[string]any
-	for _, object := range inputs {
-		object, err := converter(ac, object.(map[string]any), nil)
-		if err != nil {
-			return nil, err
-		}
-		outputs = append(outputs, object)
-	}
-	return outputs, nil
-}
-
-// applyConverterToSlice calls converter function to each element of the slice.
-func applyConverterToSlice(inputs []any, converter converterFunc) ([]map[string]any, error) {
-	var outputs []map[string]any
-	for _, object := range inputs {
-		object, err := converter(object.(map[string]any), nil)
-		if err != nil {
-			return nil, err
-		}
-		outputs = append(outputs, object)
-	}
-	return outputs, nil
-}
-
 // applyItemTransformerToSlice calls item transformer function to each element of the slice.
 func applyItemTransformerToSlice[T any](inputs []T, itemTransformer transformerFunc[T]) ([]T, error) {
 	var outputs []T
@@ -368,6 +359,13 @@ func applyItemTransformerToSlice[T any](inputs []T, itemTransformer transformerF
 		outputs = append(outputs, object)
 	}
 	return outputs, nil
+}
+
+// InternalDeepMarshal is an internal function used for deep marshaling.
+// This function is public only for internal purposes and its support is not guaranteed in future
+// versions. External consumers must not use it.
+func InternalDeepMarshal(input any, output *map[string]any) error {
+	return deepMarshal(input, output)
 }
 
 func deepMarshal(input any, output *map[string]any) error {
@@ -387,6 +385,13 @@ func deepCopy[T any](original T, copied *T) error {
 
 	err = json.Unmarshal(bytes, copied)
 	return err
+}
+
+// InternalCreateURLQuery is an internal function used for creating URL queries.
+// This function is public only for internal purposes and its support is not guaranteed in future
+// versions. External consumers must not use it.
+func InternalCreateURLQuery(query map[string]any) (string, error) {
+	return createURLQuery(query)
 }
 
 // createURLQuery creates a URL query string from a map of key-value pairs.

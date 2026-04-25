@@ -2,8 +2,8 @@ load("@rules_gleam//gleam:defs.bzl", "gleam_binary")
 
 gleam_binary(
     name = "falcon_bin",
-    main_module = "falcon",
     srcs = ["//falcon:gleam.toml"],
+    main_module = "falcon",
     visibility = ["//visibility:public"],
     deps = [
         "//falcon:falcon_lib",

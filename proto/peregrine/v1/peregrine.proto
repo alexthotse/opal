@@ -2,14 +2,19 @@ syntax = "proto3";
 package peregrine.v1;
 option go_package = "github.com/alexthotse/peregrine/gen/peregrine/v1;peregrinev1";
 
-// PeregrineService represents the Go frontend's local service, if needed for callbacks
+// PeregrineService handles callbacks/events from the Gleam backend 
+// down to the Go Bubble Tea frontend (e.g. streaming tokens, alerts)
 service PeregrineService {
   rpc Status(StatusRequest) returns (StatusResponse) {}
+  rpc StreamToken(StreamTokenRequest) returns (StreamTokenResponse) {}
+  rpc DisplayAlert(DisplayAlertRequest) returns (DisplayAlertResponse) {}
 }
 
-message StatusRequest {
-  string id = 1;
-}
-message StatusResponse {
-  string status = 1;
-}
+message StatusRequest { string id = 1; string status_message = 2; }
+message StatusResponse { string status = 1; }
+
+message StreamTokenRequest { string id = 1; string token = 2; bool is_final = 3; }
+message StreamTokenResponse { bool acknowledged = 1; }
+
+message DisplayAlertRequest { string id = 1; string title = 2; string message = 3; }
+message DisplayAlertResponse { bool acknowledged = 1; }

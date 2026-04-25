@@ -4,19 +4,39 @@ option go_package = "github.com/alexthotse/peregrine/gen/falcon/v1;falconv1";
 
 service FalconService {
   rpc Ping(PingRequest) returns (PingResponse) {}
+  
+  // Core Reasoning & Planning
   rpc StartUltrathink(UltrathinkRequest) returns (UltrathinkResponse) {}
   rpc StartUltraplan(UltraplanRequest) returns (UltraplanResponse) {}
   rpc DispatchAction(ActionRequest) returns (ActionResponse) {}
   rpc QuickSearch(SearchRequest) returns (SearchResponse) {}
+
+  // Memory & Context
+  rpc ExtractMemories(ExtractMemoriesRequest) returns (ExtractMemoriesResponse) {}
+  rpc CompactionReminders(CompactionRemindersRequest) returns (CompactionRemindersResponse) {}
+  rpc CachedMicrocompact(CachedMicrocompactRequest) returns (CachedMicrocompactResponse) {}
+  rpc GetTeammem(GetTeammemRequest) returns (GetTeammemResponse) {}
+
+  // Agents & Triggers
+  rpc VerifyTask(VerifyTaskRequest) returns (VerifyTaskResponse) {}
+  rpc RunTriggers(RunTriggersRequest) returns (RunTriggersResponse) {}
+
+  // Budget & Stats
+  rpc CheckBudget(CheckBudgetRequest) returns (CheckBudgetResponse) {}
+  rpc GetStats(GetStatsRequest) returns (GetStatsResponse) {}
+
+  // Security & Bridge
+  rpc BridgeMode(BridgeModeRequest) returns (BridgeModeResponse) {}
+  rpc BashClassifier(BashClassifierRequest) returns (BashClassifierResponse) {}
 }
 
 message PingRequest { string id = 1; }
 message PingResponse { string message = 1; }
 
-message UltrathinkRequest { string id = 1; }
+message UltrathinkRequest { string id = 1; string prompt = 2; }
 message UltrathinkResponse { string result = 1; }
 
-message UltraplanRequest { string id = 1; }
+message UltraplanRequest { string id = 1; string goal = 2; }
 message UltraplanResponse { string result = 1; }
 
 message ActionRequest { string id = 1; string action = 2; }
@@ -24,3 +44,33 @@ message ActionResponse { string result = 1; }
 
 message SearchRequest { string id = 1; string query = 2; }
 message SearchResponse { string result = 1; }
+
+message ExtractMemoriesRequest { string id = 1; string session_id = 2; }
+message ExtractMemoriesResponse { string result = 1; }
+
+message CompactionRemindersRequest { string id = 1; }
+message CompactionRemindersResponse { string result = 1; }
+
+message CachedMicrocompactRequest { string id = 1; string context_key = 2; }
+message CachedMicrocompactResponse { string result = 1; }
+
+message GetTeammemRequest { string id = 1; }
+message GetTeammemResponse { string result = 1; }
+
+message VerifyTaskRequest { string id = 1; string task_id = 2; }
+message VerifyTaskResponse { string result = 1; }
+
+message RunTriggersRequest { string id = 1; }
+message RunTriggersResponse { string result = 1; }
+
+message CheckBudgetRequest { string id = 1; }
+message CheckBudgetResponse { string result = 1; }
+
+message GetStatsRequest { string id = 1; }
+message GetStatsResponse { string result = 1; }
+
+message BridgeModeRequest { string id = 1; }
+message BridgeModeResponse { string result = 1; }
+
+message BashClassifierRequest { string id = 1; string command = 2; }
+message BashClassifierResponse { string result = 1; bool is_safe = 2; }

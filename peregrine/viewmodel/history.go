@@ -7,6 +7,21 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+var (
+	historyTitleStyle = lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("205")).
+		MarginBottom(1)
+
+	historyItemStyle = lipgloss.NewStyle().
+		PaddingLeft(2)
+
+	historySelectedItemStyle = lipgloss.NewStyle().
+		PaddingLeft(2).
+		Foreground(lipgloss.Color("205")).
+		Bold(true)
+)
+
 type HistoryModel struct {
 	active  bool
 	prompts []string
@@ -20,6 +35,8 @@ func NewHistoryModel() HistoryModel {
 			"Show me the architecture plan.",
 			"Run the benchmark suite.",
 			"Explain the Gleam concurrency model.",
+			"What are the best practices for Go project structure?",
+			"How do I use bazel to build this?",
 		},
 		cursor: 0,
 	}
@@ -59,15 +76,17 @@ func (m HistoryModel) View() string {
 		return ""
 	}
 	
-	s := "📜 Prompt History\n\n"
+	s := historyTitleStyle.Render("📜 Prompt History") + "\n"
 	for i, prompt := range m.prompts {
-		cursor := " "
 		if m.cursor == i {
-			cursor = ">"
+			s += historySelectedItemStyle.Render(fmt.Sprintf("▶ %s", prompt)) + "\n"
+		} else {
+			s += historyItemStyle.Render(fmt.Sprintf("  %s", prompt)) + "\n"
 		}
-		s += fmt.Sprintf("%s %s\n", cursor, prompt)
 	}
-	s += "\nPress 'h' or 'esc' to close."
+	
+	helpStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("241")).MarginTop(1)
+	s += helpStyle.Render("Press 'enter' to select, 'h' or 'esc' to close.")
 
 	style := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).

@@ -73,15 +73,25 @@ func (r *Live) Connect(context context.Context, model string, config *LiveConnec
 	var u url.URL
 	var header http.Header = mergeHeaders(&httpOptions, nil)
 	if r.apiClient.clientConfig.Backend == BackendVertexAI {
-		token, err := r.apiClient.clientConfig.Credentials.Token(context)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get token: %w", err)
+		hasStandardAuth := r.apiClient.clientConfig.Project != "" && r.apiClient.clientConfig.Location != ""
+		if r.apiClient.clientConfig.Credentials != nil {
+			token, err := r.apiClient.clientConfig.Credentials.Token(context)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get token: %w", err)
+			}
+			header.Set("Authorization", fmt.Sprintf("Bearer %s", token.Value))
 		}
-		header.Set("Authorization", fmt.Sprintf("Bearer %s", token.Value))
+
+		wsPath := path.Join(baseURL.Path, fmt.Sprintf("ws/google.cloud.aiplatform.%s.LlmBidiService/BidiGenerateContent", httpOptions.APIVersion))
+		// If custom base URL is used but no standard auth exists, assume proxy uses its own path.
+		if baseURL.String() != "" && !hasStandardAuth {
+			wsPath = baseURL.Path
+		}
+
 		u = url.URL{
 			Scheme: scheme,
 			Host:   baseURL.Host,
-			Path:   path.Join(baseURL.Path, fmt.Sprintf("ws/google.cloud.aiplatform.%s.LlmBidiService/BidiGenerateContent", httpOptions.APIVersion)),
+			Path:   wsPath,
 		}
 	} else {
 		apiKey := r.apiClient.clientConfig.APIKey
@@ -127,13 +137,13 @@ func (r *Live) Connect(context context.Context, model string, config *LiveConnec
 		return nil, err
 	}
 
-	var toConverter func(*apiClient, map[string]any, map[string]any) (map[string]any, error)
+	var toConverter func(*apiClient, map[string]any, map[string]any, map[string]any) (map[string]any, error)
 	if r.apiClient.clientConfig.Backend == BackendVertexAI {
 		toConverter = liveConnectParametersToVertex
 	} else {
 		toConverter = liveConnectParametersToMldev
 	}
-	body, err := toConverter(r.apiClient, parameterMap, nil)
+	body, err := toConverter(r.apiClient, parameterMap, nil, parameterMap)
 	if err != nil {
 		return nil, err
 	}
@@ -213,13 +223,13 @@ func (s *Session) SendRealtimeInput(input LiveRealtimeInput) error {
 		return err
 	}
 
-	var toConverter func(map[string]any, map[string]any) (map[string]any, error)
+	var toConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
 	if s.apiClient.clientConfig.Backend == BackendVertexAI {
 		toConverter = liveSendRealtimeInputParametersToVertex
 	} else {
 		toConverter = liveSendRealtimeInputParametersToMldev
 	}
-	body, err := toConverter(parameterMap, nil)
+	body, err := toConverter(parameterMap, nil, parameterMap)
 	if err != nil {
 		return err
 	}
@@ -257,13 +267,13 @@ func (s *Session) send(input *LiveClientMessage) error {
 		return err
 	}
 
-	var toConverter func(map[string]any, map[string]any) (map[string]any, error)
+	var toConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
 	if s.apiClient.clientConfig.Backend == BackendVertexAI {
 		toConverter = liveClientMessageToVertex
 	} else {
 		toConverter = liveClientMessageToMldev
 	}
-	body, err := toConverter(parameterMap, nil)
+	body, err := toConverter(parameterMap, nil, parameterMap)
 	if err != nil {
 		return err
 	}
@@ -295,12 +305,12 @@ func (s *Session) Receive() (*LiveServerMessage, error) {
 		return nil, fmt.Errorf("received error in response: %v", string(msgBytes))
 	}
 
-	var fromConverter func(map[string]any, map[string]any) (map[string]any, error)
+	var fromConverter func(map[string]any, map[string]any, map[string]any) (map[string]any, error)
 	if s.apiClient.clientConfig.Backend == BackendVertexAI {
 		fromConverter = liveServerMessageFromVertex
 	}
 	if fromConverter != nil {
-		responseMap, err = fromConverter(responseMap, nil)
+		responseMap, err = fromConverter(responseMap, nil, nil)
 	}
 	if err != nil {
 		return nil, err

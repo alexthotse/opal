@@ -13,12 +13,13 @@ go_library(
     deps = [
         "//peregrine/gen/falcon/v1:falcon",
         "//peregrine/gen/falcon/v1/falconv1connect",
+        "//peregrine/llm",
+        "//peregrine/vendor/connectrpc.com/connect",
         "//peregrine/vendor/github.com/charmbracelet/harmonica",
+        "//peregrine/vendor/github.com/vmihailenco/msgpack/v5:msgpack",
         "//peregrine/vendor/google.golang.org/adk/agent",
         "//peregrine/vendor/google.golang.org/adk/agent/llmagent",
         "//peregrine/vendor/google.golang.org/adk/model",
         "//peregrine/vendor/google.golang.org/genai",
-        "@com_connectrpc_connect//:connect",
-        "@com_github_vmihailenco_msgpack_v5//:msgpack",
     ],
 )

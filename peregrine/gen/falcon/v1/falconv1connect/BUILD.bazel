@@ -7,6 +7,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//peregrine/gen/falcon/v1:falcon",
-        "@com_connectrpc_connect//:connect",
+        "//peregrine/vendor/connectrpc.com/connect",
     ],
 )

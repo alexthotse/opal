@@ -35,11 +35,19 @@ const (
 const (
 	// PeregrineServiceStatusProcedure is the fully-qualified name of the PeregrineService's Status RPC.
 	PeregrineServiceStatusProcedure = "/peregrine.v1.PeregrineService/Status"
+	// PeregrineServiceStreamTokenProcedure is the fully-qualified name of the PeregrineService's
+	// StreamToken RPC.
+	PeregrineServiceStreamTokenProcedure = "/peregrine.v1.PeregrineService/StreamToken"
+	// PeregrineServiceDisplayAlertProcedure is the fully-qualified name of the PeregrineService's
+	// DisplayAlert RPC.
+	PeregrineServiceDisplayAlertProcedure = "/peregrine.v1.PeregrineService/DisplayAlert"
 )
 
 // PeregrineServiceClient is a client for the peregrine.v1.PeregrineService service.
 type PeregrineServiceClient interface {
 	Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error)
+	StreamToken(context.Context, *connect.Request[v1.StreamTokenRequest]) (*connect.Response[v1.StreamTokenResponse], error)
+	DisplayAlert(context.Context, *connect.Request[v1.DisplayAlertRequest]) (*connect.Response[v1.DisplayAlertResponse], error)
 }
 
 // NewPeregrineServiceClient constructs a client for the peregrine.v1.PeregrineService service. By
@@ -59,12 +67,26 @@ func NewPeregrineServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(peregrineServiceMethods.ByName("Status")),
 			connect.WithClientOptions(opts...),
 		),
+		streamToken: connect.NewClient[v1.StreamTokenRequest, v1.StreamTokenResponse](
+			httpClient,
+			baseURL+PeregrineServiceStreamTokenProcedure,
+			connect.WithSchema(peregrineServiceMethods.ByName("StreamToken")),
+			connect.WithClientOptions(opts...),
+		),
+		displayAlert: connect.NewClient[v1.DisplayAlertRequest, v1.DisplayAlertResponse](
+			httpClient,
+			baseURL+PeregrineServiceDisplayAlertProcedure,
+			connect.WithSchema(peregrineServiceMethods.ByName("DisplayAlert")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // peregrineServiceClient implements PeregrineServiceClient.
 type peregrineServiceClient struct {
-	status *connect.Client[v1.StatusRequest, v1.StatusResponse]
+	status       *connect.Client[v1.StatusRequest, v1.StatusResponse]
+	streamToken  *connect.Client[v1.StreamTokenRequest, v1.StreamTokenResponse]
+	displayAlert *connect.Client[v1.DisplayAlertRequest, v1.DisplayAlertResponse]
 }
 
 // Status calls peregrine.v1.PeregrineService.Status.
@@ -72,9 +94,21 @@ func (c *peregrineServiceClient) Status(ctx context.Context, req *connect.Reques
 	return c.status.CallUnary(ctx, req)
 }
 
+// StreamToken calls peregrine.v1.PeregrineService.StreamToken.
+func (c *peregrineServiceClient) StreamToken(ctx context.Context, req *connect.Request[v1.StreamTokenRequest]) (*connect.Response[v1.StreamTokenResponse], error) {
+	return c.streamToken.CallUnary(ctx, req)
+}
+
+// DisplayAlert calls peregrine.v1.PeregrineService.DisplayAlert.
+func (c *peregrineServiceClient) DisplayAlert(ctx context.Context, req *connect.Request[v1.DisplayAlertRequest]) (*connect.Response[v1.DisplayAlertResponse], error) {
+	return c.displayAlert.CallUnary(ctx, req)
+}
+
 // PeregrineServiceHandler is an implementation of the peregrine.v1.PeregrineService service.
 type PeregrineServiceHandler interface {
 	Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error)
+	StreamToken(context.Context, *connect.Request[v1.StreamTokenRequest]) (*connect.Response[v1.StreamTokenResponse], error)
+	DisplayAlert(context.Context, *connect.Request[v1.DisplayAlertRequest]) (*connect.Response[v1.DisplayAlertResponse], error)
 }
 
 // NewPeregrineServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -90,10 +124,26 @@ func NewPeregrineServiceHandler(svc PeregrineServiceHandler, opts ...connect.Han
 		connect.WithSchema(peregrineServiceMethods.ByName("Status")),
 		connect.WithHandlerOptions(opts...),
 	)
+	peregrineServiceStreamTokenHandler := connect.NewUnaryHandler(
+		PeregrineServiceStreamTokenProcedure,
+		svc.StreamToken,
+		connect.WithSchema(peregrineServiceMethods.ByName("StreamToken")),
+		connect.WithHandlerOptions(opts...),
+	)
+	peregrineServiceDisplayAlertHandler := connect.NewUnaryHandler(
+		PeregrineServiceDisplayAlertProcedure,
+		svc.DisplayAlert,
+		connect.WithSchema(peregrineServiceMethods.ByName("DisplayAlert")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/peregrine.v1.PeregrineService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PeregrineServiceStatusProcedure:
 			peregrineServiceStatusHandler.ServeHTTP(w, r)
+		case PeregrineServiceStreamTokenProcedure:
+			peregrineServiceStreamTokenHandler.ServeHTTP(w, r)
+		case PeregrineServiceDisplayAlertProcedure:
+			peregrineServiceDisplayAlertHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -105,4 +155,12 @@ type UnimplementedPeregrineServiceHandler struct{}
 
 func (UnimplementedPeregrineServiceHandler) Status(context.Context, *connect.Request[v1.StatusRequest]) (*connect.Response[v1.StatusResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("peregrine.v1.PeregrineService.Status is not implemented"))
+}
+
+func (UnimplementedPeregrineServiceHandler) StreamToken(context.Context, *connect.Request[v1.StreamTokenRequest]) (*connect.Response[v1.StreamTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("peregrine.v1.PeregrineService.StreamToken is not implemented"))
+}
+
+func (UnimplementedPeregrineServiceHandler) DisplayAlert(context.Context, *connect.Request[v1.DisplayAlertRequest]) (*connect.Response[v1.DisplayAlertResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("peregrine.v1.PeregrineService.DisplayAlert is not implemented"))
 }

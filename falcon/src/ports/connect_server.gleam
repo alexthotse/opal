@@ -5,8 +5,8 @@ import gleam/bytes_tree
 
 import domain/reasoning
 import domain/planning
-import adapters/jido_agent
-import domain/search
+import adapters/pure_agent
+import domain/memory
 
 @external(erlang, "gleam_stdlib", "identity")
 fn to_dynamic(a: a) -> dynamic.Dynamic
@@ -26,8 +26,10 @@ pub fn handle_request(req: wisp.Request) -> wisp.Response {
     "/falcon.v1.FalconService/Ping" -> "pong"
     "/falcon.v1.FalconService/StartUltrathink" -> reasoning.start_ultrathink()
     "/falcon.v1.FalconService/StartUltraplan" -> planning.start_ultraplan()
-    "/falcon.v1.FalconService/DispatchAction" -> jido_agent.dispatch_action("test_action")
-    "/falcon.v1.FalconService/QuickSearch" -> search.quick_search()
+    "/falcon.v1.FalconService/DispatchAction" -> pure_agent.dispatch_action("test_action")
+    "/falcon.v1.FalconService/QuickSearch" -> "search_completed"
+    "/falcon.v1.FalconService/ExtractMemories" -> memory.extract_memories()
+    "/falcon.v1.FalconService/CompactionReminders" -> memory.compaction_reminders()
     _ -> "not_found"
   }
 

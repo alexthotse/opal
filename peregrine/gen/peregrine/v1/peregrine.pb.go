@@ -24,6 +24,7 @@ const (
 type StatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	StatusMessage string                 `protobuf:"bytes,2,opt,name=status_message,json=statusMessage,proto3" json:"status_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,6 +62,13 @@ func (*StatusRequest) Descriptor() ([]byte, []int) {
 func (x *StatusRequest) GetId() string {
 	if x != nil {
 		return x.Id
+	}
+	return ""
+}
+
+func (x *StatusRequest) GetStatusMessage() string {
+	if x != nil {
+		return x.StatusMessage
 	}
 	return ""
 }
@@ -109,17 +117,240 @@ func (x *StatusResponse) GetStatus() string {
 	return ""
 }
 
+type StreamTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	IsFinal       bool                   `protobuf:"varint,3,opt,name=is_final,json=isFinal,proto3" json:"is_final,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StreamTokenRequest) Reset() {
+	*x = StreamTokenRequest{}
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StreamTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StreamTokenRequest) ProtoMessage() {}
+
+func (x *StreamTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StreamTokenRequest.ProtoReflect.Descriptor instead.
+func (*StreamTokenRequest) Descriptor() ([]byte, []int) {
+	return file_peregrine_v1_peregrine_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *StreamTokenRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *StreamTokenRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *StreamTokenRequest) GetIsFinal() bool {
+	if x != nil {
+		return x.IsFinal
+	}
+	return false
+}
+
+type StreamTokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Acknowledged  bool                   `protobuf:"varint,1,opt,name=acknowledged,proto3" json:"acknowledged,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StreamTokenResponse) Reset() {
+	*x = StreamTokenResponse{}
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StreamTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StreamTokenResponse) ProtoMessage() {}
+
+func (x *StreamTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StreamTokenResponse.ProtoReflect.Descriptor instead.
+func (*StreamTokenResponse) Descriptor() ([]byte, []int) {
+	return file_peregrine_v1_peregrine_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *StreamTokenResponse) GetAcknowledged() bool {
+	if x != nil {
+		return x.Acknowledged
+	}
+	return false
+}
+
+type DisplayAlertRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DisplayAlertRequest) Reset() {
+	*x = DisplayAlertRequest{}
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DisplayAlertRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DisplayAlertRequest) ProtoMessage() {}
+
+func (x *DisplayAlertRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DisplayAlertRequest.ProtoReflect.Descriptor instead.
+func (*DisplayAlertRequest) Descriptor() ([]byte, []int) {
+	return file_peregrine_v1_peregrine_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *DisplayAlertRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DisplayAlertRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *DisplayAlertRequest) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type DisplayAlertResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Acknowledged  bool                   `protobuf:"varint,1,opt,name=acknowledged,proto3" json:"acknowledged,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DisplayAlertResponse) Reset() {
+	*x = DisplayAlertResponse{}
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DisplayAlertResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DisplayAlertResponse) ProtoMessage() {}
+
+func (x *DisplayAlertResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_peregrine_v1_peregrine_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DisplayAlertResponse.ProtoReflect.Descriptor instead.
+func (*DisplayAlertResponse) Descriptor() ([]byte, []int) {
+	return file_peregrine_v1_peregrine_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DisplayAlertResponse) GetAcknowledged() bool {
+	if x != nil {
+		return x.Acknowledged
+	}
+	return false
+}
+
 var File_peregrine_v1_peregrine_proto protoreflect.FileDescriptor
 
 const file_peregrine_v1_peregrine_proto_rawDesc = "" +
 	"\n" +
-	"\x1cperegrine/v1/peregrine.proto\x12\fperegrine.v1\"\x1f\n" +
+	"\x1cperegrine/v1/peregrine.proto\x12\fperegrine.v1\"F\n" +
 	"\rStatusRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"(\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12%\n" +
+	"\x0estatus_message\x18\x02 \x01(\tR\rstatusMessage\"(\n" +
 	"\x0eStatusResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\tR\x06status2Y\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\"U\n" +
+	"\x12StreamTokenRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\x12\x19\n" +
+	"\bis_final\x18\x03 \x01(\bR\aisFinal\"9\n" +
+	"\x13StreamTokenResponse\x12\"\n" +
+	"\facknowledged\x18\x01 \x01(\bR\facknowledged\"U\n" +
+	"\x13DisplayAlertRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\":\n" +
+	"\x14DisplayAlertResponse\x12\"\n" +
+	"\facknowledged\x18\x01 \x01(\bR\facknowledged2\x88\x02\n" +
 	"\x10PeregrineService\x12E\n" +
-	"\x06Status\x12\x1b.peregrine.v1.StatusRequest\x1a\x1c.peregrine.v1.StatusResponse\"\x00B>Z<github.com/alexthotse/peregrine/gen/peregrine/v1;peregrinev1b\x06proto3"
+	"\x06Status\x12\x1b.peregrine.v1.StatusRequest\x1a\x1c.peregrine.v1.StatusResponse\"\x00\x12T\n" +
+	"\vStreamToken\x12 .peregrine.v1.StreamTokenRequest\x1a!.peregrine.v1.StreamTokenResponse\"\x00\x12W\n" +
+	"\fDisplayAlert\x12!.peregrine.v1.DisplayAlertRequest\x1a\".peregrine.v1.DisplayAlertResponse\"\x00B>Z<github.com/alexthotse/peregrine/gen/peregrine/v1;peregrinev1b\x06proto3"
 
 var (
 	file_peregrine_v1_peregrine_proto_rawDescOnce sync.Once
@@ -133,16 +364,24 @@ func file_peregrine_v1_peregrine_proto_rawDescGZIP() []byte {
 	return file_peregrine_v1_peregrine_proto_rawDescData
 }
 
-var file_peregrine_v1_peregrine_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_peregrine_v1_peregrine_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_peregrine_v1_peregrine_proto_goTypes = []any{
-	(*StatusRequest)(nil),  // 0: peregrine.v1.StatusRequest
-	(*StatusResponse)(nil), // 1: peregrine.v1.StatusResponse
+	(*StatusRequest)(nil),        // 0: peregrine.v1.StatusRequest
+	(*StatusResponse)(nil),       // 1: peregrine.v1.StatusResponse
+	(*StreamTokenRequest)(nil),   // 2: peregrine.v1.StreamTokenRequest
+	(*StreamTokenResponse)(nil),  // 3: peregrine.v1.StreamTokenResponse
+	(*DisplayAlertRequest)(nil),  // 4: peregrine.v1.DisplayAlertRequest
+	(*DisplayAlertResponse)(nil), // 5: peregrine.v1.DisplayAlertResponse
 }
 var file_peregrine_v1_peregrine_proto_depIdxs = []int32{
 	0, // 0: peregrine.v1.PeregrineService.Status:input_type -> peregrine.v1.StatusRequest
-	1, // 1: peregrine.v1.PeregrineService.Status:output_type -> peregrine.v1.StatusResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	2, // 1: peregrine.v1.PeregrineService.StreamToken:input_type -> peregrine.v1.StreamTokenRequest
+	4, // 2: peregrine.v1.PeregrineService.DisplayAlert:input_type -> peregrine.v1.DisplayAlertRequest
+	1, // 3: peregrine.v1.PeregrineService.Status:output_type -> peregrine.v1.StatusResponse
+	3, // 4: peregrine.v1.PeregrineService.StreamToken:output_type -> peregrine.v1.StreamTokenResponse
+	5, // 5: peregrine.v1.PeregrineService.DisplayAlert:output_type -> peregrine.v1.DisplayAlertResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -159,7 +398,7 @@ func file_peregrine_v1_peregrine_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_peregrine_v1_peregrine_proto_rawDesc), len(file_peregrine_v1_peregrine_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

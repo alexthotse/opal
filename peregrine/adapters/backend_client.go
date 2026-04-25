@@ -7,10 +7,12 @@ import (
 	"connectrpc.com/connect"
 	falconv1 "github.com/alexthotse/peregrine/gen/falcon/v1"
 	"github.com/alexthotse/peregrine/gen/falcon/v1/falconv1connect"
+	"github.com/alexthotse/peregrine/llm"
 )
 
 type BackendClient struct {
-	client falconv1connect.FalconServiceClient
+	client    falconv1connect.FalconServiceClient
+	llmClient *llm.Client
 }
 
 func NewDefaultBackendClient() *BackendClient {
@@ -20,8 +22,12 @@ func NewDefaultBackendClient() *BackendClient {
 		"http://localhost:8080",
 		connect.WithCodec(NewMsgPackCodec()),
 	)
+	
+	llmClient, _ := llm.NewClient()
+	
 	return &BackendClient{
-		client: client,
+		client:    client,
+		llmClient: llmClient,
 	}
 }
 
@@ -36,9 +42,29 @@ func (b *BackendClient) Ping(ctx context.Context, id string) (string, error) {
 }
 
 // StartUltrathink invokes the deep reasoning agent
-func (b *BackendClient) StartUltrathink(ctx context.Context, id string) (string, error) {
-	req := connect.NewRequest(&falconv1.UltrathinkRequest{Id: id})
+func (b *BackendClient) StartUltrathink(ctx context.Context, id string, prompt string) (string, error) {
+	req := connect.NewRequest(&falconv1.UltrathinkRequest{Id: id, Prompt: prompt})
 	res, err := b.client.StartUltrathink(ctx, req)
+	if err != nil {
+		return "", err
+	}
+	return res.Msg.Result, nil
+}
+
+// StartUltraplan invokes the architecture planner
+func (b *BackendClient) StartUltraplan(ctx context.Context, id string, goal string) (string, error) {
+	req := connect.NewRequest(&falconv1.UltraplanRequest{Id: id, Goal: goal})
+	res, err := b.client.StartUltraplan(ctx, req)
+	if err != nil {
+		return "", err
+	}
+	return res.Msg.Result, nil
+}
+
+// ExtractMemories retrieves memories
+func (b *BackendClient) ExtractMemories(ctx context.Context, id string, sessionID string) (string, error) {
+	req := connect.NewRequest(&falconv1.ExtractMemoriesRequest{Id: id, SessionId: sessionID})
+	res, err := b.client.ExtractMemories(ctx, req)
 	if err != nil {
 		return "", err
 	}
@@ -53,4 +79,12 @@ func (b *BackendClient) DispatchAction(ctx context.Context, id, action string) (
 		return "", err
 	}
 	return res.Msg.Result, nil
+}
+
+// GenerateReasoning makes a network call to the Gemini API using the LLM client
+func (b *BackendClient) GenerateReasoning(prompt string) (string, error) {
+	if b.llmClient == nil {
+		return "", context.Canceled // Or any error to indicate it's not initialized
+	}
+	return b.llmClient.GenerateReasoning(prompt)
 }

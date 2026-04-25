@@ -22,6 +22,10 @@ cloud.google.com/go/auth/internal/trustboundary
 # cloud.google.com/go/compute/metadata v0.9.0
 ## explicit; go 1.24.0
 cloud.google.com/go/compute/metadata
+# connectrpc.com/connect v1.19.2
+## explicit; go 1.24.0
+connectrpc.com/connect
+connectrpc.com/connect/internal/gen/connectext/grpc/status/v1
 # github.com/aymanbagabas/go-osc52/v2 v2.0.1
 ## explicit; go 1.16
 github.com/aymanbagabas/go-osc52/v2
@@ -140,6 +144,15 @@ github.com/muesli/termenv
 # github.com/rivo/uniseg v0.4.7
 ## explicit; go 1.18
 github.com/rivo/uniseg
+# github.com/vmihailenco/msgpack/v5 v5.4.1
+## explicit; go 1.19
+github.com/vmihailenco/msgpack/v5
+github.com/vmihailenco/msgpack/v5/msgpcode
+# github.com/vmihailenco/tagparser/v2 v2.0.0
+## explicit; go 1.15
+github.com/vmihailenco/tagparser/v2
+github.com/vmihailenco/tagparser/v2/internal
+github.com/vmihailenco/tagparser/v2/internal/parser
 # github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e
 ## explicit; go 1.19
 github.com/xo/terminfo
@@ -241,7 +254,7 @@ google.golang.org/adk/model
 google.golang.org/adk/session
 google.golang.org/adk/tool
 google.golang.org/adk/tool/toolconfirmation
-# google.golang.org/genai v1.40.0
+# google.golang.org/genai v1.54.0
 ## explicit; go 1.24
 google.golang.org/genai
 # google.golang.org/genproto/googleapis/rpc v0.0.0-20260316180232-0b37fe3546d5
@@ -351,3 +364,4 @@ rsc.io/omap
 # rsc.io/ordered v1.1.1
 ## explicit; go 1.22.0
 rsc.io/ordered
+# github.com/alexthotse/peregrine/gen => ./gen

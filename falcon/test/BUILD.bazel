@@ -5,9 +5,9 @@ gleam_test(
     srcs = glob([
         "**/*.gleam",
     ]),
+    strip_src_prefix = "falcon/test",
     deps = [
         "//falcon:falcon_lib",
         "@hex_gleeunit//:gleam",
     ],
-    strip_src_prefix = "falcon/test",
 )
