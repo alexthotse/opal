@@ -10,6 +10,8 @@ import (
 	"google.golang.org/adk/agent"
 	"google.golang.org/adk/agent/llmagent"
 	"google.golang.org/adk/model"
+	"google.golang.org/adk/runner"
+	"google.golang.org/adk/session"
 )
 
 // GenericModelWrapper implements adk's model.LLM interface, making Peregrine vendor-agnostic.
@@ -39,7 +41,7 @@ func (m *GenericModelWrapper) GenerateContent(ctx context.Context, req *model.LL
 
 // ADKAgentClient wraps the Google Agent Development Kit (ADK).
 type ADKAgentClient struct {
-	agent agent.Agent
+	runner *runner.Runner
 }
 
 func NewADKAgentClient(ctx context.Context) (*ADKAgentClient, error) {
@@ -71,36 +73,46 @@ func NewADKAgentClient(ctx context.Context) (*ADKAgentClient, error) {
 		return nil, fmt.Errorf("failed to create ADK agent: %w", err)
 	}
 
+	sessionSvc := session.InMemoryService()
+	r, err := runner.New(runner.Config{
+		AppName:        "peregrine",
+		Agent:          ag,
+		SessionService: sessionSvc,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to create runner: %w", err)
+	}
+
 	return &ADKAgentClient{
-		agent: ag,
+		runner: r,
 	}, nil
 }
 
 func (c *ADKAgentClient) GenerateReasoning(ctx context.Context, prompt string) (string, error) {
 	// Trigger the ADK Agent to reason
-	result, err := c.agent.Run(ctx, &agent.RunRequest{
-		Input: []*genai.Content{
-			{
-				Role: "user",
-				Parts: []any{
-					genai.Text(prompt),
-				},
-			},
-		},
-	})
-	if err != nil {
-		return "", fmt.Errorf("ADK Agent failed: %w", err)
-	}
+	content := genai.NewContentFromParts([]*genai.Part{
+		{Text: prompt},
+	}, genai.RoleUser)
 
-	if len(result.Messages) > 0 {
-		for _, msg := range result.Messages {
-			if msg.Role == "model" && len(msg.Parts) > 0 {
-				if text, ok := msg.Parts[0].(genai.Text); ok {
-					return string(text), nil
+	events := c.runner.Run(ctx, "user-1", "session-1", content, agent.RunConfig{})
+
+	var reasoning string
+	for event, err := range events {
+		if err != nil {
+			return "", fmt.Errorf("ADK Agent failed: %w", err)
+		}
+		if event.Content != nil {
+			for _, part := range event.Content.Parts {
+				if part.Text != "" {
+					reasoning += part.Text
 				}
 			}
 		}
 	}
 
-	return "No reasoning returned from ADK Agent.", nil
+	if reasoning == "" {
+		return "No reasoning returned from ADK Agent.", nil
+	}
+
+	return reasoning, nil
 }

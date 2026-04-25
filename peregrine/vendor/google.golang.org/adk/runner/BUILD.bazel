@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "runner",
+    srcs = ["runner.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/runner",
+    importpath = "google.golang.org/adk/runner",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/adk/agent",
+        "//peregrine/vendor/google.golang.org/adk/artifact",
+        "//peregrine/vendor/google.golang.org/adk/internal/agent/parentmap",
+        "//peregrine/vendor/google.golang.org/adk/internal/agent/runconfig",
+        "//peregrine/vendor/google.golang.org/adk/internal/artifact",
+        "//peregrine/vendor/google.golang.org/adk/internal/context",
+        "//peregrine/vendor/google.golang.org/adk/internal/llminternal",
+        "//peregrine/vendor/google.golang.org/adk/internal/memory",
+        "//peregrine/vendor/google.golang.org/adk/internal/plugininternal",
+        "//peregrine/vendor/google.golang.org/adk/internal/utils",
+        "//peregrine/vendor/google.golang.org/adk/memory",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/adk/plugin",
+        "//peregrine/vendor/google.golang.org/adk/session",
+        "//peregrine/vendor/google.golang.org/genai",
+    ],
+)

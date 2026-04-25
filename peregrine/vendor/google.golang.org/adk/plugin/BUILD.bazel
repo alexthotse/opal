@@ -1,15 +1,14 @@
 load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
-    name = "llm",
-    srcs = ["client.go"],
-    importpath = "github.com/alexthotse/peregrine/llm",
+    name = "plugin",
+    srcs = ["plugin.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/google.golang.org/adk/plugin",
+    importpath = "google.golang.org/adk/plugin",
     visibility = ["//visibility:public"],
     deps = [
         "//peregrine/vendor/google.golang.org/adk/agent",
         "//peregrine/vendor/google.golang.org/adk/agent/llmagent",
-        "//peregrine/vendor/google.golang.org/adk/model",
-        "//peregrine/vendor/google.golang.org/adk/runner",
         "//peregrine/vendor/google.golang.org/adk/session",
         "//peregrine/vendor/google.golang.org/genai",
     ],
