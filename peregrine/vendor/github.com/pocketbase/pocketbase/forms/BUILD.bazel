@@ -1,0 +1,27 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "forms",
+    srcs = [
+        "apple_client_secret_create.go",
+        "record_upsert.go",
+        "test_email_send.go",
+        "test_s3_filesystem.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/forms",
+    importpath = "github.com/pocketbase/pocketbase/forms",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/go-ozzo/ozzo-validation/v4:ozzo-validation",
+        "//peregrine/vendor/github.com/go-ozzo/ozzo-validation/v4/is",
+        "//peregrine/vendor/github.com/golang-jwt/jwt/v5:jwt",
+        "//peregrine/vendor/github.com/pocketbase/dbx",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/core",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/core/validators",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/mails",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/security",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/types",
+        "//peregrine/vendor/github.com/spf13/cast",
+    ],
+)

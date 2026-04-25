@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "types",
+    srcs = [
+        "datetime.go",
+        "geo_point.go",
+        "json_array.go",
+        "json_map.go",
+        "json_raw.go",
+        "types.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/types",
+    importpath = "github.com/pocketbase/pocketbase/tools/types",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/github.com/spf13/cast"],
+)

@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "is",
+    srcs = ["rules.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/go-ozzo/ozzo-validation/v4/is",
+    importpath = "github.com/go-ozzo/ozzo-validation/v4/is",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/asaskevich/govalidator",
+        "//peregrine/vendor/github.com/go-ozzo/ozzo-validation/v4:ozzo-validation",
+    ],
+)

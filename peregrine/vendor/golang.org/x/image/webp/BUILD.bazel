@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "webp",
+    srcs = [
+        "decode.go",
+        "doc.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/image/webp",
+    importpath = "golang.org/x/image/webp",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/golang.org/x/image/riff",
+        "//peregrine/vendor/golang.org/x/image/vp8",
+        "//peregrine/vendor/golang.org/x/image/vp8l",
+    ],
+)

@@ -1,0 +1,25 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "filesystem",
+    srcs = [
+        "file.go",
+        "filesystem.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem",
+    importpath = "github.com/pocketbase/pocketbase/tools/filesystem",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/disintegration/imaging",
+        "//peregrine/vendor/github.com/fatih/color",
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem/blob",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem/internal/fileblob",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem/internal/s3blob",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem/internal/s3blob/s3",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/inflector",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/security",
+        "//peregrine/vendor/golang.org/x/image/webp",
+    ],
+)

@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "fileblob",
+    srcs = [
+        "attrs.go",
+        "fileblob.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem/internal/fileblob",
+    importpath = "github.com/pocketbase/pocketbase/tools/filesystem/internal/fileblob",
+    visibility = ["//peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem:__subpackages__"],
+    deps = ["//peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem/blob"],
+)

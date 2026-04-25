@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "color",
+    srcs = [
+        "color.go",
+        "color_windows.go",
+        "doc.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/fatih/color",
+    importpath = "github.com/fatih/color",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/mattn/go-colorable",
+        "//peregrine/vendor/github.com/mattn/go-isatty",
+    ] + select({
+        "@rules_go//go/platform:windows": [
+            "//peregrine/vendor/golang.org/x/sys/windows",
+        ],
+        "//conditions:default": [],
+    }),
+)

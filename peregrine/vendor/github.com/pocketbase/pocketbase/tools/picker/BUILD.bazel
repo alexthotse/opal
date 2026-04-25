@@ -1,0 +1,20 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "picker",
+    srcs = [
+        "excerpt_modifier.go",
+        "modifiers.go",
+        "pick.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/picker",
+    importpath = "github.com/pocketbase/pocketbase/tools/picker",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/search",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/tokenizer",
+        "//peregrine/vendor/github.com/spf13/cast",
+        "//peregrine/vendor/golang.org/x/net/html",
+    ],
+)

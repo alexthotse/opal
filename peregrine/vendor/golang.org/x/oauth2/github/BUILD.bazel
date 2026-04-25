@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "github",
+    srcs = ["github.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/github",
+    importpath = "golang.org/x/oauth2/github",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2/endpoints"],
+)

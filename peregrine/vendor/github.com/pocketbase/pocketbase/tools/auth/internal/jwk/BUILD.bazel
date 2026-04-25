@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "jwk",
+    srcs = ["jwk.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/auth/internal/jwk",
+    importpath = "github.com/pocketbase/pocketbase/tools/auth/internal/jwk",
+    visibility = ["//peregrine/vendor/github.com/pocketbase/pocketbase/tools/auth:__subpackages__"],
+    deps = ["//peregrine/vendor/github.com/golang-jwt/jwt/v5:jwt"],
+)

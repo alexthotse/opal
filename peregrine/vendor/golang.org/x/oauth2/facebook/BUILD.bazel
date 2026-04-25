@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "facebook",
+    srcs = ["facebook.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/facebook",
+    importpath = "golang.org/x/oauth2/facebook",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2"],
+)

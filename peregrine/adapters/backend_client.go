@@ -12,7 +12,7 @@ import (
 
 type BackendClient struct {
 	client    falconv1connect.FalconServiceClient
-	llmClient *llm.Client
+	llmClient *llm.ADKAgentClient
 }
 
 func NewDefaultBackendClient() *BackendClient {
@@ -22,9 +22,9 @@ func NewDefaultBackendClient() *BackendClient {
 		"http://localhost:8080",
 		connect.WithCodec(NewMsgPackCodec()),
 	)
-	
-	llmClient, _ := llm.NewClient()
-	
+
+	llmClient, _ := llm.NewADKAgentClient(context.Background())
+
 	return &BackendClient{
 		client:    client,
 		llmClient: llmClient,
@@ -81,10 +81,10 @@ func (b *BackendClient) DispatchAction(ctx context.Context, id, action string) (
 	return res.Msg.Result, nil
 }
 
-// GenerateReasoning makes a network call to the Gemini API using the LLM client
-func (b *BackendClient) GenerateReasoning(prompt string) (string, error) {
+// GenerateReasoning generates reasoning natively in Go via ADK Agent
+func (b *BackendClient) GenerateReasoning(ctx context.Context, prompt string) (string, error) {
 	if b.llmClient == nil {
-		return "", context.Canceled // Or any error to indicate it's not initialized
+		return "Mock Reasoning (ADK Agent failed to init or API Key missing): " + prompt, nil
 	}
-	return b.llmClient.GenerateReasoning(prompt)
+	return b.llmClient.GenerateReasoning(ctx, prompt)
 }

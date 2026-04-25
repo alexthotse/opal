@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "scan",
+    srcs = ["bytes.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/scan",
+    importpath = "github.com/gabriel-vasile/mimetype/internal/scan",
+    visibility = ["//peregrine/vendor/github.com/gabriel-vasile/mimetype:__subpackages__"],
+)

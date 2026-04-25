@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "kakao",
+    srcs = ["kakao.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/kakao",
+    importpath = "golang.org/x/oauth2/kakao",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2"],
+)

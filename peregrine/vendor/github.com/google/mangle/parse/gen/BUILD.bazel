@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "gen",
+    srcs = [
+        "mangle_base_listener.go",
+        "mangle_base_visitor.go",
+        "mangle_lexer.go",
+        "mangle_listener.go",
+        "mangle_parser.go",
+        "mangle_visitor.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/google/mangle/parse/gen",
+    importpath = "github.com/google/mangle/parse/gen",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/github.com/antlr4-go/antlr/v4:antlr"],
+)

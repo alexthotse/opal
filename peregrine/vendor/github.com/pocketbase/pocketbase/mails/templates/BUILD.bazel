@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "templates",
+    srcs = [
+        "html_content.go",
+        "layout.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/mails/templates",
+    importpath = "github.com/pocketbase/pocketbase/mails/templates",
+    visibility = ["//visibility:public"],
+)

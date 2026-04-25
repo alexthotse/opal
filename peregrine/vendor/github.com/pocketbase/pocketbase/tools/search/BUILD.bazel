@@ -1,0 +1,29 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "search",
+    srcs = [
+        "filter.go",
+        "identifier_macros.go",
+        "multi_match_subquery.go",
+        "provider.go",
+        "simple_field_resolver.go",
+        "sort.go",
+        "token_functions.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/search",
+    importpath = "github.com/pocketbase/pocketbase/tools/search",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/ganigeorgiev/fexpr",
+        "//peregrine/vendor/github.com/pocketbase/dbx",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/dbutils",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/inflector",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/security",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/store",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/types",
+        "//peregrine/vendor/github.com/spf13/cast",
+        "//peregrine/vendor/golang.org/x/sync/errgroup",
+    ],
+)

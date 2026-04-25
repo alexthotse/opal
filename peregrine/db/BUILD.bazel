@@ -12,9 +12,9 @@ go_library(
     importpath = "github.com/alexthotse/peregrine/db",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_github_google_mangle//ast",
-        "@com_github_google_mangle//parse",
-        "@com_github_pocketbase_pocketbase//:pocketbase",
-        "@com_github_pocketbase_pocketbase//core",
+        "//peregrine/vendor/github.com/google/mangle/ast",
+        "//peregrine/vendor/github.com/google/mangle/parse",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/core",
     ],
 )

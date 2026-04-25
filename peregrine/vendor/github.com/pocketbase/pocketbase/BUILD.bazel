@@ -1,0 +1,23 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pocketbase",
+    srcs = [
+        "modernc_versions_check.go",
+        "pocketbase.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase",
+    importpath = "github.com/pocketbase/pocketbase",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/fatih/color",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/cmd",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/core",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/migrations",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/hook",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/osutils",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/routine",
+        "//peregrine/vendor/github.com/spf13/cobra",
+    ],
+)

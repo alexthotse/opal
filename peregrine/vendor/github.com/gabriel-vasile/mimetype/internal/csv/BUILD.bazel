@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "csv",
+    srcs = ["parser.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/csv",
+    importpath = "github.com/gabriel-vasile/mimetype/internal/csv",
+    visibility = ["//peregrine/vendor/github.com/gabriel-vasile/mimetype:__subpackages__"],
+    deps = ["//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/scan"],
+)

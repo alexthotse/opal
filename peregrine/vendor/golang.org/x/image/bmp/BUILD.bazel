@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "bmp",
+    srcs = [
+        "reader.go",
+        "writer.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/image/bmp",
+    importpath = "golang.org/x/image/bmp",
+    visibility = ["//visibility:public"],
+)

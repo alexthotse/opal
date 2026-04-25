@@ -5,5 +5,10 @@ go_library(
     srcs = ["client.go"],
     importpath = "github.com/alexthotse/peregrine/llm",
     visibility = ["//visibility:public"],
-    deps = ["//peregrine/vendor/google.golang.org/genai"],
+    deps = [
+        "//peregrine/vendor/google.golang.org/adk/agent",
+        "//peregrine/vendor/google.golang.org/adk/agent/llmagent",
+        "//peregrine/vendor/google.golang.org/adk/model",
+        "//peregrine/vendor/google.golang.org/genai",
+    ],
 )

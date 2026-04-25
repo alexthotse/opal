@@ -1,0 +1,20 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "subscriptions",
+    srcs = [
+        "broker.go",
+        "client.go",
+        "message.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/subscriptions",
+    importpath = "github.com/pocketbase/pocketbase/tools/subscriptions",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/inflector",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/security",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/store",
+        "//peregrine/vendor/github.com/spf13/cast",
+    ],
+)

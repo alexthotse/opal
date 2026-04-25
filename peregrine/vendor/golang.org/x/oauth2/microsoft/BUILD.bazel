@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "microsoft",
+    srcs = ["microsoft.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/microsoft",
+    importpath = "golang.org/x/oauth2/microsoft",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2"],
+)

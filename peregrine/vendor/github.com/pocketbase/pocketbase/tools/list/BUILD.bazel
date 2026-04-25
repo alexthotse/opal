@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "list",
+    srcs = ["list.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+    importpath = "github.com/pocketbase/pocketbase/tools/list",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/store",
+        "//peregrine/vendor/github.com/spf13/cast",
+    ],
+)

@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "yandex",
+    srcs = ["yandex.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/yandex",
+    importpath = "golang.org/x/oauth2/yandex",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2"],
+)

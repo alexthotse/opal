@@ -1,0 +1,16 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "logger",
+    srcs = [
+        "batch_handler.go",
+        "log.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/logger",
+    importpath = "github.com/pocketbase/pocketbase/tools/logger",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/go-ozzo/ozzo-validation/v4:ozzo-validation",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/types",
+    ],
+)

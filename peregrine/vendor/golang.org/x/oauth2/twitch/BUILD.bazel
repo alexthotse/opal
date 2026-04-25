@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "twitch",
+    srcs = ["twitch.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/twitch",
+    importpath = "golang.org/x/oauth2/twitch",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2"],
+)

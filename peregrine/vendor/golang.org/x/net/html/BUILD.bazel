@@ -1,0 +1,23 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "html",
+    srcs = [
+        "const.go",
+        "doc.go",
+        "doctype.go",
+        "entity.go",
+        "escape.go",
+        "foreign.go",
+        "iter.go",
+        "node.go",
+        "nodetype_string.go",
+        "parse.go",
+        "render.go",
+        "token.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/net/html",
+    importpath = "golang.org/x/net/html",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/net/html/atom"],
+)

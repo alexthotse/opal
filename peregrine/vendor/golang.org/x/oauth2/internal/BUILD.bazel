@@ -1,0 +1,14 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "internal",
+    srcs = [
+        "doc.go",
+        "oauth2.go",
+        "token.go",
+        "transport.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/internal",
+    importpath = "golang.org/x/oauth2/internal",
+    visibility = ["//peregrine/vendor/golang.org/x/oauth2:__subpackages__"],
+)

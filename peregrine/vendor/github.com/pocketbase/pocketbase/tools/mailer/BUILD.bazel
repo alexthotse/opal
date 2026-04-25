@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "mailer",
+    srcs = [
+        "html2text.go",
+        "mailer.go",
+        "sendmail.go",
+        "smtp.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/mailer",
+    importpath = "github.com/pocketbase/pocketbase/tools/mailer",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/domodwyer/mailyak/v3:mailyak",
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/hook",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/security",
+        "//peregrine/vendor/golang.org/x/net/html",
+    ],
+)

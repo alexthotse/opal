@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "blob",
+    srcs = [
+        "bucket.go",
+        "driver.go",
+        "hex.go",
+        "reader.go",
+        "writer.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/filesystem/blob",
+    importpath = "github.com/pocketbase/pocketbase/tools/filesystem/blob",
+    visibility = ["//visibility:public"],
+)

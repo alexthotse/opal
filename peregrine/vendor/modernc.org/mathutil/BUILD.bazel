@@ -1,0 +1,63 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "mathutil",
+    srcs = [
+        "binarylog.go",
+        "bits.go",
+        "envelope.go",
+        "int.go",
+        "mathutil.go",
+        "permute.go",
+        "poly.go",
+        "primes.go",
+        "rat.go",
+        "rnd.go",
+        "sqr.go",
+        "sqr_std.go",
+        "tables.go",
+        "test_deps.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/modernc.org/mathutil",
+    importpath = "modernc.org/mathutil",
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@rules_go//go/platform:386": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:amd64": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:arm": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:arm64": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:mips": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:mips64": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:mips64le": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:mipsle": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:ppc64": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:ppc64le": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:s390x": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "@rules_go//go/platform:wasm": [
+            "//peregrine/vendor/github.com/remyoudompheng/bigfft",
+        ],
+        "//conditions:default": [],
+    }),
+)

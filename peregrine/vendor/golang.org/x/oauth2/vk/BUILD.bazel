@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "vk",
+    srcs = ["vk.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/vk",
+    importpath = "golang.org/x/oauth2/vk",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2"],
+)

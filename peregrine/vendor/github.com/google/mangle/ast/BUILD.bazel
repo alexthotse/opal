@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "ast",
+    srcs = [
+        "ast.go",
+        "decl.go",
+        "serde.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/google/mangle/ast",
+    importpath = "github.com/google/mangle/ast",
+    visibility = ["//visibility:public"],
+)

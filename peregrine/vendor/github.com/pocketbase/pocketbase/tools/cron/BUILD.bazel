@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cron",
+    srcs = [
+        "cron.go",
+        "job.go",
+        "schedule.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/cron",
+    importpath = "github.com/pocketbase/pocketbase/tools/cron",
+    visibility = ["//visibility:public"],
+)

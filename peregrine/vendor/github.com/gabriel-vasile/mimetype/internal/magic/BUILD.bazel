@@ -1,0 +1,35 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "magic",
+    srcs = [
+        "archive.go",
+        "audio.go",
+        "binary.go",
+        "database.go",
+        "document.go",
+        "font.go",
+        "ftyp.go",
+        "geo.go",
+        "image.go",
+        "magic.go",
+        "meteo.go",
+        "ms_office.go",
+        "netpbm.go",
+        "ogg.go",
+        "text.go",
+        "text_csv.go",
+        "video.go",
+        "zip.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/magic",
+    importpath = "github.com/gabriel-vasile/mimetype/internal/magic",
+    visibility = ["//peregrine/vendor/github.com/gabriel-vasile/mimetype:__subpackages__"],
+    deps = [
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/charset",
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/csv",
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/json",
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/markup",
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/scan",
+    ],
+)

@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "spotify",
+    srcs = ["spotify.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/golang.org/x/oauth2/spotify",
+    importpath = "golang.org/x/oauth2/spotify",
+    visibility = ["//visibility:public"],
+    deps = ["//peregrine/vendor/golang.org/x/oauth2"],
+)

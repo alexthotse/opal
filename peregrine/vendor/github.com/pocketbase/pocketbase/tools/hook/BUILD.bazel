@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "hook",
+    srcs = [
+        "event.go",
+        "hook.go",
+        "tagged.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/tools/hook",
+    importpath = "github.com/pocketbase/pocketbase/tools/hook",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/list",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/security",
+    ],
+)

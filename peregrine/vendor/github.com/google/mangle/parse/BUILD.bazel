@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "parse",
+    srcs = ["parse.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/google/mangle/parse",
+    importpath = "github.com/google/mangle/parse",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/antlr4-go/antlr/v4:antlr",
+        "//peregrine/vendor/github.com/google/mangle/ast",
+        "//peregrine/vendor/github.com/google/mangle/parse/gen",
+        "//peregrine/vendor/github.com/google/mangle/symbols",
+    ],
+)

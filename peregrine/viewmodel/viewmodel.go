@@ -121,7 +121,7 @@ func (m *AppViewModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// Generate reasoning via Gemini
 			m.state = domain.AddMessage(m.state, "Generating reasoning...")
 			return m, func() tea.Msg {
-				res, err := m.backendClient.GenerateReasoning("Explain the concept of Hexagonal Architecture in one short sentence.")
+				res, err := m.backendClient.GenerateReasoning(context.Background(), "Explain the concept of Hexagonal Architecture in one short sentence.")
 				if err != nil {
 					return rpcResultMsg(fmt.Sprintf("Reasoning failed: %v", err))
 				}

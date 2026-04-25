@@ -1,0 +1,20 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cmd",
+    srcs = [
+        "serve.go",
+        "superuser.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/pocketbase/pocketbase/cmd",
+    importpath = "github.com/pocketbase/pocketbase/cmd",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/fatih/color",
+        "//peregrine/vendor/github.com/go-ozzo/ozzo-validation/v4/is",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/apis",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/core",
+        "//peregrine/vendor/github.com/pocketbase/pocketbase/tools/security",
+        "//peregrine/vendor/github.com/spf13/cobra",
+    ],
+)

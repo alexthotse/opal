@@ -1,0 +1,25 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "imaging",
+    srcs = [
+        "adjust.go",
+        "convolution.go",
+        "doc.go",
+        "effects.go",
+        "histogram.go",
+        "io.go",
+        "resize.go",
+        "scanner.go",
+        "tools.go",
+        "transform.go",
+        "utils.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/disintegration/imaging",
+    importpath = "github.com/disintegration/imaging",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/golang.org/x/image/bmp",
+        "//peregrine/vendor/golang.org/x/image/tiff",
+    ],
+)

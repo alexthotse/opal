@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "mimetype",
+    srcs = [
+        "mime.go",
+        "mimetype.go",
+        "tree.go",
+    ],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/gabriel-vasile/mimetype",
+    importpath = "github.com/gabriel-vasile/mimetype",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/charset",
+        "//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/magic",
+    ],
+)

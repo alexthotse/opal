@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "markup",
+    srcs = ["markup.go"],
+    importmap = "github.com/alexthotse/peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/markup",
+    importpath = "github.com/gabriel-vasile/mimetype/internal/markup",
+    visibility = ["//peregrine/vendor/github.com/gabriel-vasile/mimetype:__subpackages__"],
+    deps = ["//peregrine/vendor/github.com/gabriel-vasile/mimetype/internal/scan"],
+)
