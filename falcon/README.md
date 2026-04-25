@@ -6,12 +6,12 @@
 ```sh
 gleam add falcon@1
 ```
-```gleam
-import falcon
+```bash
+# Run the Gleam backend
+gleam run -m falcon
 
-pub fn main() {
-  // TODO: An example of the project in use
-}
+# In another terminal, run the Go frontend
+go run ./peregrine --theme crush --provider anthropic
 ```
 
 Further documentation can be found at <https://hexdocs.pm/falcon>.
