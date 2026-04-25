@@ -32,7 +32,7 @@ jobs:
 
       - name: Check Formatting
         run: |
-          task format
+          task format:peregrine
 
       - name: Run Unit Tests
         run: task test
