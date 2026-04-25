@@ -7,6 +7,7 @@ go_library(
         "animator.go",
         "backend_client.go",
         "msgpack_codec.go",
+        "tts.go",
     ],
     importpath = "github.com/alexthotse/peregrine/adapters",
     visibility = ["//visibility:public"],
