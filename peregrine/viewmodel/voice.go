@@ -3,6 +3,7 @@ package viewmodel
 import (
 	"log"
 
+	"github.com/alexthotse/peregrine/adapters"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -40,12 +41,14 @@ func (m *MockAudioRecorder) Close() error {
 type VoiceModel struct {
 	active   bool
 	recorder AudioRecorder
+	tts      adapters.TTSProvider
 }
 
 func NewVoiceModel() VoiceModel {
 	return VoiceModel{
 		active:   false,
 		recorder: &MockAudioRecorder{},
+		tts:      adapters.NewTTSProvider("pocket-tts"),
 	}
 }
 

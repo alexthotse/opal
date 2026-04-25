@@ -29,7 +29,7 @@ type ADKAgentClient struct {
 }
 
 func NewADKAgentClient(provider string) (*ADKAgentClient, error) {
-	var m model.Model
+	var m model.LLM
 	switch provider {
 	case "gemini":
 		// Standard ADK Google GenAI implementation
