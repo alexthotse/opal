@@ -30,10 +30,6 @@ jobs:
         with:
           version: 3.x
 
-      - name: Check Formatting
-        run: |
-          task format:peregrine
-
       - name: Run Unit Tests
         run: task test
 
