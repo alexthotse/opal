@@ -12,7 +12,8 @@ import (
 
 func TestMainApp(t *testing.T) {
 	bc := adapters.NewDefaultBackendClient()
-	ac, err := adapters.NewADKAgentClient("anthropic")
+	t.Setenv("OPENAI_API_KEY", "test")
+	ac, err := adapters.NewADKAgentClient("openai")
 	if err != nil {
 		t.Fatalf("Failed to initialize ADK Agent: %v", err)
 	}

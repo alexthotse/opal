@@ -20,9 +20,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install ALSA headers
+      - name: Install ALSA tools and headers
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+        run: sudo apt-get update && sudo apt-get install -y alsa-utils libasound2-dev
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5
@@ -50,9 +50,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install ALSA headers
+      - name: Install ALSA tools and headers
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+        run: sudo apt-get update && sudo apt-get install -y alsa-utils libasound2-dev
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5
@@ -108,9 +108,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install ALSA headers
+      - name: Install ALSA tools and headers
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+        run: sudo apt-get update && sudo apt-get install -y alsa-utils libasound2-dev
 
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.8.5

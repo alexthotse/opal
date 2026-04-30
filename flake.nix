@@ -52,12 +52,12 @@
           doCheck = false;
 
           nativeBuildInputs = [ pkgs.makeWrapper ];
-          buildInputs = [ pkgs.alsa-lib ];
+          buildInputs = pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-lib ];
 
           postInstall = ''
             wrapProgram $out/bin/peregrine_cli \
               --set FALCON_DIR "${falconBackend}/share/falcon" \
-              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.gleam pkgs.erlang ]}
+              --prefix PATH : ${pkgs.lib.makeBinPath ([ pkgs.gleam pkgs.erlang ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-utils ])}
             
             mv $out/bin/peregrine_cli $out/bin/peregrine
           '';
@@ -83,15 +83,14 @@
               peregrineFrontend
               pkgs.bashInteractive
               pkgs.coreutils
-              pkgs.alsa-lib
-            ];
+            ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-lib pkgs.alsa-utils ];
             pathsToLink = [ "/bin" "/share" ];
           };
 
           config = {
             Cmd = [ "${peregrineFrontend}/bin/peregrine" ];
             Env = [
-              "PATH=${peregrineFrontend}/bin:${pkgs.bashInteractive}/bin:${pkgs.coreutils}/bin"
+              "PATH=/bin:${peregrineFrontend}/bin:${pkgs.bashInteractive}/bin:${pkgs.coreutils}/bin"
             ];
           };
         };
@@ -119,7 +118,7 @@
             bazelisk
             buf
             protobuf
-          ];
+          ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ alsa-lib alsa-utils ];
         };
       }
     );
