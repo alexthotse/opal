@@ -6,6 +6,7 @@ gleam_test(
         "**/*.gleam",
     ]),
     strip_src_prefix = "falcon/test",
+    visibility = ["//visibility:public"],
     deps = [
         "//falcon:falcon_lib",
         "@hex_gleeunit//:gleam",

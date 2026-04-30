@@ -34,3 +34,8 @@ alias(
     name = "falcon",
     actual = "//falcon/bin:falcon_bin",
 )
+
+alias(
+    name = "falcon_test",
+    actual = "//falcon/test:falcon_test",
+)

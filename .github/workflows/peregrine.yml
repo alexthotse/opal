@@ -65,6 +65,14 @@ jobs:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Nix
+        if: runner.os == 'Linux'
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Enable Nix Cache
+        if: runner.os == 'Linux'
+        uses: DeterminateSystems/magic-nix-cache-action@v8
+
       - name: Build Falcon Backend (Gleam)
         run: task build:falcon
 
@@ -114,6 +122,12 @@ jobs:
         with:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v16
+
+      - name: Enable Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v8
 
       - name: Build Native Linux Binary
         run: task build:peregrine
