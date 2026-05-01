@@ -36,10 +36,8 @@
           buildInputs = pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-lib ];
 
           postInstall = ''
-            wrapProgram $out/bin/peregrine_cli \
+            wrapProgram $out/bin/peregrine \
               --prefix PATH : ${pkgs.lib.makeBinPath (pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-utils ])}
-            
-            mv $out/bin/peregrine_cli $out/bin/peregrine
           '';
         };
 
