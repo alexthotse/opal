@@ -24,7 +24,7 @@ tasks:
   build:container:
     desc: "Build the Alpine Linux-based Docker OCI image using Nix"
     cmds:
-      - nix build .#container --print-build-logs
+      - nix build .#container --print-build-logs --option sandbox false
 
   test:
     desc: "Run all tests via Bazel"
