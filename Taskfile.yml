@@ -57,3 +57,23 @@ tasks:
     desc: "Format the Peregrine Go frontend"
     cmds:
       - cd peregrine && go fmt ./...
+
+  harness:install:
+    desc: "Install agentic harness tooling (gt + bd) via go install"
+    cmds:
+      - ./harness/gt.sh install
+
+  harness:init:
+    desc: "Initialize local agentic HQ under .gastown/"
+    cmds:
+      - ./harness/gt.sh init
+
+  harness:rig-add:
+    desc: "Register this repo as a rig in local agentic HQ"
+    cmds:
+      - ./harness/gt.sh rig-add
+
+  harness:doctor:
+    desc: "Run harness diagnostics (best-effort)"
+    cmds:
+      - ./harness/gt.sh doctor
