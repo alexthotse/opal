@@ -24,13 +24,17 @@
           version = "1.0.0";
           src = ./falcon;
 
-          nativeBuildInputs = with pkgs; [ gleam erlang rebar3 elixir ];
+          nativeBuildInputs =
+            with pkgs;
+            [ gleam erlang rebar3 elixir ]
+            ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ glibcLocales ];
 
           buildPhase = ''
             export HOME=$TMPDIR
-            export LANG=C.UTF-8
-            export LC_ALL=C.UTF-8
+            export LANG=en_US.UTF-8
+            export LC_ALL=en_US.UTF-8
             export ELIXIR_ERL_OPTIONS="+fnu"
+            ${pkgs.lib.optionalString pkgs.stdenv.isLinux "export LOCALE_ARCHIVE=${pkgs.glibcLocales}/lib/locale/locale-archive"}
             mix local.hex --force
             mix local.rebar --force
             gleam deps download
