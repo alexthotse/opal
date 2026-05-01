@@ -19,34 +19,6 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        falconBackend = pkgs.stdenv.mkDerivation {
-          pname = "falcon";
-          version = "1.0.0";
-          src = ./falcon;
-
-          nativeBuildInputs =
-            with pkgs;
-            [ gleam erlang rebar3 elixir ]
-            ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ glibcLocales ];
-
-          buildPhase = ''
-            export HOME=$TMPDIR
-            export LANG=en_US.UTF-8
-            export LC_ALL=en_US.UTF-8
-            export ELIXIR_ERL_OPTIONS="+fnu"
-            ${pkgs.lib.optionalString pkgs.stdenv.isLinux "export LOCALE_ARCHIVE=${pkgs.glibcLocales}/lib/locale/locale-archive"}
-            mix local.hex --force
-            mix local.rebar --force
-            gleam deps download
-            gleam build
-          '';
-
-          installPhase = ''
-            mkdir -p $out/share/falcon
-            cp -r ./* $out/share/falcon/
-          '';
-        };
-
         peregrineFrontend = pkgs.buildGoModule {
           pname = "peregrine";
           version = "1.0.0";
@@ -65,8 +37,7 @@
 
           postInstall = ''
             wrapProgram $out/bin/peregrine_cli \
-              --set FALCON_DIR "${falconBackend}/share/falcon" \
-              --prefix PATH : ${pkgs.lib.makeBinPath ([ pkgs.gleam pkgs.erlang ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-utils ])}
+              --prefix PATH : ${pkgs.lib.makeBinPath (pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-utils ])}
             
             mv $out/bin/peregrine_cli $out/bin/peregrine
           '';
@@ -114,7 +85,6 @@
       in
       {
         packages = {
-          backend = falconBackend;
           frontend = peregrineFrontend;
           container = peregrineContainer;
           default = peregrineFrontend;
