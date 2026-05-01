@@ -27,7 +27,7 @@
           # Setting to empty string forces Nix to calculate and show the new hash
           # during the first build if it's incorrect.
           # vendorHash = "sha256-n6V8YgR3bSjJqG9Yy25p50yK2263v7K15E9L41V35G8=";
-          vendorHash = pkgs.lib.fakeHash;
+          vendorHash = "sha256-IdMpy1B4BbilibgbTbO4xoM162l69mF69YGCQHLS5OE=";
           
           # Don't check during build to avoid issues with bubbletea tests in nix sandbox
           doCheck = false;
