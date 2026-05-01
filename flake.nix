@@ -28,6 +28,11 @@
 
           buildPhase = ''
             export HOME=$TMPDIR
+            export LANG=C.UTF-8
+            export LC_ALL=C.UTF-8
+            export ELIXIR_ERL_OPTIONS="+fnu"
+            mix local.hex --force
+            mix local.rebar --force
             gleam deps download
             gleam build
           '';
