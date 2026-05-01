@@ -24,7 +24,7 @@
           version = "1.0.0";
           src = ./falcon;
 
-          nativeBuildInputs = with pkgs; [ gleam erlang rebar3 ];
+          nativeBuildInputs = with pkgs; [ gleam erlang rebar3 elixir ];
 
           buildPhase = ''
             export HOME=$TMPDIR
