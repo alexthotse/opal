@@ -69,10 +69,6 @@ jobs:
         if: runner.os == 'Linux'
         uses: DeterminateSystems/nix-installer-action@v16
 
-      - name: Enable Nix Cache
-        if: runner.os == 'Linux'
-        uses: DeterminateSystems/magic-nix-cache-action@v8
-
       - name: Build Falcon Backend (Gleam)
         run: task build:falcon
 
@@ -87,10 +83,6 @@ jobs:
           fi
           ./bazel-bin/peregrine/peregrine_/peregrine -h || echo "Binary exists and is executable"
 
-      - name: Install Nix
-        if: runner.os == 'Linux'
-        uses: DeterminateSystems/nix-installer-action@main
-      
       - name: Build OCI Container (Alpine Linux Base)
         # OCI builds natively on Linux. Avoid macOS Nix cross-compilation quirks for Docker outputs.
         if: runner.os == 'Linux'
@@ -125,9 +117,6 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v16
-
-      - name: Enable Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@v8
 
       - name: Build Native Linux Binary
         run: task build:peregrine
