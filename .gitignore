@@ -1,0 +1,4 @@
+ci_*.log
+peregrine/debug.log
+peregrine/peregrine
+peregrine/peregrine_cli
