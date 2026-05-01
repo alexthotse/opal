@@ -63,19 +63,27 @@
           '';
         };
 
-        # OCI (Docker) container image using Alpine Linux as the base
+        alpineBase = pkgs.stdenv.mkDerivation {
+          name = "alpine-linux-base.tar";
+
+          nativeBuildInputs = [ pkgs.skopeo ];
+
+          outputHashAlgo = "sha256";
+          outputHashMode = "flat";
+          outputHash = "sha256-p+iV7+tp4QeS7Scuk9H/TdUk6dwfCQNvr/lqO+eDL9M=";
+
+          buildCommand = ''
+            export HOME="$TMPDIR"
+            export XDG_RUNTIME_DIR="$TMPDIR"
+            skopeo copy docker://alpine@sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5 docker-archive:$out:alpine:latest
+          '';
+        };
+
         peregrineContainer = pkgs.dockerTools.buildImage {
           name = "ghcr.io/alexthotse/peregrine";
           tag = "latest";
           
-          # Pull a minimal Alpine Linux image as the base
-          fromImage = pkgs.dockerTools.pullImage {
-            imageName = "alpine";
-            imageDigest = "sha256:0a4eaa0eecf5f8c050e5bba433f58c052be7587ee8af3e8b3910ef9ab5fbe9f5"; # alpine:3.21.3
-            sha256 = "sha256-p+iV7+tp4QeS7Scuk9H/TdUk6dwfCQNvr/lqO+eDL9M=";
-            finalImageName = "alpine";
-            finalImageTag = "latest";
-          };
+          fromImage = alpineBase;
 
           copyToRoot = pkgs.buildEnv {
             name = "peregrine-env";
