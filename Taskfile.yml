@@ -40,7 +40,7 @@ tasks:
   test:peregrine:
     desc: "Test the Peregrine Go frontend via Bazel"
     cmds:
-      - bazelisk test //peregrine/... || true
+      - bazelisk test //peregrine/...
 
   format:
     desc: "Format both Falcon and Peregrine codebases"

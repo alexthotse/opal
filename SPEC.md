@@ -21,7 +21,7 @@ terminal AI assistant system. TUI client (Go) talks to local backend (Gleam) ove
 
 ## §V INVARIANTS
 V1: repo contains 0 `*.py` source files.
-V2: `bazelisk test //falcon:falcon_test //peregrine/...` exit 0.
+V2: `bazelisk test //falcon/test:falcon_test //peregrine/...` exit 0.
 V3: `go test ./...` exit 0 in `peregrine/`.
 V4: Linux voice capture uses `arecord` (`-f S16_LE -c 1 -r 16000`) not embedded audio lib.
 V5: Nix container base image = Alpine, built via nix (no Dockerfile).
