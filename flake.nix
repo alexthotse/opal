@@ -126,13 +126,13 @@
           default = bundle;
         };
 
-        apps = {
+        apps = rec {
           peregrine = flake-utils.lib.mkApp {
             drv = peregrineFrontend;
             exePath = "/bin/peregrine";
           };
           harness = flake-utils.lib.mkApp { drv = harness; };
-          default = self.apps.${system}.peregrine;
+          default = peregrine;
         };
 
         devShells.default = pkgs.mkShell {
