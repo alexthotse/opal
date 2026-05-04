@@ -4,9 +4,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    gastown.url = "github:gastownhall/gastown";
+    beads.url = "github:gastownhall/beads";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    gastown,
+    beads,
+  }:
     let
       supportedSystems = [
         "x86_64-linux"
@@ -18,6 +26,9 @@
     flake-utils.lib.eachSystem supportedSystems (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+
+        gtPkg = gastown.packages.${system}.default;
+        bdPkg = beads.packages.${system}.default;
 
         peregrineFrontend = pkgs.buildGoModule {
           pname = "peregrine";
@@ -39,6 +50,29 @@
             wrapProgram $out/bin/peregrine \
               --prefix PATH : ${pkgs.lib.makeBinPath (pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.alsa-utils ])}
           '';
+        };
+
+        harness = pkgs.writeShellApplication {
+          name = "opal-harness";
+          runtimeInputs = [
+            bdPkg
+            gtPkg
+            pkgs.bash
+            pkgs.coreutils
+            pkgs.git
+          ];
+          text = builtins.readFile ./harness/gt.sh;
+        };
+
+        bundle = pkgs.buildEnv {
+          name = "opal";
+          paths = [
+            bdPkg
+            gtPkg
+            harness
+            peregrineFrontend
+          ];
+          pathsToLink = [ "/bin" "/share" ];
         };
 
         alpineBase = pkgs.stdenv.mkDerivation {
@@ -83,14 +117,22 @@
       in
       {
         packages = {
+          bd = bdPkg;
+          gt = gtPkg;
+          harness = harness;
+          bundle = bundle;
           frontend = peregrineFrontend;
           container = peregrineContainer;
-          default = peregrineFrontend;
+          default = bundle;
         };
 
-        apps.default = flake-utils.lib.mkApp {
-          drv = peregrineFrontend;
-          exePath = "/bin/peregrine";
+        apps = {
+          peregrine = flake-utils.lib.mkApp {
+            drv = peregrineFrontend;
+            exePath = "/bin/peregrine";
+          };
+          harness = flake-utils.lib.mkApp { drv = harness; };
+          default = self.apps.${system}.peregrine;
         };
 
         devShells.default = pkgs.mkShell {
@@ -103,6 +145,8 @@
             bazelisk
             buf
             protobuf
+            gtPkg
+            bdPkg
           ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ alsa-lib alsa-utils ];
         };
       }
